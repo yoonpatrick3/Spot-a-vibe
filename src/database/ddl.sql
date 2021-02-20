@@ -7,7 +7,7 @@ CREATE TABLE Artist (
     PRIMARY KEY(artist_id)
 );
 
-CREATE TABLE Songs (
+CREATE TABLE Song (
     id varchar(50) NOT NULL,
     title varchar(100) NOT NULL,
     artist_id int NOT NULL,
