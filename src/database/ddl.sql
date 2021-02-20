@@ -2,7 +2,7 @@ CREATE DATABASE SpotifySongs;
 USE SpotifySongs;
 
 CREATE TABLE Artist (
-    artist_id int NOT NULL AUTO_INCREMENT,
+    artist_id varchar(50) NOT NULL,
     artist_name varchar(100) NOT NULL,
     PRIMARY KEY(artist_id)
 );
@@ -10,7 +10,7 @@ CREATE TABLE Artist (
 CREATE TABLE Song (
     id varchar(50) NOT NULL,
     title varchar(100) NOT NULL,
-    artist_id int NOT NULL,
+    artist_id varchar(50) NOT NULL,
     img_link varchar(100),
     album varchar(100),
     acousticness double,

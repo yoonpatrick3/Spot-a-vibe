@@ -1,9 +1,8 @@
 import numpy as np
 import sys
-sys.path.append("..")
 import os
-print("pyoon", )
-from song import *
+sys.path.append(os.getcwd())
+from src.song import *
 
 # Finds the difference in a circular array
 def find_circular_diff(num1: int, num2: int, circular_array: list) -> int:
@@ -21,11 +20,10 @@ def find_circular_diff(num1: int, num2: int, circular_array: list) -> int:
 # Squared difference noramlized to 0 and 1
 def scaled_squared_difference(num1: int, num2: int) -> float:
     maxnum = max(abs(num1), abs(num2))
-    return (num1-num2 / maxnum) ** 2
+    return ((num1-num2) / maxnum) ** 2
 
 # Squared difference normalized to 0 and 1 within a circular array
 def scaled_squared_difference_circular(num1: int, num2: int, circular_array: list) -> float:
-    print(find_circular_diff(num1, num2, circular_array))
     return (find_circular_diff(num1, num2, circular_array) / 6) **2
 
 # Finds the residual squared sum of all the song features
@@ -46,6 +44,8 @@ def residual_square_sum(song1: Song, song2: Song) -> float:
 
 # Finds the n-closest songs given a list of songs and a target songs
 def closest_songs(target_song: Song, list_of_songs: list, num_songs: int) -> list:
+    if num_songs >= len(list_of_songs):
+        num_songs = len(list_of_songs)-1
     list_of_residuals = []
     for song in list_of_songs:
         list_of_residuals.append(residual_square_sum(target_song, song))
