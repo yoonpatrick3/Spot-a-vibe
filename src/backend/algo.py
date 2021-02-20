@@ -20,7 +20,7 @@ def find_circular_diff(num1: int, num2: int, circular_array: list) -> int:
 # Squared difference noramlized to 0 and 1
 def scaled_squared_difference(num1: int, num2: int) -> float:
     maxnum = max(abs(num1), abs(num2))
-    return ((num1-num2) / maxnum) ** 2
+    return ((num1-num2) / maxnum) ** 2 if maxnum else 0
 
 # Squared difference normalized to 0 and 1 within a circular array
 def scaled_squared_difference_circular(num1: int, num2: int, circular_array: list) -> float:
