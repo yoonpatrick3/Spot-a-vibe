@@ -1,5 +1,9 @@
 import numpy as np
-from .. import song
+import sys
+sys.path.append("..")
+import os
+print("pyoon", )
+from song import *
 
 # Finds the difference in a circular array
 def find_circular_diff(num1: int, num2: int, circular_array: list) -> int:
