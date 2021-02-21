@@ -2,3 +2,4 @@
 "/apiSearch" : api endpoint
 "/artist" : artist profile page
 "/track" : track details page
+"/error" : error page (redirect all errors here)

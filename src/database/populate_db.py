@@ -4,14 +4,10 @@ import os
 sys.path.append(os.getcwd())
 from src.song import *
 import requests
-from dotenv import load_dotenv
+import time
+from src.auth import get_auth
 
 def make_request():
-    load_dotenv()
-    #pip install python-dotenv
-
-    client_id = os.getenv('CLIENT_ID')
-    client_secret = os.getenv('CLIENT_SECRET')
 
     #SET UP DB CONNECTION
     mydb = mysql.connector.connect(
@@ -22,19 +18,8 @@ def make_request():
     )
     mycursor = mydb.cursor()
 
-    # Getting the authorization token from Spotify
-    AUTH_URL = 'https://accounts.spotify.com/api/token'
-
-    auth_response = requests.post(AUTH_URL, {
-        'grant_type': 'client_credentials',
-        'client_id': client_id,
-        'client_secret': client_secret,
-    })
-
-    # convert the response to JSON
-    auth_response_data = auth_response.json()
     # save the access token
-    access_token = auth_response_data['access_token']
+    access_token = get_auth(1)
 
     # populating the database with a playlist of the most popular songs
     url = 'https://api.spotify.com/v1/playlists/'
@@ -53,7 +38,7 @@ def make_request():
         list_of_tracks += song_json.json().get('items')
         offset += 100
     
-    return head, mycursor, mydb
+    return head, mycursor, mydb, list_of_tracks
 
 def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     audio_url = 'https://api.spotify.com/v1/audio-features/'
@@ -65,9 +50,18 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
         else:
             track = t
         album = track.get('album')
+        
+        
+        track_id = track.get('id')
+        # checking if id already exists in database
+        id_exists_query = ('SELECT COUNT(*) FROM Song WHERE id = %s')
+        mycursor.execute(id_exists_query, (track_id,))
+        count = mycursor.fetchone()
+        if count[0] == 1:
+            print('this song is already in the database!')
+            continue
 
         track_name = track.get('name')
-        track_id = track.get('id')
         img_link = album.get('images')[0].get('url')
         track_album = album.get('name')
         artist_id = album.get('artists')[0].get('id')
@@ -81,16 +75,30 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
         song_dict['artist_name'] = artist_name
         song_dict['img_link'] = img_link
         song_dict['album'] = track_album
-        audio_features = requests.get(audio_url + track_id, headers=head)
-        print(audio_features.json())
-        song_dict.update(audio_features.json())
+
+        id_num = 1
+        while id_num < 4:
+            audio_features = requests.get(audio_url + track_id, headers=head)
+            if audio_features.status_code != 200:
+                id_num += 1
+                access_token = get_auth(id_num)
+                head = {'Authorization': 'Bearer ' + access_token}
+                audio_features = requests.get(audio_url + track_id, headers=head)
+            else:
+                break
+    
+        try:
+            song_dict.update(audio_features.json())
+        except:
+            print("Error msg cuz audio_features.json failed, status code: ", audio_features.status_code)
+            return
+
+
+        song_dict['key_scale'] = song_dict.pop('key')
         song = Song(song_dict)
 
-        # song = Song(track_id, track_name, artist_id, artist_name, img_link, track_album)
-        # audio_features = requests.get(audio_url + track_id, headers=head)
-        # song.set_audio_features(audio_features.json())
-
         list_of_songs.append(song)
+        
 
     artist_sql = ("INSERT IGNORE INTO Artist(artist_id, artist_name) VALUES (%s, %s)")
     artist_val = []
@@ -99,6 +107,7 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
 
     artist_val = list(set(artist_val))
 
+    time.sleep(0.1)
     mycursor.executemany(artist_sql, artist_val)
     mydb.commit()
 
@@ -112,8 +121,7 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     mycursor.executemany(song_sql, song_val)
     mydb.commit()
 
-    mycursor.close()
-    mydb.close()
+
 
 #url for audio features
 # audio_url = 'https://api.spotify.com/v1/audio-features/'
@@ -126,6 +134,8 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
 # create a Song object for every track
 
 if __name__ == '__main__':
-    head, mycursor, mydb = make_request()
+    head, mycursor, mydb, list_of_tracks = make_request()
     create_and_insert_to_db(list_of_tracks, mycursor, True, head, mydb)
+    mycursor.close()
+    mydb.close()
 

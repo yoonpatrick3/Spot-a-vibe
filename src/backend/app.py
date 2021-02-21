@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.getcwd())
 from src.song import *
-from dotenv import load_dotenv
+from src.auth import get_auth
 from src.database.populate_db import create_and_insert_to_db
 
 app = Flask(__name__)
@@ -19,26 +19,8 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
-load_dotenv()
-#pip install python-dotenv
-
-client_id = os.getenv('CLIENT_ID')
-client_secret = os.getenv('CLIENT_SECRET')
-
-
-# Getting the authorization token from Spotify
-AUTH_URL = 'https://accounts.spotify.com/api/token'
-
-auth_response = requests.post(AUTH_URL, {
-    'grant_type': 'client_credentials',
-    'client_id': client_id,
-    'client_secret': client_secret,
-})
-
-# convert the response to JSON
-auth_response_data = auth_response.json()
 # save the access token
-access_token = auth_response_data['access_token']
+access_token = get_auth(1)
 
 
 @app.route("/apiSearch", methods=['GET'])
@@ -46,20 +28,25 @@ def apiSearch():
     if request.method == 'GET':
         params = request.args
         q = params.get('q', None)
-        relation = params.get('relation', 'track')
+        relation = params.get('type', 'track')
         if q != None:
             #call spotify api and return a JSON response of images, song names, artist
             url = 'https://api.spotify.com/v1/search'
-            queryparam = '?q=' + q + '&type=' + relation
+            q = q.replace(" ", "%20")
+            queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
             head = {'Authorization': 'Bearer ' + access_token}
             req = requests.get(url + queryparam, headers=head)
              #add into our database
-            create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
-            return req.json().get("tracks")
+            try:
+                create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
+                return req.json().get("tracks")
+            except:
+                # error page
+                return redirect("/error?msg=Something_went_wrong_with_your_request")
         else:
-            return "Please add a search parameter.", 404
+            return redirect("/error?msg=Please_add_a_search_parameter")
     else: 
-        return "Invalid HTTP method", 404
+        return redirect("/error?msg=Invalid_HTTP_method")
 
 @app.route("/track")
 def trackProfile():
@@ -108,9 +95,9 @@ def trackProfile():
             returnTrack["similar_songs"] = similar_song_attributes
             return returnTrack
         else:
-            return "Please add a track_id parameter.", 404
+            return redirect("/error?msg=Please_add_a_track_id_parameter")
     else:
-        return "Invalid HTTP method", 404
+        return redirect("/error?msg=Invalid_HTTP_method")
         
 @app.route("/artist")
 def artistProfile():
@@ -141,14 +128,17 @@ def artistProfile():
                 
             return jsonify(result)
         else:
-            return 'Please add an artist_id parameter', 404
+            return redirect("/error?msg=Please_add_an_artist_id_parameter")
     else:
-        return "Please add a artist_id parameter.", 404
-
+        return redirect("/error?msg=Invalid_HTTP_Request")
 
 @app.route("/")
 def index():
     return "homepage"
+
+@app.route("/error")
+def error():
+    return "error"
 
 def format_song(col_names, track):
     song_dict = {}

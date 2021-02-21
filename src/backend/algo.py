@@ -27,28 +27,44 @@ def scaled_squared_difference_circular(num1: int, num2: int, circular_array: lis
     return (find_circular_diff(num1, num2, circular_array) / 6) **2
 
 # Finds the residual squared sum of all the song features
-def residual_square_sum(song1: Song, song2: Song) -> float:
-    list_of_features = [scaled_squared_difference(song1.acousticness, song2.acousticness),
-                       scaled_squared_difference(song1.danceability, song2.danceability),
-                       scaled_squared_difference(song1.duration_ms, song2.duration_ms),
-                       scaled_squared_difference(song1.energy, song2.energy),
-                       scaled_squared_difference(song1.instrumentalness, song2.instrumentalness),
-                       scaled_squared_difference_circular(song1.key_scale, song2.key_scale, range(12)),
-                       scaled_squared_difference(song1.liveness, song2.liveness),
-                       scaled_squared_difference(song1.mode, song2.mode),
-                       scaled_squared_difference(song1.speechiness, song2.speechiness),
-                       scaled_squared_difference(song1.tempo, song2.tempo),
-                       scaled_squared_difference(song1.time_signature, song2.time_signature),
-                       scaled_squared_difference(song1.valence, song2.valence)]
+def residual_square_sum(song1: Song, song2: Song, slider_values: dict) -> float:
+    list_of_features = [scaled_squared_difference(song1.acousticness, song2.acousticness) * slider_values['acousticness'],
+                       scaled_squared_difference(song1.danceability, song2.danceability) * slider_values['danceability'],
+                       scaled_squared_difference(song1.duration_ms, song2.duration_ms) * slider_values['duration_ms'],
+                       scaled_squared_difference(song1.energy, song2.energy) * slider_values['energy'],
+                       scaled_squared_difference(song1.instrumentalness, song2.instrumentalness) * slider_values['instrumentalness'],
+                       scaled_squared_difference_circular(song1.key_scale, song2.key_scale, range(12)) * slider_values['key_scale'],
+                       scaled_squared_difference(song1.liveness, song2.liveness) * slider_values['liveness'],
+                       scaled_squared_difference(song1.mode, song2.mode) * slider_values['mode'],
+                       scaled_squared_difference(song1.speechiness, song2.speechiness) * slider_values['speechiness'],
+                       scaled_squared_difference(song1.tempo, song2.tempo) * slider_values['tempo'],
+                       scaled_squared_difference(song1.time_signature, song2.time_signature) * slider_values['time_signature'],
+                       scaled_squared_difference(song1.valence, song2.valence) * slider_values['valence']]
     return np.sum(list_of_features)
 
+default_slider_values = {
+    'acousticness' = 1.0,
+    'danceability' = 1.0,
+    'duration_ms' = 1.0,
+    'energy' = 1.0,
+    'instrumentalness' = 1.0,
+    'key_scale' = 1.0,
+    'liveness' = 1.0,
+    'mode' = 1.0,
+    'speechiness' = 1.0,
+    'tempo' = 1.0,
+    'time_signature' = 1.0,
+    'valence' = 1.0
+}
+
 # Finds the n-closest songs given a list of songs and a target songs
-def closest_songs(target_song: Song, list_of_songs: list, num_songs: int) -> list:
+def closest_songs(target_song: Song, list_of_songs: list, num_songs: int, slider_values=default_slider_values: dict) -> list:
     if num_songs >= len(list_of_songs):
         num_songs = len(list_of_songs)-1
     list_of_residuals = []
     for song in list_of_songs:
-        list_of_residuals.append(residual_square_sum(target_song, song))
+        if song.id != target_song.id:
+            list_of_residuals.append(residual_square_sum(target_song, song, slider_values))
     npar = np.array(list_of_residuals)
     n_lowest_index = np.argpartition(npar, num_songs)[:num_songs]
     sorted_indices = n_lowest_index[np.argsort(npar[n_lowest_index])]
