@@ -12,8 +12,26 @@ const Search = (props) => {
     });
 
     function search(input, option) {
-        console.log("Input: " + input + " Option: " + option);
         //api call here i think
+        input.replaceAll(" ", "%20")
+        fetch('http://localhost:5000/apiSearch?q=' + input + '&type=' + option)
+            .then(response=> {
+                return response.json();
+            })
+            .then(data => {
+                if (option === "artist") {
+                    let song_array = data.items.map(artist => {
+                        console.log(artist);
+                        console.log(artist.name);
+                        console.log(artist.id);
+                        let url = artist.images.length > 0 ? artist.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png'
+                        return <SongCard trackArtist={artist.name} trackName={artist.id} imageURL={url}></SongCard>
+                    })
+                    props.updateFunc(song_array)
+                } else {
+
+                }
+            })
     }
 
     useEffect(() => {
@@ -38,8 +56,7 @@ const Search = (props) => {
                     <ContinuousSlider weightName="Weight2" handleWeightChange={handleWeightChange}></ContinuousSlider>
                     <ContinuousSlider weightName="Weight3" handleWeightChange={handleWeightChange}></ContinuousSlider>
                 </Grid>
-                <SongCard trackArtist="KD/A" trackName="POP/STARS" 
-                    imageURL="https://i.scdn.co/image/ab67616d0000b2731b36f91abf80aedb7c88f460"></SongCard>
+                
             </Grid>
         </div>
     )

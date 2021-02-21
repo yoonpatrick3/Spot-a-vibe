@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
 export const SearchGroup = (props) => {
 
-    const [currOpt, setOpt] = useState("Artist");
+    const [currOpt, setOpt] = useState("artist");
     const [input, setInput] = useState("");
 
     const classes = useStyles();
@@ -45,14 +45,13 @@ export const SearchGroup = (props) => {
                 <Grid item xs={6}>
                     <TextField label={currOpt} onChange={(ev) => {
                         setInput(ev.target.value);
-                        console.log(ev.target.value);
                     }} onKeyPress={handleEnterPressed}></TextField>
                 </Grid>
                 <Grid item xs={3}>
                     <InputLabel id="label">Search</InputLabel>
                     <Select labelId="label" defaultValue="Artist" onChange={handleOptionChange}>
-                        <MenuItem value="Artist">Artist</MenuItem>
-                        <MenuItem value="Song">Song</MenuItem>
+                        <MenuItem value="artist">Artist</MenuItem>
+                        <MenuItem value="track">Track</MenuItem>
                     </Select>
                 </Grid>
                 <Grid item xs={3}>

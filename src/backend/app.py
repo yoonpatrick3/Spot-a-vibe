@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, jsonify
+from flask import Flask, request, redirect, jsonify, render_template
 import mysql.connector
 from algo import closest_songs
 import requests
@@ -9,7 +9,7 @@ from src.song import *
 from src.auth import get_auth
 from src.database.populate_db import create_and_insert_to_db
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -36,10 +36,13 @@ def apiSearch():
             queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
             head = {'Authorization': 'Bearer ' + access_token}
             req = requests.get(url + queryparam, headers=head)
-             #add into our database
+            #add into our database
             try:
-                create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
-                return req.json().get("tracks")
+                if relation == 'track':
+                    create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
+                    return req.json().get("tracks")
+                else:
+                    return req.json().get("artists")
             except:
                 # error page
                 return redirect("/error?msg=Something_went_wrong_with_your_request")
@@ -134,7 +137,7 @@ def artistProfile():
 
 @app.route("/")
 def index():
-    return "homepage"
+    return render_template('index.html')
 
 @app.route("/error")
 def error():
@@ -153,4 +156,4 @@ def get_artist_name(mycursor, artist_id):
     
 
 if __name__ == '__main__':
-    app.run(port="3000", debug=True)
+    app.run(port="5000", debug=True)

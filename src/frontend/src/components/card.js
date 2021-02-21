@@ -27,6 +27,12 @@ export const SongCard = (props) => {
 
   return (
     <Card className={classes.root}>
+      <CardMedia
+        className={classes.cover}
+        component='img'
+        src={props.imageURL}
+        title={props.trackName}
+      />
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="caption" variant="caption">
@@ -37,12 +43,6 @@ export const SongCard = (props) => {
           </Typography>
         </CardContent>
       </div>
-      <CardMedia
-        className={classes.cover}
-        component='img'
-        src={props.imageURL}
-        title={props.trackName}
-      />
     </Card>
   );
 }
