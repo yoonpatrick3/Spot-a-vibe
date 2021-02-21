@@ -1,2 +1,4 @@
 "/" : homepage
-"/api" : api endpoint
+"/apiSearch" : api endpoint
+"/artist" : artist profile page
+"/track" : track details page
