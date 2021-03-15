@@ -49,7 +49,7 @@ const Search = (props) => {
         <div className="search">
             <Grid container >
                 <Grid item xs={12}>
-                    <SearchGroup handleSearch={search}></SearchGroup>
+                    <SearchGroup className="search" handleSearch={search}></SearchGroup>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: 100}}>
                     <ContinuousSlider weightName="Weight1" handleWeightChange={handleWeightChange}></ContinuousSlider>

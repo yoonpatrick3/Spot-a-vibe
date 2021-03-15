@@ -9,9 +9,6 @@ import { makeStyles } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
-    root: {
-        width: 400,
-    },
 
     button: {
         marginTop: "10px",
@@ -41,20 +38,20 @@ export const SearchGroup = (props) => {
 
     return (
         <div>
-            <Grid container spacing={2} className={classes.root}>
-                <Grid item xs={6}>
+            <Grid container className={classes.root}>
+                <Grid item>
                     <TextField label={currOpt} onChange={(ev) => {
                         setInput(ev.target.value);
                     }} onKeyPress={handleEnterPressed}></TextField>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item>
                     <InputLabel id="label">Search</InputLabel>
                     <Select labelId="label" defaultValue="Artist" onChange={handleOptionChange}>
                         <MenuItem value="artist">Artist</MenuItem>
                         <MenuItem value="track">Track</MenuItem>
                     </Select>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item>
                     <Button variant="outlined" onClick={handleSearch} className={classes.button}>Search</Button>
                 </Grid>
             </Grid>

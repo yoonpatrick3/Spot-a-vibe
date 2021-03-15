@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="App">
-      <Search updateFunc={updateCards}></Search>
+      <Search className="search" updateFunc={updateCards}></Search>
       <CardHolder cards={cards}></CardHolder>
     </div>
   );
