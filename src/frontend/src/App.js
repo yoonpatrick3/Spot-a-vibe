@@ -1,14 +1,15 @@
 import './App.css';
 import React, { useState } from 'react';
 import Search from './components/search';
-import SongCard from './components/card';
 import CardHolder from './components/CardHolder';
+import Header from './components/header'
 
 function App() {
   const [cards, updateCards] = useState([]);
 
   return (
     <div className="App">
+      <Header></Header>
       <Search className="search" updateFunc={updateCards}></Search>
       <CardHolder cards={cards}></CardHolder>
     </div>

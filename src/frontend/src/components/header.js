@@ -5,29 +5,38 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import Logo from '../resources/spot_a_like.png'
 
 
 const useStyles = makeStyles((theme) => ({
-
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
 }));
 
-const header = (props) => {
+export default function ButtonAppBar(props) {
     const classes = useStyles();
 
     return (
-        <AppBar position="static">
-            <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                    News
-                </Typography>
-                <Button color="inherit">Login</Button>
-            </Toolbar>
-        </AppBar>
+        <div className={classes.root}>
+            <AppBar position="sticky">
+                <Toolbar>
+                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                        <Avatar alt="Spot-a-like logo" src={Logo} />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        Spot-a-Like
+          </Typography>
+                    <Button color="inherit" href="https://github.com/yanDavid21/SQLiteDiff-Web-App" target="_blank">Source</Button>
+                </Toolbar>
+            </AppBar>
+        </div>
     );
 }
-
-export default header;
