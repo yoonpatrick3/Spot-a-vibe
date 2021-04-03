@@ -6,12 +6,15 @@ import Header from './components/header'
 
 function App() {
   const [cards, updateCards] = useState([]);
+  const [showSearchBar, setSearchBar] = useState(true)
 
   return (
     <div className="App">
       <Header></Header>
-      <Search className="search" updateFunc={updateCards}></Search>
-      <CardHolder cards={cards}></CardHolder>
+      <div className = "body">
+        <Search className="search" updateFunc={updateCards} showSearchBar></Search>
+        <CardHolder cards={cards}></CardHolder>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import ContinuousSlider from './MySlider';
 import SearchGroup from './SearchGroup';
 import SongCard from './card';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+
+    button: {
+        marginTop: "10px",
+    }
+});
 
 const Search = (props) => {
     const [weights, setWeight] = useState({
@@ -11,11 +19,13 @@ const Search = (props) => {
         Weight3: 0
     });
 
+    const classes = useStyles();
+
     function search(input, option) {
         //api call here i think
         input.replaceAll(" ", "%20")
         fetch('http://localhost:5000/apiSearch?q=' + input + '&type=' + option)
-            .then(response=> {
+            .then(response => {
                 return response.json();
             })
             .then(data => {
@@ -34,6 +44,10 @@ const Search = (props) => {
             })
     }
 
+    function searchByWeights(weight1, weight2, weight3) {
+
+    }
+
     useEffect(() => {
         console.log(weights);
     })
@@ -47,17 +61,18 @@ const Search = (props) => {
 
     return (
         <div className="search">
-            <Grid container >
-                <Grid item xs={12}>
-                    <SearchGroup className="search" handleSearch={search}></SearchGroup>
-                </Grid>
-                <Grid item xs={12} style={{ marginTop: 100}}>
-                    <ContinuousSlider weightName="Weight1" handleWeightChange={handleWeightChange}></ContinuousSlider>
-                    <ContinuousSlider weightName="Weight2" handleWeightChange={handleWeightChange}></ContinuousSlider>
-                    <ContinuousSlider weightName="Weight3" handleWeightChange={handleWeightChange}></ContinuousSlider>
-                </Grid>
-                
-            </Grid>
+            <div>
+                <h2>Search by Artist or Track</h2>
+                <SearchGroup className="search" handleSearch={search}></SearchGroup>
+            </div>
+
+            <div>
+                <h2>Search by vibes </h2>
+                <ContinuousSlider weightName="Weight1" handleWeightChange={handleWeightChange}></ContinuousSlider>
+                <ContinuousSlider weightName="Weight2" handleWeightChange={handleWeightChange}></ContinuousSlider>
+                <ContinuousSlider weightName="Weight3" handleWeightChange={handleWeightChange}></ContinuousSlider>
+                <Button variant="outlined" onClick={searchByWeights} className={classes.button}>Search</Button>
+            </div>
         </div>
     )
 }

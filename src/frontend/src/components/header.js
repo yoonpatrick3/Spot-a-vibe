@@ -12,31 +12,30 @@ import Logo from '../resources/spot_a_like.png'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        "background-color": "rgb(50, 50, 50)",
     },
     menuButton: {
         marginRight: theme.spacing(2),
     },
     title: {
         flexGrow: 1,
-    },
+    }
 }));
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <AppBar position="sticky">
-                <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <Avatar alt="Spot-a-like logo" src={Logo} />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                        Spot-a-Like
-          </Typography>
-                    <Button color="inherit" href="https://github.com/yanDavid21/SQLiteDiff-Web-App" target="_blank">Source</Button>
-                </Toolbar>
-            </AppBar>
-        </div>
+        <AppBar position="sticky" className={classes.root}>
+            <Toolbar>
+                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <Avatar alt="Spot-a-like logo" src={Logo} />
+                </IconButton>
+                <Typography variant="h4" className={classes.title}>
+                    Spot-a-Like
+                </Typography>
+                <Button color="inherit" href="https://github.com/yanDavid21/SQLiteDiff-Web-App" target="_blank">Source</Button>
+            </Toolbar>
+        </AppBar>
     );
 }

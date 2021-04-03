@@ -8,15 +8,36 @@
 
 .search {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content:space-between;
-  padding:5%;
+  align-items: baseline;
+  padding:2em;
+  background-color: white;
 }
 
 .search > * {
   margin-left:5%;
 }
 
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items:center;
+  background-color:rgb(27, 27, 27);
+}
+
+.body > * {
+  width:50%;
+  height:50vh;
+}
+
+
+.search-group {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
 
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
