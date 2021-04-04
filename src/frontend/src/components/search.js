@@ -31,11 +31,8 @@ const Search = (props) => {
             .then(data => {
                 if (option === "artist") {
                     let song_array = data.items.map(artist => {
-                        console.log(artist);
-                        console.log(artist.name);
-                        console.log(artist.id);
                         let url = artist.images.length > 0 ? artist.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png'
-                        return <SongCard trackArtist={artist.name} trackName={artist.id} imageURL={url}></SongCard>
+                        return <SongCard trackArtist={artist.name} imageURL={url}></SongCard>
                     })
                     props.updateFunc(song_array)
                 } else {

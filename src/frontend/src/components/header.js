@@ -12,7 +12,7 @@ import Logo from '../resources/spot_a_like.png'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        "background-color": "rgb(50, 50, 50)",
+        "background-color": "rgb(50, 50, 50)"
     },
     menuButton: {
         marginRight: theme.spacing(2),

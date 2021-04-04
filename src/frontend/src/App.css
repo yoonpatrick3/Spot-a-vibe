@@ -24,12 +24,14 @@
   flex-direction: column;
   justify-content: space-around;
   align-items:center;
-  background-color:rgb(27, 27, 27);
+  background-color:white;
+  overflow: auto;
+  padding: 2em;
+  height: 90vh;
 }
 
 .body > * {
   width:50%;
-  height:50vh;
 }
 
 
