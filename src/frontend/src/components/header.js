@@ -34,7 +34,7 @@ export default function ButtonAppBar(props) {
                 <Typography variant="h4" className={classes.title}>
                     Spot-a-Like
                 </Typography>
-                <Button color="inherit" href="https://github.com/yanDavid21/SQLiteDiff-Web-App" target="_blank">Source</Button>
+                <Button color="inherit" href="https://github.com/yoonpatrick3/Spot-a-like" target="_blank">Source</Button>
             </Toolbar>
         </AppBar>
     );

@@ -39,7 +39,7 @@ def apiSearch():
             #add into our database
             try:
                 if relation == 'track':
-                    create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
+                    #create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
                     return req.json().get("tracks")
                 else:
                     return req.json().get("artists")

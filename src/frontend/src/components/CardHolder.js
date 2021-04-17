@@ -4,7 +4,11 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    "flex-direction": 'column'
+    "flex-direction": 'column',
+    'min-width':'80%',
+    'min-height':'80%',
+    'background-color': "lightgrey",
+    'overflow': 'auto',
   }
 }));
 

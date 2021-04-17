@@ -4,6 +4,7 @@
   flex-direction:column;
   justify-content: center;
   flex-wrap: wrap;
+  overflow: hidden;
 }
 
 .search {
@@ -11,27 +12,33 @@
   flex-direction: row;
   justify-content:space-between;
   align-items: baseline;
-  padding:2em;
   background-color: white;
 }
 
 .search > * {
-  margin-left:5%;
+  padding:10%;
+}
+
+.results-page {
+  flex-direction: column;
+  display:flex;
+  align-items:center;
+  justify-content: space-around;
 }
 
 .body {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: center;
   align-items:center;
   background-color:white;
-  overflow: auto;
-  padding: 2em;
+  overflow: hidden;
   height: 90vh;
 }
 
 .body > * {
-  width:50%;
+  width:100vw;
+  height:100%;
 }
 
 

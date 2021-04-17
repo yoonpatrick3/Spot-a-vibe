@@ -8,15 +8,15 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    height: 70,
+    'height': 65,
+    'min-height':65, 
     width: '100%'
   },
-  details: {
+  content: {
     display: 'flex',
     flexDirection: 'column',
-  },
-  content: {
-    flex: '1 0 auto',
+    'align-items': 'baseline',
+    'justify-content': 'center'
   },
   cover: {
     width: 70,
@@ -34,8 +34,7 @@ export const SongCard = (props) => {
         src={props.imageURL}
         title={props.trackName}
       />
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
+      <CardContent className={classes.content}>
           <Typography component="caption" variant="caption">
             {props.trackName}
           </Typography>
@@ -43,7 +42,6 @@ export const SongCard = (props) => {
             {props.trackArtist}
           </Typography>
         </CardContent>
-      </div>
     </Card>
   );
 }
