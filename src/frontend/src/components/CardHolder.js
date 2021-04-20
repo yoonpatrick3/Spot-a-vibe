@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     "flex-direction": 'column',
     'min-width':'80%',
-    'min-height':'80%',
+    'min-height':'700px',
     'background-color': "lightgrey",
     'overflow': 'auto',
   }

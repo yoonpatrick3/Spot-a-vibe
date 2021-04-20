@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import ContinuousSlider from './MySlider';
 import SearchGroup from './SearchGroup';
-import SongCard from './card';
+import SongCard from './Card';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -59,7 +59,7 @@ const Search = (props) => {
     }
 
     useEffect(() => {
-        console.log(weights);
+        
     })
 
     const handleWeightChange = (weightName, newVal) => {

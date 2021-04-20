@@ -51,7 +51,7 @@ def apiSearch():
     else: 
         return redirect("/error?msg=Invalid_HTTP_method")
 
-@app.route("/track")
+@app.route("/api/track")
 def trackProfile():
     if request.method == 'GET':
         params = request.args
@@ -102,7 +102,7 @@ def trackProfile():
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
         
-@app.route("/artist")
+@app.route("/api/artist")
 def artistProfile():
     if request.method == 'GET':
         params = request.args
@@ -141,7 +141,11 @@ def index():
 
 @app.route("/error")
 def error():
-    return "error"
+    return render_template('index.html')
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 def format_song(col_names, track):
     song_dict = {}

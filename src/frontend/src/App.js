@@ -1,24 +1,21 @@
 import './App.css';
-import React, { useState } from 'react';
-import Search from './components/search';
-import Header from './components/header';
-import ResultsPage from './components/ResultsPage'
-import move_left_style from './components/Search'
+import React from 'react';
+import Header from './components/Header';
+import { BrowserRouter } from 'react-router-dom'
+import Body from './components/Body'
 
 function App() {
-  const [cards, updateCards] = useState([]);
-  const [showing, setShowing] = useState({});
-
-
+  
   return (
-    <div className="App">
-      <Header></Header>
-      <div className="body"  style = {showing}>
-        <Search className="search" updateFunc={updateCards} showSearchBar showing={showing} setShowing={setShowing}></Search>
-        {showing === move_left_style ? <></> : <ResultsPage setShowing = {setShowing} cards = {cards} showing = {showing}></ResultsPage>}
+    <BrowserRouter>
+      <div className="App">
+        <Header></Header>
+        <Body></Body>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
+
+
 
 export default App;
