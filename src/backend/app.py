@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, jsonify, render_template
 import mysql.connector
+import json
 from algo import closest_songs
 import requests
 import sys
@@ -39,11 +40,22 @@ def apiSearch():
             #add into our database
             try:
                 if relation == 'track':
-                    #create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
-                    return req.json().get("tracks")
+                    create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
+                    response = req.json().get("tracks").get("items")
+                    tracks = []
+                    for track in response:
+                        tracks.append({"images": track.get("album").get("images"), "artist_name": track.get("artists")[0].get("name"), 
+                        "track_name": track.get("name"), "id": track.get("id")})
+                    return_dict = {"items": tracks}
+                    return json.dumps(return_dict)
                 else:
-                    return req.json().get("artists")
-            except:
+                    response = req.json().get("artists").get("items")
+                    artists = []
+                    for artist in response:
+                        artists.append({"images": artist.get("images"), "artist_name": artist.get("name"), "id": artist.get("id")})
+                    return_dict = {"items": artists}
+                    return json.dumps(return_dict)
+            except ValueError:
                 # error page
                 return redirect("/error?msg=Something_went_wrong_with_your_request")
         else:
@@ -161,3 +173,6 @@ def get_artist_name(mycursor, artist_id):
 
 if __name__ == '__main__':
     app.run(port="5000", debug=True)
+
+
+#TODO: add query param support for error messages, connect artist and track pages to songcard

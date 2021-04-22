@@ -24,8 +24,6 @@ const Search = (props) => {
         Weight3: 0
     });
 
-    
-
     const classes = useStyles();
 
     function search(input, option) {
@@ -39,14 +37,16 @@ const Search = (props) => {
                 if (option === "artist") {
                     let song_array = data.items.map(artist => {
                         let url = artist.images.length > 0 ? artist.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png'
-                        return <SongCard style = {{'min-height': '100px'}} trackArtist={artist.name} imageURL={url}></SongCard>
+                        return <SongCard style = {{'min-height': '100px'}} artist_id={artist.id} trackArtist={artist.artist_name} imageURL={url}></SongCard>
                     })
                     props.updateFunc(song_array);
                 } else {
                     console.log(data);
                     let track_array = data.items.map(track => {
-                        let url = track.album.images.length > 0 ? track.album.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png'
-                        return <SongCard style = {{'min-height': '100px'}} trackArtist={track.artists[0].name} trackName = {track.name} imageURL={url}></SongCard>
+                        let url = track.images.length > 0 ? track.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
+
+                        return <SongCard style = {{'min-height': '100px'}} track_id={track.id} trackArtist={track.artist_name}
+                         trackName = {track.track_name} imageURL={url}></SongCard>
                     })
                     props.updateFunc(track_array);
                 }
@@ -58,9 +58,6 @@ const Search = (props) => {
         props.setShowing(move_left_style);
     }
 
-    useEffect(() => {
-        
-    })
 
     const handleWeightChange = (weightName, newVal) => {
         setWeight((prev) => ({

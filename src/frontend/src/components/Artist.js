@@ -13,9 +13,7 @@ function ArtistProfile(props) {
 function Artist(props) {
     let artistID = props.id;
     return (
-        <>
-            {artistID ? <ArtistProfile id={artistID}/> : <Redirect to="/"></Redirect>}
-        </>
+        <>{artistID ? <ArtistProfile id={artistID}/> : <Redirect to="/"></Redirect>}</>
     )
 }
 

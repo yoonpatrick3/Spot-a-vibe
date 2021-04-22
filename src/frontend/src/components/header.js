@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Logo from '../resources/spot_a_like.png'
+import { Link } from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,10 +30,12 @@ export default function ButtonAppBar(props) {
         <AppBar position="sticky" className={classes.root}>
             <Toolbar>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <Avatar alt="Spot-a-like logo" src={Logo} />
+                    <Link to="/">
+                        <Avatar alt="Spot-a-like logo" src={Logo} />
+                    </Link>
                 </IconButton>
                 <Typography variant="h4" className={classes.title}>
-                    Spot-a-Like
+                    SPOT-A-LIKE
                 </Typography>
                 <Button color="inherit" href="https://github.com/yoonpatrick3/Spot-a-like" target="_blank">Source</Button>
             </Toolbar>
