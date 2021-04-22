@@ -37,7 +37,7 @@ const Search = (props) => {
                 if (option === "artist") {
                     let song_array = data.items.map(artist => {
                         let url = artist.images.length > 0 ? artist.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png'
-                        return <SongCard style = {{'min-height': '100px'}} artist_id={artist.id} trackArtist={artist.artist_name} imageURL={url}></SongCard>
+                        return <SongCard type="artist" style = {{'min-height': '100px'}} id={artist.id} trackArtist={artist.artist_name} imageURL={url}></SongCard>
                     })
                     props.updateFunc(song_array);
                 } else {
@@ -45,8 +45,8 @@ const Search = (props) => {
                     let track_array = data.items.map(track => {
                         let url = track.images.length > 0 ? track.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
 
-                        return <SongCard style = {{'min-height': '100px'}} track_id={track.id} trackArtist={track.artist_name}
-                         trackName = {track.track_name} imageURL={url}></SongCard>
+                        return <SongCard style = {{'min-height': '100px'}} id={track.id} trackArtist={track.artist_name}
+                         trackName = {track.track_name} imageURL={url} type="track"></SongCard>
                     })
                     props.updateFunc(track_array);
                 }

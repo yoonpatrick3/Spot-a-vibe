@@ -58,7 +58,6 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
         mycursor.execute(id_exists_query, (track_id,))
         count = mycursor.fetchone()
         if count[0] == 1:
-            print('this song is already in the database!')
             continue
 
         track_name = track.get('name')
