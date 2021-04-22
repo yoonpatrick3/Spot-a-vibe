@@ -6,7 +6,7 @@ import Search from './Search';
 import ResultsPage from './ResultsPage'
 import { Switch, Route, useLocation } from 'react-router-dom'
 
-function Body(props) {
+function Body() {
     const [cards, updateCards] = useState([]);
     const [showing, setShowing] = useState({});
     const query = new URLSearchParams(useLocation().search);
@@ -26,7 +26,7 @@ function Body(props) {
                 <Track id={query.get("id")} />
             </Route>
             <Route path="*">
-                <NoMatch />
+                <NoMatch message={query.get("msg")}/>
             </Route>
         </Switch>
     )
