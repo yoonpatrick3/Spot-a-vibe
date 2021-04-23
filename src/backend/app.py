@@ -13,11 +13,11 @@ from src.database.populate_db import create_and_insert_to_db
 app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
 
 mydb = mysql.connector.connect(
-  host=os.environ['S3_KEY'],
-  user="root",
-  password="",
-  database="SpotifySongs"
-)
+    host=os.getenv('DATABASE_URL', 'localhost'),
+    user="root",
+    password="",
+    database="SpotifySongs"
+    )
 mycursor = mydb.cursor()
 
 # save the access token

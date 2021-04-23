@@ -11,7 +11,7 @@ def make_request():
 
     #SET UP DB CONNECTION
     mydb = mysql.connector.connect(
-    host=os.getenv('DATABASE_URL', default_value),
+    host=os.getenv('DATABASE_URL', 'localhost'),
     user="root",
     password="",
     database="SpotifySongs"
