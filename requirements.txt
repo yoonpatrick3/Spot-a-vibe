@@ -2,3 +2,4 @@ python-dotenv
 numpy
 flask
 mysql-connector-python
+requests
