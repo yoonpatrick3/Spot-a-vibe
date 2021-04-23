@@ -41,7 +41,6 @@ const Search = (props) => {
                     })
                     props.updateFunc(song_array);
                 } else {
-                    console.log(data);
                     let track_array = data.items.map(track => {
                         let url = track.images.length > 0 ? track.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
 

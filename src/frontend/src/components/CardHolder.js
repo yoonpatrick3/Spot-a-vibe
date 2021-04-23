@@ -2,11 +2,18 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  unpopulated: {
     display: 'flex',
     "flex-direction": 'column',
     'min-width':'80%',
     'min-height':'700px',
+    'background-color': "lightgrey",
+    'overflow': 'auto',
+  },
+  populated: {
+    display: 'flex',
+    "flex-direction": 'column',
+    'min-width':'80%',
     'background-color': "lightgrey",
     'overflow': 'auto',
   }
@@ -15,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 export const CardHolder = (props) => {
   const classes = useStyles();
   return (
-   <div className={classes.root}>
+   <div className={props.cards.length > 0 ? classes.populated : classes.unpopulated}>
        {props.cards}
    </div>
   );
@@ -23,7 +30,4 @@ export const CardHolder = (props) => {
 
 export default CardHolder
 
-//TODO: get song cards to link to the artist profile
-//TODO: search by track, should track cards same as artist
-//TODO: page? davinky? react-router figure out what /track and /artist do :) 
-//TODO: love our gf's
+

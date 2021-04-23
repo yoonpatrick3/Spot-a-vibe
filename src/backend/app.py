@@ -122,19 +122,29 @@ def artistProfile():
         if artist_id != None:
             #query from db
             #return as json
-            artist_query = ('SELECT * FROM Artist WHERE artist_id = %s')
             song_query = ('SELECT * FROM Song WHERE artist_id = %s')
 
-            mycursor.execute(artist_query, (artist_id, ))
-            artist = mycursor.fetchone()
+
 
             result = {}
-            result["artist_name"] = artist[1]
-            result["artist_id"] = artist[0]
-            
+            #get spotify data for the artist
+            url = 'https://api.spotify.com/v1/artists/'
+            head = {'Authorization': 'Bearer ' + access_token}
+            req = requests.get(url + artist_id, headers=head)
+            result["follower-count"] = req.json().get("followers").get("total")
+            result["genres"] = req.json().get("genres")
+            result["images"] = req.json().get("images")
+            result["popularity"] = req.json().get("popularity")
+            result["artist_name"] = req.json().get("name")
+            result["artist_id"] = req.json().get("id")
+
+            req_for_top_tracks = requests.get(url + artist_id + "/top-tracks?market=US", headers=head)
+            create_and_insert_to_db(req_for_top_tracks.json().get("tracks"), mycursor, False, head, mydb)
+
+
             mycursor.execute(song_query, (artist_id,))
             artist_songs = mycursor.fetchall()
-            
+                
             songs = []
             for song in artist_songs:
                 songs.append(format_song(mycursor.column_names, song))
