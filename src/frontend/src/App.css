@@ -57,6 +57,19 @@
 }
 
 .artist-profile {
+  display: flex;
+  flex-direction: column;
+  padding:2em;
+}
+
+.artist-bio {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.artist-data {
   
 }
 
