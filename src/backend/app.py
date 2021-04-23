@@ -13,7 +13,7 @@ from src.database.populate_db import create_and_insert_to_db
 app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
 
 mydb = mysql.connector.connect(
-  host="localhost",
+  host=os.environ['S3_KEY'],
   user="root",
   password="",
   database="SpotifySongs"

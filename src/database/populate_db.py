@@ -11,7 +11,7 @@ def make_request():
 
     #SET UP DB CONNECTION
     mydb = mysql.connector.connect(
-    host="localhost",
+    host=os.environ['S3_KEY'],
     user="root",
     password="",
     database="SpotifySongs"
