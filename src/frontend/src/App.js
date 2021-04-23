@@ -4,8 +4,11 @@ import Header from './components/Header';
 import { BrowserRouter } from 'react-router-dom'
 import Body from './components/Body'
 
+export const address = 'http://localhost:5000'
+
+
 function App() {
-  
+
   return (
     <BrowserRouter>
       <div className="App">

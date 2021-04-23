@@ -56,13 +56,13 @@
   align-items: center;
 }
 
-.artist-profile {
+.artist-track-profile {
   display: flex;
   flex-direction: column;
   padding:2em;
 }
 
-.artist-bio {
+.artist-track-bio {
   display: flex;
   flex-direction: row;
   justify-content: space-around;

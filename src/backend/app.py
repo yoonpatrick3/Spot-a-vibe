@@ -23,6 +23,8 @@ mycursor = mydb.cursor()
 # save the access token
 access_token = get_auth(1)
 
+head = {'Authorization': 'Bearer ' + access_token}
+
 
 @app.route("/apiSearch", methods=['GET'])
 def apiSearch():
@@ -35,7 +37,6 @@ def apiSearch():
             url = 'https://api.spotify.com/v1/search'
             q = q.replace(" ", "%20")
             queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
-            head = {'Authorization': 'Bearer ' + access_token}
             req = requests.get(url + queryparam, headers=head)
             #add into our database
             try:
@@ -68,8 +69,13 @@ def trackProfile():
     if request.method == 'GET':
         params = request.args
         track_id = params.get('track_id', None)
+        
         #query from db
         if track_id != None:
+            req = requests.get('https://api.spotify.com/v1/tracks/' + track_id, headers = head)
+            artist_name = req.json().get("album").get("artists")[0].get("name")
+            popularity = req.json().get("popularity")
+
             query = ('SELECT * FROM Song WHERE id = %s')
             mycursor.execute(query, (track_id,))
             track = mycursor.fetchone()
@@ -108,6 +114,8 @@ def trackProfile():
             for song in similar_songs:
                 similar_song_attributes.append(song.get_core_attributes())
             returnTrack["similar_songs"] = similar_song_attributes
+            returnTrack["artist_name"] = artist_name
+            returnTrack["popularity"] = popularity
             return returnTrack
         else:
             return redirect("/error?msg=Please_add_a_track_id_parameter")
@@ -124,12 +132,9 @@ def artistProfile():
             #return as json
             song_query = ('SELECT * FROM Song WHERE artist_id = %s')
 
-
-
             result = {}
             #get spotify data for the artist
             url = 'https://api.spotify.com/v1/artists/'
-            head = {'Authorization': 'Bearer ' + access_token}
             req = requests.get(url + artist_id, headers=head)
             result["follower-count"] = req.json().get("followers").get("total")
             result["genres"] = req.json().get("genres")

@@ -35,7 +35,7 @@ export default function ButtonAppBar(props) {
                     </Link>
                 </IconButton>
                 <Typography variant="h4" className={classes.title}>
-                    SPOT-A-LIKE
+                    SPOT-AI-FY
                 </Typography>
                 <Button color="inherit" href="https://github.com/yoonpatrick3/Spot-a-like" target="_blank">Source</Button>
             </Toolbar>

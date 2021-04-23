@@ -2,51 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom'
 import CardHolder from './CardHolder'
 import SongCard from './Card'
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
-import HelpIcon from '@material-ui/icons/Help';
 import Tooltip from '@material-ui/core/Tooltip';
-import StatDialog from './StatDialog'
-import Button from '@material-ui/core/Button';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import PeopleIcon from '@material-ui/icons/People';
 import AlbumIcon from '@material-ui/icons/Album';
+import { address } from '../App'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Intro from './Intro'
+import Stat, { formatStat } from './Stat'
+import Divider from '@material-ui/core/Divider';
 
-const useStyles = makeStyles((theme) => ({
-    small: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
-    },
-    medium: {
-        width: theme.spacing(20),
-        height: theme.spacing(20),
-    },
-    large: {
-        width: theme.spacing(40),
-        height: theme.spacing(40),
-    },
-    relative: {
-        position: 'relative',
-        left: theme.spacing(1),
-    },
-}));
 
-function formatStat(stat) {
-    if (stat <= .20) {
-        return "Very low";
-    } else if (stat <= .40) {
-        return "Moderately low";
-    } else if (stat <= .60) {
-        return "Neutral"
-    } else if (stat <= .80) {
-        return "Moderately high";
-    } else {
-        return "Very high"
-    }
-}
+const defaultSpotifyImgLink = 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
+
 
 function formatList(list) {
-    let returnStr = list.toString();
+    let trimmedList = list.slice(0, 3);
+    let returnStr = trimmedList.toString();
     returnStr = returnStr.replaceAll(",", " | ")
     return returnStr;
 }
@@ -54,50 +26,40 @@ function formatList(list) {
 
 function ArtistProfile(props) {
     const [artistData, setArtistData] = useState({})
-    const classes = useStyles();
-    const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/artist?artist_id=${props.id}`)
+        fetch(`${address}/api/artist?artist_id=${props.id}`)
             .then(response => {
                 return response.json();
             })
             .then(data => {
                 let danceability = 0;
-                let positivity = 0;
+                let valence = 0;
                 let acousticness = 0;
                 let energy = 0;
                 let instrumentalness = 0;
-                let loudness = 0;
-                let speechiness = 0;
                 let popularity = data.popularity;
                 let genres = formatList(data.genres);
 
                 data.discography.forEach(song => {
                     danceability += song.danceability;
-                    positivity += song.valence;
+                    valence += song.valence;
                     acousticness += song.acousticness;
                     energy += song.energy;
                     instrumentalness += song.instrumentalness;
-                    loudness += song.loudness;
-                    speechiness += song.speechiness;
                 })
 
                 danceability /= data.discography.length;
-                positivity /= data.discography.length;
+                valence /= data.discography.length;
                 acousticness /= data.discography.length;
                 energy /= data.discography.length;
                 instrumentalness /= data.discography.length;
-                loudness /= data.discography.length;
-                speechiness /= data.discography.length;
 
                 danceability = formatStat(danceability);
-                positivity = formatStat(positivity);
+                valence = formatStat(valence);
                 acousticness = formatStat(acousticness);
                 energy = formatStat(energy);
                 instrumentalness = formatStat(instrumentalness);
-                loudness = formatStat(loudness);
-                speechiness = formatStat(speechiness);
 
 
                 let discography = data.discography.map(song => {
@@ -107,14 +69,12 @@ function ArtistProfile(props) {
 
                 setArtistData({
                     artist_name: data.artist_name,
-                    artist_image: data.images.length > 0 ? data.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png',
+                    artist_image: data.images.length > 0 ? data.images[0].url : defaultSpotifyImgLink,
                     danceability: danceability,
-                    positivity: positivity,
+                    valence: valence,
                     acousticness: acousticness,
                     energy: energy,
                     instrumentalness: instrumentalness,
-                    loudness: loudness,
-                    speechiness: speechiness,
                     discography: discography,
                     popularity: popularity,
                     followers: data["follower-count"],
@@ -126,41 +86,30 @@ function ArtistProfile(props) {
 
 
     return (
-        <div className="artist-profile">
+        <div className="artist-track-profile">
             {artistData.artist_name ?
                 <>
-                    <div className="artist-bio">
-                        <div className="artist-intro">
-                            <Avatar src={artistData.artist_image} alt={`Profile picture of ${artistData.artist_name}`} className={classes.large} />
-                            <h1>{artistData.artist_name}</h1>
-                        </div>
+                    <div className="artist-track-bio">
+                        <Intro imgSrc={artistData.artist_image} alt={`Profile picture of ${artistData.artist_name}`} name={artistData.artist_name}></Intro>
                         <div className="artist-data">
-                            <h3><PeopleIcon color="disabled"/> {artistData.followers}</h3>
-                            <h3><WhatshotIcon color="secondary"/> {artistData.popularity}</h3>
-                            <h3><AlbumIcon color="disabled"/> {artistData.genres}</h3>
+                            <Tooltip title="Followers on Spotify" aria-label="followers">
+                                <h3><PeopleIcon color="disabled" /> {artistData.followers}</h3>
+                            </Tooltip>
+                            <Tooltip title="Popularity of artist (on a scale of 0-100)" aria-label="popularity">
+                                <h3><WhatshotIcon color="secondary" /> {artistData.popularity}</h3>
+                            </Tooltip>
+                            {artistData.genres.length > 0 ? <Tooltip title="Genre of music" aria-label="genre">
+                                <h3><AlbumIcon color="disabled" /> {artistData.genres}</h3>
+                            </Tooltip> : <></>}
                         </div>
-                        <div className="artist-music-stats">
-                            <h2>Music Analysis:
-                                <Tooltip title="Click for more information" aria-label="info" className={classes.relative}>
-                                    <Button onClick={() => setOpen(true)}>
-                                        <HelpIcon color="disabled" />
-                                    </Button>
-                                </Tooltip>
-                            </h2>
-                            <p>Danceability: {artistData.danceability}</p>
-                            <p>Positivity: {artistData.positivity}</p>
-                            <p>Acousticness: {artistData.acousticness}</p>
-                            <p>Energy: {artistData.energy}</p>
-                            <p>Instrumentalness: {artistData.instrumentalness}</p>
-                            <p>Loudness: {artistData.loudness}</p>
-                            <p>Speechiness: {artistData.speechiness}</p>
-                            <StatDialog open={open} onClose={() => setOpen(false)} />
-                        </div>
+                        <Stat danceability={artistData.danceability} valence={artistData.valence} acousticness={artistData.acousticness}
+                        energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false}></Stat>
                     </div>
+                    <Divider />
                     <div className="results-page">
                         <CardHolder cards={artistData.discography} />
                     </div>
-                </> : <></>}
+                </> : <CircularProgress />}
         </div>
     )
 }
