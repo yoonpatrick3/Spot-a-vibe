@@ -40,7 +40,7 @@ export const SearchGroup = (props) => {
                 <TextField label={currOpt} onChange={(ev) => {
                     setInput(ev.target.value);
                 }} onKeyPress={handleEnterPressed}></TextField>
-                <Select labelId="label" defaultValue="Artist" onChange={handleOptionChange}>
+                <Select labelId="label" defaultValue="artist" onChange={handleOptionChange}>
                     <MenuItem value="artist">Artist</MenuItem>
                     <MenuItem value="track">Track</MenuItem>
                 </Select>

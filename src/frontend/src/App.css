@@ -45,7 +45,7 @@
 .search-group {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: flex-end;
 }
 
 .error-page {

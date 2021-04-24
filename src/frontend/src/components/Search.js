@@ -20,15 +20,16 @@ export let move_left_style = {
 
 const Search = (props) => {
     const [weights, setWeight] = useState({
-        Weight1: 0,
-        Weight2: 0,
-        Weight3: 0
+        Danceability: 0.5, 
+        Valence: 0.5,
+        Acousticness: 0.5,
+        Energy:0.5, 
+        Instrumentalness:0.5
     });
 
     const classes = useStyles();
 
     function search(input, option) {
-        //api call here i think
         input.replaceAll(" ", "%20")
         fetch(address + '/apiSearch?q=' + input + '&type=' + option)
             .then(response => {
@@ -54,16 +55,9 @@ const Search = (props) => {
             })
     }
 
-    function searchByWeights(weight1, weight2, weight3) {
+    function searchByWeights() {
+        console.log("d:" + weights.Danceability + "v:" + weights.Valence + "a:" + weights.Acousticness + "e" + weights.Energy + "i" + weights.Instrumentalness)
         props.setShowing(move_left_style);
-    }
-
-
-    const handleWeightChange = (weightName, newVal) => {
-        setWeight((prev) => ({
-            ...prev,
-            [weightName]: newVal
-        }))
     }
 
     return (
@@ -75,9 +69,11 @@ const Search = (props) => {
 
             <div>
                 <h2>Search by vibes </h2>
-                <ContinuousSlider weightName="Weight1" handleWeightChange={handleWeightChange}></ContinuousSlider>
-                <ContinuousSlider weightName="Weight2" handleWeightChange={handleWeightChange}></ContinuousSlider>
-                <ContinuousSlider weightName="Weight3" handleWeightChange={handleWeightChange}></ContinuousSlider>
+                <ContinuousSlider weightName="Danceability" setWeight={setWeight}></ContinuousSlider>
+                <ContinuousSlider weightName="Valence" setWeight={setWeight}></ContinuousSlider>
+                <ContinuousSlider weightName="Acousticness" setWeight={setWeight}></ContinuousSlider>
+                <ContinuousSlider weightName="Energy" setWeight={setWeight}></ContinuousSlider>
+                <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight}></ContinuousSlider>
                 <Button variant="outlined" onClick={searchByWeights} className={classes.button}>Search</Button>
             </div>
         </div>

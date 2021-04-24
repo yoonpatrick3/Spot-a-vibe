@@ -6,17 +6,41 @@ import Slider from '@material-ui/core/Slider';
 
 const useStyles = makeStyles({
   root: {
-    width: 200,
+    width: 500,
   },
 });
 
+const marks = [
+  {
+    value: 0,
+    label: 'Very Low',
+  },
+  {
+    value: .25,
+    label: 'Moderately Low',
+  },
+  {
+    value: .5,
+    label: 'Neutral',
+  },
+  {
+    value: .75,
+    label: 'Moderately High',
+  },
+  {
+    value: 1.0,
+    label: 'Very High',
+  }
+];
+
 export const ContinuousSlider = (props) => {
   const classes = useStyles();
-  const [value, setValue] = useState(30);
-  
-  const handleChange = (ev, newVal) => {
-    props.handleWeightChange(props.weightName, newVal);
-    setValue(newVal);
+
+  function onChange(ev, newVal) {
+    props.setWeight(prev => ({
+      ...prev,
+      [props.weightName]: newVal
+    }))
   }
 
   return (
@@ -24,11 +48,8 @@ export const ContinuousSlider = (props) => {
       <Typography id="continuous-slider" gutterBottom>
         {props.weightName}
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs>
-          <Slider value={value} onChange={handleChange} aria-labelledby="continuous-slider" />
-        </Grid>
-      </Grid>
+      <Slider step={.01} defaultValue={.5} min={0.0} max={1.0} onChange={onChange}
+          marks={marks} aria-labelledby="continuous-slider" track={false} />
     </div>
   );
 }
