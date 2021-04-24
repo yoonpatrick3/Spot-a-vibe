@@ -58,9 +58,24 @@ def apiSearch():
                     return json.dumps(return_dict)
             except ValueError:
                 # error page
-                return redirect("/error?msg=Something_went_wrong_with_your_request")
+                return redirect("/error?msg=Something_went_giwrong_with_your_request")
         else:
             return redirect("/error?msg=Please_add_a_search_parameter")
+    else: 
+        return redirect("/error?msg=Invalid_HTTP_method")
+
+@app.route("/apiWeights")
+def searchByWeights():
+    if request.method == 'GET':
+        params = request.args
+        danceability = params.get('d', 0.5)
+        acousticness = params.get('a', 0.5)
+        valence = params.get('v', 0.5)
+        instrumentalness = params.get('i', None)
+        energy = params.get('e', None)
+
+
+
     else: 
         return redirect("/error?msg=Invalid_HTTP_method")
 
@@ -118,7 +133,7 @@ def trackProfile():
             returnTrack["popularity"] = popularity
             return returnTrack
         else:
-            return redirect("/error?msg=Please_add_a_track_id_parameter")
+            return redirect("/error?msg=Please_add_the_correct_query_parameters")
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
         

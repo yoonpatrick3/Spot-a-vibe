@@ -35,18 +35,18 @@ export const SearchGroup = (props) => {
     }
 
     return (
-        <div>
-            <div className = "search-group">
+        <>
+            <div className="search-group">
                 <TextField label={currOpt} onChange={(ev) => {
                     setInput(ev.target.value);
-                }} onKeyPress={handleEnterPressed}></TextField>
-                <Select labelId="label" defaultValue="artist" onChange={handleOptionChange}>
+                }} onKeyPress={handleEnterPressed} className="search-input"></TextField>
+                <Select labelId="label" defaultValue="artist" onChange={handleOptionChange} className="search-dropdown">
                     <MenuItem value="artist">Artist</MenuItem>
                     <MenuItem value="track">Track</MenuItem>
                 </Select>
             </div>
             <Button variant="outlined" onClick={handleSearch} className={classes.button}>Search</Button>
-        </div>
+        </>
     )
 }
 

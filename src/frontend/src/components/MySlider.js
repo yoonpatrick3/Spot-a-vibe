@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
-const useStyles = makeStyles({
-  root: {
-    width: 500,
-  },
-});
 
 const marks = [
   {
@@ -34,7 +27,6 @@ const marks = [
 ];
 
 export const ContinuousSlider = (props) => {
-  const classes = useStyles();
 
   function onChange(ev, newVal) {
     props.setWeight(prev => ({
@@ -44,7 +36,7 @@ export const ContinuousSlider = (props) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div>
       <Typography id="continuous-slider" gutterBottom>
         {props.weightName}
       </Typography>

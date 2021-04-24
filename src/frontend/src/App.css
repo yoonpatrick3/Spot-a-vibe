@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   justify-content: center;
   flex-wrap: wrap;
   overflow: hidden;
@@ -10,19 +10,20 @@
 .search {
   display: flex;
   flex-direction: row;
-  justify-content:space-between;
+  justify-content: space-between;
   align-items: baseline;
   background-color: white;
 }
 
-.search > * {
-  padding:10%;
+.search>* {
+  padding: 10%;
+  width: 40%;
 }
 
 .results-page {
   flex-direction: column;
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   justify-content: space-around;
 }
 
@@ -30,28 +31,36 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items:center;
-  background-color:white;
+  align-items: center;
+  background-color: white;
   overflow: hidden;
   height: 90vh;
 }
 
-.body > * {
-  width:100vw;
-  height:100%;
+.body>* {
+  width: 100vw;
+  height: 100%;
 }
-
 
 .search-group {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  justify-content: center;
+}
+
+.search-input {
+  width: 80%;
+}
+
+.search-dropdown {
+  width: 20%;
 }
 
 .error-page {
   height: 90vh;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -59,7 +68,7 @@
 .artist-track-profile {
   display: flex;
   flex-direction: column;
-  padding:2em;
+  padding: 2em;
 }
 
 .artist-track-bio {
@@ -69,27 +78,18 @@
   align-items: center;
 }
 
-.artist-data {
-  
-}
-
-
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
 
-}
+@media only screen and (min-width: 600px) {}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
 
-}
+@media only screen and (min-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
 
-}
+@media only screen and (min-width: 992px) {}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
 
-}
+@media only screen and (min-width: 1200px) {}
