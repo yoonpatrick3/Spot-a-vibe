@@ -1,8 +1,8 @@
 {
     "cacheDirectories": [
-      "client/node_modules"
+      "src/frontend/node_modules"
     ],
     "scripts": {
-      "heroku-prebuild": "cd client && npm install && npm run build"
+      "heroku-postbuild": "cd src/frontend && npm install && npm run build"
     }
 }
