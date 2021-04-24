@@ -14,7 +14,7 @@ def make_request():
         host=os.getenv('DATABASE_URL', 'localhost'),
         user=os.getenv('DATABASE_USERNAME', 'root'),
         password=os.getenv('DATABASE_PASS', ''),
-        database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs')
+        database=os.getenv('SpotifySongs', 'SpotifySongs')
     )
     mycursor = mydb.cursor()
 
