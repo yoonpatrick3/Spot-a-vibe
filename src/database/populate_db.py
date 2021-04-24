@@ -2,10 +2,10 @@ import mysql.connector
 import sys
 import os
 sys.path.append(os.getcwd())
-from src.song import *
+from src.backend.song import *
 import requests
 import time
-from src.auth import get_auth
+from src.backend.auth import get_auth
 
 def make_request():
 

@@ -6,8 +6,8 @@ import requests
 import sys
 import os
 sys.path.append(os.getcwd())
-from src.song import *
-from src.auth import get_auth
+from song import *
+from auth import get_auth
 from src.database.populate_db import create_and_insert_to_db
 
 app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")

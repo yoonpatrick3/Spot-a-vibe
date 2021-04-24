@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import os
 sys.path.append(os.getcwd())
-from src.song import *
+from song import *
 
 # Finds the difference in a circular array
 def find_circular_diff(num1: int, num2: int, circular_array: list) -> int:
