@@ -187,7 +187,8 @@ def get_artist_name(mycursor, artist_id):
     
 
 if __name__ == '__main__':
-    app.run(port="5000", debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 #TODO: add query param support for error messages, connect artist and track pages to songcard
