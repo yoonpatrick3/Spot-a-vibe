@@ -3,6 +3,7 @@
       "src/frontend/node_modules"
     ],
     "scripts": {
-      "heroku-prebuild": "cd src/frontend && npm install && npm run build"
+      "heroku-prebuild": "cd src/frontend && npm install && npm run build",
+      "start": "python src/backend/app.py"
     }
   }
