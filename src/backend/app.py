@@ -14,9 +14,9 @@ app = Flask(__name__, static_folder="../frontend/build/static", template_folder=
 
 mydb = mysql.connector.connect(
     host=os.getenv('DATABASE_URL', 'localhost'),
-    user="root",
-    password="",
-    database="SpotifySongs"
+    user=os.getenv('DATABASE_USERNAME', 'root'),
+    password=os.getenv('DATABASE_PASS', ''),
+    database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs')
     )
 mycursor = mydb.cursor()
 

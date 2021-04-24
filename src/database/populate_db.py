@@ -11,10 +11,10 @@ def make_request():
 
     #SET UP DB CONNECTION
     mydb = mysql.connector.connect(
-    host=os.getenv('DATABASE_URL', 'localhost'),
-    user="root",
-    password="",
-    database="SpotifySongs"
+        host=os.getenv('DATABASE_URL', 'localhost'),
+        user=os.getenv('DATABASE_USERNAME', 'root'),
+        password=os.getenv('DATABASE_PASS', ''),
+        database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs')
     )
     mycursor = mydb.cursor()
 
