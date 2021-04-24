@@ -6,7 +6,7 @@
         "client/node_modules"
       ],
     "scripts": {
-        "heroku-postbuild": "cd src/frontend && npm install && npm run build",
+        "heroku-postbuild": "cd src/frontend && npm install && npm run build"
     },
     "engines": {
       "node": "v12.19.0"
