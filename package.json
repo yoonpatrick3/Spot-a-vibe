@@ -1,9 +1,0 @@
-{
-    "version": "0.1.0",
-    "cacheDirectories": [
-      "src/frontend/node_modules"
-    ],
-    "scripts": {
-      "heroku-postbuild": "cd src/frontend && npm install && npm run build"
-    }
-}
