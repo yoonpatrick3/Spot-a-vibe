@@ -4,6 +4,7 @@ import ContinuousSlider from './MySlider';
 import SearchGroup from './SearchGroup';
 import SongCard from './Card';
 import { makeStyles } from '@material-ui/core';
+import { address } from '../App'
 
 const useStyles = makeStyles({
 
@@ -29,7 +30,7 @@ const Search = (props) => {
     function search(input, option) {
         //api call here i think
         input.replaceAll(" ", "%20")
-        fetch('http://localhost:5000/apiSearch?q=' + input + '&type=' + option)
+        fetch(address + '/apiSearch?q=' + input + '&type=' + option)
             .then(response => {
                 return response.json();
             })
