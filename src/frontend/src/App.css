@@ -16,7 +16,7 @@
 }
 
 .search>* {
-  padding: 10%;
+  padding: 5%;
   width: 40%;
 }
 
@@ -68,28 +68,89 @@
 .artist-track-profile {
   display: flex;
   flex-direction: column;
-  padding: 2em;
 }
 
-.artist-track-bio {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+
+@media only screen and (max-width: 600px) {
+  .artist-track-bio {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .artist-track-bio > *{
+    width: 90%;
+  }
+
+  .App {
+    font-size:small;
+  }
+
+  .artist-track-profile {
+    padding: .5em;
+  }
+
+  .artist-track-name {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 
-@media only screen and (min-width: 600px) {}
+@media only screen and (min-width: 600px) {
+  .artist-track-bio {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .artist-track-bio > *{
+    width: 90%;
+  }
+  .artist-track-profile {
+    padding: 1em;
+  }
+
+  .artist-track-name {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
 
 /* Medium devices (landscape tablets, 768px and up) */
 
-@media only screen and (min-width: 768px) {}
+@media only screen and (min-width: 768px) {
+
+  .artist-track-bio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .artist-track-bio > *{
+    width: 40%;
+  }
+}
 
 /* Large devices (laptops/desktops, 992px and up) */
 
-@media only screen and (min-width: 992px) {}
+@media only screen and (min-width: 992px) {
+
+  .artist-track-profile {
+    padding: 2em;
+  }
+}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 
-@media only screen and (min-width: 1200px) {}
+@media only screen and (min-width: 1200px) {
+  
+
+}

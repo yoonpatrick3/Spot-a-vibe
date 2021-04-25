@@ -25,7 +25,9 @@ export const SearchGroup = (props) => {
     }
 
     const handleSearch = (ev) => {
-        props.handleSearch(input, currOpt);
+        if(input !== ""){
+            props.handleSearch(input, currOpt);
+        }
     }
 
     const handleEnterPressed = (ev) => {

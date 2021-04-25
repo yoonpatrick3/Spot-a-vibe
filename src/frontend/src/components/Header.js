@@ -31,11 +31,11 @@ export default function ButtonAppBar(props) {
             <Toolbar>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <Link to="/">
-                        <Avatar alt="Spot-a-like logo" src={Logo} />
+                        <Avatar alt="Spot-a-vibe logo" src={Logo} />
                     </Link>
                 </IconButton>
                 <Typography variant="h4" className={classes.title}>
-                    SPOT-AI-FY
+                    SPOT-A-VIBE
                 </Typography>
                 <Button color="inherit" href="https://github.com/yoonpatrick3/Spot-a-like" target="_blank">Source</Button>
             </Toolbar>

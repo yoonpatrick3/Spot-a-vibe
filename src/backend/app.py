@@ -68,13 +68,46 @@ def apiSearch():
 def searchByWeights():
     if request.method == 'GET':
         params = request.args
-        danceability = params.get('d', 0.5)
-        acousticness = params.get('a', 0.5)
-        valence = params.get('v', 0.5)
-        instrumentalness = params.get('i', None)
-        energy = params.get('e', None)
+        danceability = float(params.get('d'))
+        acousticness = float(params.get('a'))
+        valence = float(params.get('v', 0.5))
+        instrumentalness = float(params.get('i'))
+        energy = float(params.get('e'))
+        
+        target_song_dict = {'acousticness': acousticness, 'danceability': danceability, 'valence': valence, 'instrumentalness': instrumentalness, 'energy': energy,
+        'key_scale': 5, 'liveness': .16, 'loudness': -6, 'mode': .6, 'speechiness': .11, 'tempo': 121, 'time_signature': 4, 'duration_ms': 200000}
+        print(target_song_dict)
+
+        all_songs_query = ('SELECT * FROM Song')
+        mycursor.execute(all_songs_query)
+        col_names = mycursor.column_names
+        all_songs = mycursor.fetchall()
+            
+        list_of_songs = []
+        all_song_columns = mycursor.column_names
+        for song in all_songs:
+            temp_song_dict = format_song(all_song_columns, song)
 
 
+            # artist_name_query = ('SELECT artist_name FROM Artist WHERE artist_id = %s')
+            # mycursor.execute(artist_name_query, temp_song_dict['artist_id'])
+            # temp_song_dict["artist_name"] = mycursor.fetchone()[0]
+                
+            temp_song_dict['artist_name'] = get_artist_name(mycursor, temp_song_dict.get('artist_id'))
+                
+            list_of_songs.append(Song(temp_song_dict))
+
+            # target_song_dict = format_song(mycursor.column_names, track)
+        target_song = Song(target_song_dict)
+        similar_songs = closest_songs(target_song, list_of_songs, 10) #closest_songs(Target song, list of songs, number of closest songs to output)
+            #
+            
+        returnDict = {}
+        similar_song_attributes = []
+        for song in similar_songs:
+            similar_song_attributes.append(song.get_core_attributes())
+        returnDict["similar_songs"] = similar_song_attributes
+        return returnDict
 
     else: 
         return redirect("/error?msg=Invalid_HTTP_method")
@@ -97,7 +130,6 @@ def trackProfile():
             col_names = mycursor.column_names
 
             target_song_dict = format_song(col_names, track)
-            
 
             #
             all_songs_query = ('SELECT * FROM Song')

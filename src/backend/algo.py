@@ -43,18 +43,18 @@ def residual_square_sum(song1: Song, song2: Song, slider_values: dict) -> float:
     return np.sum(list_of_features)
 
 default_slider_values = {
-    'acousticness' : 1.0,
-    'danceability' :1.0,
-    'duration_ms' : 1.0,
-    'energy' : 1.0,
-    'instrumentalness' : 1.0,
-    'key_scale' : 1.0,
-    'liveness' : 1.0,
+    'acousticness' : 15.0,
+    'danceability' :20.0,
+    'duration_ms' : 0.1,
+    'energy' : 20.0,
+    'instrumentalness' : 15.0,
+    'key_scale' : 0.2,
+    'liveness' : 0.2,
     'mode' : 1.0,
     'speechiness' : 1.0,
     'tempo' : 1.0,
-    'time_signature' : 1.0,
-    'valence' : 1.0
+    'time_signature' : 0.2,
+    'valence' : 20.0
 }
 
 # Finds the n-closest songs given a list of songs and a target songs

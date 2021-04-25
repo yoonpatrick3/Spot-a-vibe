@@ -5,6 +5,7 @@ import SearchGroup from './SearchGroup';
 import SongCard from './Card';
 import { makeStyles } from '@material-ui/core';
 import { address } from '../App'
+import { defaultSpotifyImgLink } from './Artist'
 
 const useStyles = makeStyles({
 
@@ -20,11 +21,11 @@ export let move_left_style = {
 
 const Search = (props) => {
     const [weights, setWeight] = useState({
-        Danceability: 0.5, 
+        Danceability: 0.6,
         Valence: 0.5,
-        Acousticness: 0.5,
-        Energy:0.5, 
-        Instrumentalness:0.5
+        Acousticness: 0.2,
+        Energy: 0.6,
+        Instrumentalness: 0.03
     });
 
     const classes = useStyles();
@@ -38,16 +39,16 @@ const Search = (props) => {
             .then(data => {
                 if (option === "artist") {
                     let song_array = data.items.map(artist => {
-                        let url = artist.images.length > 0 ? artist.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png'
-                        return <SongCard type="artist" style = {{'min-height': '100px'}} id={artist.id} trackArtist={artist.artist_name} imageURL={url}></SongCard>
+                        let url = artist.images.length > 0 ? artist.images[0].url : defaultSpotifyImgLink
+                        return <SongCard type="artist" style={{ 'min-height': '100px' }} id={artist.id} trackArtist={artist.artist_name} imageURL={url}></SongCard>
                     })
                     props.updateFunc(song_array);
                 } else {
                     let track_array = data.items.map(track => {
-                        let url = track.images.length > 0 ? track.images[0].url : 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
+                        let url = track.images.length > 0 ? track.images[0].url : defaultSpotifyImgLink;
 
-                        return <SongCard style = {{'min-height': '100px'}} id={track.id} trackArtist={track.artist_name}
-                         trackName = {track.track_name} imageURL={url} type="track"></SongCard>
+                        return <SongCard style={{ 'min-height': '100px' }} id={track.id} trackArtist={track.artist_name}
+                            trackName={track.track_name} imageURL={url} type="track"></SongCard>
                     })
                     props.updateFunc(track_array);
                 }
@@ -56,7 +57,19 @@ const Search = (props) => {
     }
 
     function searchByWeights() {
-        console.log("d:" + weights.Danceability + "v:" + weights.Valence + "a:" + weights.Acousticness + "e" + weights.Energy + "i" + weights.Instrumentalness)
+        fetch(`${address}/apiWeights?d=${weights.Danceability}&v=${weights.Valence}&a=${weights.Acousticness}&e=${weights.Energy}&i=${weights.Instrumentalness}`)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                let track_array = data.similar_songs.map(track => {
+                    let url = track.img_link ? track.img_link : defaultSpotifyImgLink;
+
+                    return <SongCard style={{ 'min-height': '100px' }} id={track.id} trackArtist={track.artist_name}
+                        trackName={track.title} imageURL={url} type="track"></SongCard>
+                })
+                props.updateFunc(track_array);
+            })
         props.setShowing(move_left_style);
     }
 
@@ -69,11 +82,11 @@ const Search = (props) => {
 
             <div>
                 <h2>Search by vibes </h2>
-                <ContinuousSlider weightName="Danceability" setWeight={setWeight}></ContinuousSlider>
-                <ContinuousSlider weightName="Valence" setWeight={setWeight}></ContinuousSlider>
-                <ContinuousSlider weightName="Acousticness" setWeight={setWeight}></ContinuousSlider>
-                <ContinuousSlider weightName="Energy" setWeight={setWeight}></ContinuousSlider>
-                <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight}></ContinuousSlider>
+                <ContinuousSlider weightName="Danceability" setWeight={setWeight} min={0.2} max={1.0} defaultValue={weights.Danceability}></ContinuousSlider>
+                <ContinuousSlider weightName="Valence" setWeight={setWeight} min={0.0} max={1.0} defaultValue={weights.Valence}></ContinuousSlider>
+                <ContinuousSlider weightName="Acousticness" setWeight={setWeight} max={0.4} min={0.0} defaultValue={weights.Acousticness}></ContinuousSlider>
+                <ContinuousSlider weightName="Energy" setWeight={setWeight} min={0.2} max={1.0} defaultValue={weights.Energy}></ContinuousSlider>
+                <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight} min={0.0} max={.06} defaultValue={weights.Instrumentalness}></ContinuousSlider>
                 <Button variant="outlined" onClick={searchByWeights} className={classes.button}>Search</Button>
             </div>
         </div>

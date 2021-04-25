@@ -9,6 +9,7 @@ import Stat, { formatStat } from './Stat'
 import Divider from '@material-ui/core/Divider';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import Tooltip from '@material-ui/core/Tooltip';
+import { defaultSpotifyImgLink } from './Artist'
 
 
 function TrackProfile(props) {
@@ -20,15 +21,23 @@ function TrackProfile(props) {
                 return response.json();
             })
             .then(data => {
-                let danceability = formatStat(data.danceability);
-                let valence = formatStat(data.valence);
-                let acousticness = formatStat(data.acousticness);
-                let energy = formatStat(data.energy);
-                let instrumentalness = formatStat(data.instrumentalness);
+                let danceability = formatStat(.6, data.danceability);
+                let valence = formatStat(.5, data.valence);
+                let acousticness = formatStat(.2, data.acousticness);
+                let energy = formatStat(.6, data.energy);
+                let instrumentalness = formatStat(.03, data.instrumentalness);
+                console.log(data)
+                // let danceability = data.danceability
+                // let valence = data.valence
+                // let acousticness = data.acousticness
+                // let energy = data.energy
+                // let instrumentalness = data.instrumentalness
+
 
                 let similarSongs = data.similar_songs.map(song => {
+                    let url = song.img_link ? song.img_link : defaultSpotifyImgLink;
                     return <SongCard style={{ 'min-height': '100px' }} id={song.id} trackArtist={song.artist_name}
-                        trackName={song.title} imageURL={song.img_link} type="track"></SongCard>
+                        trackName={song.title} imageURL={url} type="track"></SongCard>
                 })
 
                 setTrackData({
@@ -52,16 +61,18 @@ function TrackProfile(props) {
             {trackData.artistName ?
                 <>
                     <div className="artist-track-bio">
-                        <Intro imgSrc={trackData.img_link} alt={`Picture of track: ${trackData.trackTitle}`} name={trackData.trackTitle}></Intro>
-                        <div>
-                            <Tooltip title="Artist of the track" aria-label="artist-name">
-                                <Link to={`/artist?id=${trackData.artistID}`}>
-                                    <h2>{trackData.artistName}</h2>
-                                </Link>
-                            </Tooltip>
-                            <Tooltip title="Popularity of track (on a scale of 0-100)" aria-label="popularity">
-                                <h3><WhatshotIcon color="secondary" /> {trackData.popularity}</h3>
-                            </Tooltip>
+                        <div className="artist-track-name">
+                            <Intro imgSrc={trackData.img_link} alt={`Picture of track: ${trackData.trackTitle}`} name={trackData.trackTitle}></Intro>
+                            <div>
+                                <Tooltip title="Artist of the track" aria-label="artist-name">
+                                    <Link to={`/artist?id=${trackData.artistID}`}>
+                                        <h2>{trackData.artistName}</h2>
+                                    </Link>
+                                </Tooltip>
+                                <Tooltip title="Popularity of track (on a scale of 0-100)" aria-label="popularity">
+                                    <h3><WhatshotIcon color="secondary" /> {trackData.popularity}</h3>
+                                </Tooltip>
+                            </div>
                         </div>
                         <Stat danceability={trackData.danceability} valence={trackData.valence} acousticness={trackData.acousticness}
                             energy={trackData.energy} instrumentalness={trackData.instrumentalness} isTrack={true}></Stat>

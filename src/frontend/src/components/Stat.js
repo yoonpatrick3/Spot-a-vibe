@@ -12,14 +12,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function formatStat(stat) {
-    if (stat <= .20) {
+export function formatStat(average, stat) {
+    let range;
+    if (average <= .5) {
+        range = stat;
+    } else {
+        range = 1 - stat;
+    }
+
+    if (stat <= average - .9 * range ) {
         return "Very low";
-    } else if (stat <= .40) {
+    } else if (stat <= average - .25 * range) {
         return "Moderately low";
-    } else if (stat <= .60) {
+    } else if (stat <= average + .25 * range) {
         return "Neutral"
-    } else if (stat <= .80) {
+    } else if (stat <= average + .9 * range) {
         return "Moderately high";
     } else {
         return "Very high"

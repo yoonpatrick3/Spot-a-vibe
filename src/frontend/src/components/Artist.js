@@ -13,7 +13,7 @@ import Stat, { formatStat } from './Stat'
 import Divider from '@material-ui/core/Divider';
 
 
-const defaultSpotifyImgLink = 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
+export const defaultSpotifyImgLink = 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
 
 
 function formatList(list) {
@@ -55,11 +55,11 @@ function ArtistProfile(props) {
                 energy /= data.discography.length;
                 instrumentalness /= data.discography.length;
 
-                danceability = formatStat(danceability);
-                valence = formatStat(valence);
-                acousticness = formatStat(acousticness);
-                energy = formatStat(energy);
-                instrumentalness = formatStat(instrumentalness);
+                danceability = formatStat(.6, danceability);
+                valence = formatStat(.5, valence);
+                acousticness = formatStat(.2, acousticness);
+                energy = formatStat(.6, energy);
+                instrumentalness = formatStat(.03, instrumentalness);
 
 
                 let discography = data.discography.map(song => {
@@ -90,24 +90,26 @@ function ArtistProfile(props) {
             {artistData.artist_name ?
                 <>
                     <div className="artist-track-bio">
-                        <Intro imgSrc={artistData.artist_image} alt={`Profile picture of ${artistData.artist_name}`} name={artistData.artist_name}></Intro>
-                        <div className="artist-data">
-                            <Tooltip title="Followers on Spotify" aria-label="followers">
-                                <h3><PeopleIcon color="disabled" /> {artistData.followers}</h3>
-                            </Tooltip>
-                            <Tooltip title="Popularity of artist (on a scale of 0-100)" aria-label="popularity">
-                                <h3><WhatshotIcon color="secondary" /> {artistData.popularity}</h3>
-                            </Tooltip>
-                            {artistData.genres.length > 0 ? <Tooltip title="Genre of music" aria-label="genre">
+                        <div className="artist-track-name">
+                            <Intro imgSrc={artistData.artist_image} alt={`Profile picture of ${artistData.artist_name}`} name={artistData.artist_name}></Intro>
+                            <div className="artist-data">
+                                <Tooltip title="Followers on Spotify" aria-label="followers">
+                                    <h3><PeopleIcon color="disabled" /> {artistData.followers}</h3>
+                                </Tooltip>
+                                <Tooltip title="Popularity of artist (on a scale of 0-100)" aria-label="popularity">
+                                    <h3><WhatshotIcon color="secondary" /> {artistData.popularity}</h3>
+                                </Tooltip>
+                                {artistData.genres.length > 0 ? <Tooltip title="Genre of music" aria-label="genre">
                                 <h3><AlbumIcon color="disabled" /> {artistData.genres}</h3>
                             </Tooltip> : <></>}
+                            </div>
                         </div>
                         <Stat danceability={artistData.danceability} valence={artistData.valence} acousticness={artistData.acousticness}
-                        energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false}></Stat>
+                            energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false}></Stat>
                     </div>
                     <Divider />
                     <div className="results-page">
-                        <CardHolder cards={artistData.discography} />
+                        <CardHolder cards={artistData.discography}/>
                     </div>
                 </> : <CircularProgress />}
         </div>
