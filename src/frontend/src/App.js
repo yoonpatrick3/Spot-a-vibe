@@ -4,7 +4,7 @@ import Header from './components/Header';
 import { BrowserRouter } from 'react-router-dom'
 import Body from './components/Body'
 
-export const address = 'http://spot-a-vibe.herokuapp.com'
+export const address = 'https://spot-a-vibe.herokuapp.com'
 
 
 function App() {
