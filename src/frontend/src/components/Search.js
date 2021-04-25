@@ -54,14 +54,17 @@ const Search = (props) => {
                 }
                 props.setShowing(move_left_style);
             })
+            .catch(err => {
+                props.setAlert("Something went wrong with your request. Please try again later.")
+                console.log(err)
+            })
     }
 
     function searchByWeights() {
         fetch(`${address}/apiWeights?d=${weights.Danceability}&v=${weights.Valence}&a=${weights.Acousticness}&e=${weights.Energy}&i=${weights.Instrumentalness}`)
             .then(response => {
                 return response.json();
-            })
-            .then(data => {
+            }).then(data => {
                 let track_array = data.similar_songs.map(track => {
                     let url = track.img_link ? track.img_link : defaultSpotifyImgLink;
 
@@ -69,7 +72,11 @@ const Search = (props) => {
                         trackName={track.title} imageURL={url} type="track"></SongCard>
                 })
                 props.updateFunc(track_array);
+            }).catch(err => {
+                props.setAlert("Something went wrong with your request. Please try again later.")
+                console.log(err)
             })
+
         props.setShowing(move_left_style);
     }
 

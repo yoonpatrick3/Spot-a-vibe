@@ -82,6 +82,10 @@ function ArtistProfile(props) {
                     discography: discography
                 })
             })
+            .catch(err => {
+                props.setAlert("Something went wrong with your request. We cannot find the specified artist.");
+                console.log(err)
+            })
     }, [props.id])
 
 
@@ -119,7 +123,7 @@ function ArtistProfile(props) {
 function Artist(props) {
     let artistID = props.id;
     return (
-        <>{artistID ? <ArtistProfile id={artistID} /> : <Redirect to="/"></Redirect>}</>
+        <>{artistID ? <ArtistProfile id={artistID} setAlert={props.setAlert} /> : <Redirect to="/"></Redirect>}</>
     )
 }
 

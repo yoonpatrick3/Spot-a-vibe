@@ -9,6 +9,7 @@ import Stat, { formatStat } from './Stat'
 import Divider from '@material-ui/core/Divider';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import Tooltip from '@material-ui/core/Tooltip';
+import LibraryMusicIcon from '@material-ui/icons/LibraryMusic';
 import { defaultSpotifyImgLink } from './Artist'
 
 
@@ -51,8 +52,12 @@ function TrackProfile(props) {
                     trackTitle: data.title,
                     popularity: data.popularity,
                     similarSongs: similarSongs,
-                    artistID: data.artist_id
+                    artistID: data.artist_id,
+                    album: data.album
                 });
+            }).catch(err => {
+                props.setAlert("Something went wrong with your request. We cannot find the specified track. Please try again later.")
+                console.log(err)
             })
     }, props.id)
 
@@ -68,6 +73,9 @@ function TrackProfile(props) {
                                     <Link to={`/artist?id=${trackData.artistID}`}>
                                         <h2>{trackData.artistName}</h2>
                                     </Link>
+                                </Tooltip>
+                                <Tooltip title="Album" aria-label="album">
+                                    <h3><LibraryMusicIcon color="disabled" /> {trackData.album}</h3>
                                 </Tooltip>
                                 <Tooltip title="Popularity of track (on a scale of 0-100)" aria-label="popularity">
                                     <h3><WhatshotIcon color="secondary" /> {trackData.popularity}</h3>
@@ -91,7 +99,7 @@ function Track(props) {
     let trackID = props.id;
     return (
         <>
-            {trackID ? <TrackProfile id={trackID} /> : <Redirect to="/"></Redirect>}
+            {trackID ? <TrackProfile id={trackID} setAlert={props.setAlert} /> : <Redirect to="/"></Redirect>}
         </>
     )
 }
