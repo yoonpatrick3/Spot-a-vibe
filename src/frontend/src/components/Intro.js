@@ -35,7 +35,7 @@ export default function Intro(props) {
     const classes = useStyles();
 
     return (
-        <div style={{flex:'column', 'align-items':'center'}}>
+        <div className="intro">
             <Avatar src={props.imgSrc} alt={`Profile picture of ${props.alt}`} className={classes.icon} />
             <h1>{props.name}</h1>
         </div>
