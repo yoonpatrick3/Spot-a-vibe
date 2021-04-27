@@ -102,9 +102,9 @@ function renderSpot(phase, setPhase, confirmationQuestion, setConfrimation, prop
                             <DialogTitle id="stat-dialog">Track</DialogTitle>
                             <Divider></Divider>
                             <DialogContent>
-                                <DialogContentText>
-                                    Is this what you meant?
-                                </DialogContentText>
+                                <TextField>
+                                    
+                                </TextField>
                             </DialogContent>
                         </>}
                 </>
@@ -126,9 +126,9 @@ function renderSpot(phase, setPhase, confirmationQuestion, setConfrimation, prop
                             <DialogTitle id="stat-dialog">Track</DialogTitle>
                             <Divider></Divider>
                             <DialogContent>
-                                <DialogContentText>
-                                    Is this what you meant?
-                                </DialogContentText>
+                                <TextField>
+
+                                </TextField>
                             </DialogContent>
                         </>}
                 </>

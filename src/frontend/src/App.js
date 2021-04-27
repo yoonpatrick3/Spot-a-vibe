@@ -6,7 +6,7 @@ import Body from './components/Body'
 import Alert from '@material-ui/lab/Alert';
 import Spot from './components/Spot'
 
-export const address = 'http://localhost:5000'
+export const address = 'https://spot-a-vibe.herokuapp.com'
 
 
 function App() {
