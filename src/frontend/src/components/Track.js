@@ -38,7 +38,7 @@ function TrackProfile(props) {
                 let similarSongs = data.similar_songs.map(song => {
                     let url = song.img_link ? song.img_link : defaultSpotifyImgLink;
                     return <SongCard style={{ 'min-height': '100px' }} id={song.id} trackArtist={song.artist_name}
-                        trackName={song.title} imageURL={url} type="track"></SongCard>
+                        trackName={song.title} imageURL={url} type="track" onClick={()=>{setTrackData({})}}></SongCard>
                 })
 
                 setTrackData({

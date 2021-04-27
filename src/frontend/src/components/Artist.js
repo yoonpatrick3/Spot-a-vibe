@@ -109,7 +109,7 @@ function ArtistProfile(props) {
                             </div>
                         </div>
                         <Stat danceability={artistData.danceability} valence={artistData.valence} acousticness={artistData.acousticness}
-                            energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false}></Stat>
+                            energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false} onClick={()=>{setArtistData({})}}></Stat>
                     </div>
                     <Divider />
                     <div className="results-page">

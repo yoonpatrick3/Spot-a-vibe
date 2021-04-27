@@ -28,7 +28,7 @@ export const SongCard = (props) => {
   const classes = useStyles();
 
   return (
-    <Link to={`/${props.type}?id=${props.id}`}>
+    <Link to={`/${props.type}?id=${props.id}`} onClick={props.onClick}>
       <Card className={classes.root}>
         <CardMedia
           className={classes.cover}
