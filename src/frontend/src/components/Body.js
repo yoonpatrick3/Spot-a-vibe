@@ -5,10 +5,8 @@ import Artist from './Artist'
 import Search from './Search';
 import ResultsPage from './ResultsPage'
 import { Switch, Route, useLocation } from 'react-router-dom'
-import Spot from './Spot'
 
 function Body(props) {
-    const [spot, setSpot] = useState(true);
     const [cards, updateCards] = useState([]);
     const [showing, setShowing] = useState({});
     const query = new URLSearchParams(useLocation().search);

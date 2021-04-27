@@ -6,6 +6,8 @@ import SongCard from './Card';
 import { makeStyles } from '@material-ui/core';
 import { address } from '../App'
 import { defaultSpotifyImgLink } from './Artist'
+import StatTooltip from './StatTooltip'
+import StatDialog from './StatDialog'
 
 const useStyles = makeStyles({
 
@@ -27,6 +29,7 @@ const Search = (props) => {
         Energy: 0.6,
         Instrumentalness: 0.03
     });
+    const [open, setOpen] = useState(false);
 
     const classes = useStyles();
 
@@ -88,13 +91,14 @@ const Search = (props) => {
             </div>
 
             <div>
-                <h2>Search by vibes </h2>
+                <h2>Search by vibes <StatTooltip setOpen={setOpen} /> </h2> 
                 <ContinuousSlider weightName="Danceability" setWeight={setWeight} min={0.2} max={1.0} defaultValue={weights.Danceability}></ContinuousSlider>
                 <ContinuousSlider weightName="Valence" setWeight={setWeight} min={0.0} max={1.0} defaultValue={weights.Valence}></ContinuousSlider>
                 <ContinuousSlider weightName="Acousticness" setWeight={setWeight} max={0.4} min={0.0} defaultValue={weights.Acousticness}></ContinuousSlider>
                 <ContinuousSlider weightName="Energy" setWeight={setWeight} min={0.2} max={1.0} defaultValue={weights.Energy}></ContinuousSlider>
                 <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight} min={0.0} max={.06} defaultValue={weights.Instrumentalness}></ContinuousSlider>
                 <Button variant="outlined" onClick={searchByWeights} className={classes.button}>Search</Button>
+                <StatDialog isTrack={props.isTrack} open={open} onClose={() => setOpen(false)} />
             </div>
         </div>
     )
