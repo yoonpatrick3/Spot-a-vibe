@@ -105,6 +105,7 @@
   }
 }
 
+
 /* Small devices (portrait tablets and large phones, 600px and up) */
 
 @media only screen and (min-width: 600px) {
@@ -127,6 +128,21 @@
     justify-content: space-around;
     align-items: center;
   }
+}
+
+.spot-bios {
+  display:flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.spot-bios > *{
+  margin:.75em;
+}
+
+.spot-learn-more > * {
+  margin-left: 1em;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */

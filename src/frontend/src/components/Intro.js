@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
     icon: {
         ['@media (max-width:300px)']: { // eslint-disable-line no-useless-computed-key
             width: theme.spacing(10),
