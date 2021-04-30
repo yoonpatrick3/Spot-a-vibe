@@ -65,7 +65,7 @@ export default function SpotTrack(props) {
         <>
             {props.confirmationQuestion ?
                 <>
-                    <DialogTitle id="stat-dialog">Artist</DialogTitle>
+                    <DialogTitle id="stat-dialog">Track</DialogTitle>
                     <Divider></Divider>
                     <DialogContent>
                         <DialogContentText>
