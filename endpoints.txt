@@ -1,5 +1,6 @@
 "/" : homepage
-"/apiSearch" : api endpoint
+"/apiSearch" : api endpoint for searching by name
 "/artist" : artist profile page
 "/track" : track details page
 "/error" : error page (redirect all errors here)
+"/apiWeights": api endpoint for searching by weights

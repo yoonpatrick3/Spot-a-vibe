@@ -41,11 +41,11 @@ const Search = (props) => {
             })
             .then(data => {
                 if (option === "artist") {
-                    let song_array = data.items.map(artist => {
+                    let artist_array = data.items.map(artist => {
                         let url = artist.images.length > 0 ? artist.images[0].url : defaultSpotifyImgLink
                         return <SongCard type="artist" style={{ 'min-height': '100px' }} id={artist.id} trackArtist={artist.artist_name} imageURL={url}></SongCard>
                     })
-                    props.updateFunc(song_array);
+                    props.updateFunc(artist_array);
                 } else {
                     let track_array = data.items.map(track => {
                         let url = track.images.length > 0 ? track.images[0].url : defaultSpotifyImgLink;

@@ -76,6 +76,21 @@
   flex-direction: column;
 }
 
+.spot-bios {
+  display:flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.spot-bios > *{
+  margin:.75em;
+}
+
+.spot-learn-more > * {
+  margin-left: 1em;
+}
+
 
 @media only screen and (max-width: 600px) {
   .artist-track-bio {
@@ -103,6 +118,12 @@
     justify-content: space-between;
     align-items: center;
   }
+  .spot-bios {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: space-between;
+  }
 }
 
 
@@ -128,21 +149,6 @@
     justify-content: space-around;
     align-items: center;
   }
-}
-
-.spot-bios {
-  display:flex;
-  flex-direction: row;
-  align-items:center;
-  justify-content: space-between;
-}
-
-.spot-bios > *{
-  margin:.75em;
-}
-
-.spot-learn-more > * {
-  margin-left: 1em;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */

@@ -9,7 +9,7 @@ import Spot from './components/Spot'
 import Fab from '@material-ui/core/Fab';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 
-export const address = 'https://spot-a-vibe.herokuapp.com'
+export const address = 'http://localhost:5000'
 
 const useStyles = makeStyles((theme) => ({
   extendedIcon: {
@@ -34,14 +34,14 @@ function App() {
         <Header></Header>
         {showAlert ? <Alert severity="error" onClose={() => { setAlert("") }}>{showAlert}</Alert> : <></>}
         <Body setAlert={setAlert}></Body>
-        <Spot open={spot} handleClose={setSpot} spotPhase={spotPhase} changePhase={changePhase} />
+        <Spot open={spot} handleClose={setSpot} spotPhase={spotPhase} changePhase={changePhase} setAlert={setAlert} />
       </div>
       <Fab
         variant="extended"
         size="medium"
         color="primary"
         aria-label="add"
-        style={{ position: 'absolute', bottom: '1em', right: '1em' }}
+        style={{ position: 'fixed', bottom: '1em', right: '1em' }}
         onClick={openSpot}>
         <ContactSupportIcon className={classes.extendedIcon} />
           Need help?
