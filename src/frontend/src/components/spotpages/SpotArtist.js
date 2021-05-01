@@ -29,7 +29,7 @@ export default function SpotArtist(props) {
                 .then(data => {
                     let artist_array = data.items.map(artist => {
                         let url = artist.images.length > 0 ? artist.images[0].url : defaultSpotifyImgLink
-                        return <div onClick={() => {props.showDialog(false)}}><SongCard type="artist" style={{ 'min-height': '100px' }} id={artist.id} 
+                        return <div onClick={() => {props.showDialog(false)}}><SongCard type="artist" id={artist.id} 
                         trackArtist={artist.artist_name} imageURL={url}></SongCard></div>
                     })
                     setCards(artist_array.splice(0, 6));
@@ -49,7 +49,7 @@ export default function SpotArtist(props) {
                     props.setConfirmation(true);
                 })
                 .catch(err => {
-                    props.setAlert("Something went wrong with your request. Please try again later.")
+                    props.setAlert({show:true, message:"Something went wrong with your request. Please try again later."})
                     console.log(err)
                 })
                 

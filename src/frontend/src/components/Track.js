@@ -37,7 +37,7 @@ function TrackProfile(props) {
 
                 let similarSongs = data.similar_songs.map(song => {
                     let url = song.img_link ? song.img_link : defaultSpotifyImgLink;
-                    return <SongCard style={{ 'min-height': '100px' }} id={song.id} trackArtist={song.artist_name}
+                    return <SongCard id={song.id} trackArtist={song.artist_name}
                         trackName={song.title} imageURL={url} type="track" onClick={()=>{setTrackData({})}}></SongCard>
                 })
 
@@ -56,7 +56,7 @@ function TrackProfile(props) {
                     album: data.album
                 });
             }).catch(err => {
-                props.setAlert("Something went wrong with your request. We cannot find the specified track. Please try again later.")
+                props.setAlert({show: true, message: "Something went wrong with your request. We cannot find the specified track. Please try again later."})
                 console.log(err)
             })
     }, props.id)

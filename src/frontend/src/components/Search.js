@@ -58,7 +58,7 @@ const Search = (props) => {
                 props.setShowing(move_left_style);
             })
             .catch(err => {
-                props.setAlert("Something went wrong with your request. Please try again later.")
+                props.setAlert({show: true, message:"Something went wrong with your request. Please try again later."})
                 console.log(err)
             })
     }
@@ -76,7 +76,7 @@ const Search = (props) => {
                 })
                 props.updateFunc(track_array);
             }).catch(err => {
-                props.setAlert("Something went wrong with your request. Please try again later.")
+                props.setAlert({show: true, message:"Something went wrong with your request. Please try again later."})
                 console.log(err)
             })
 

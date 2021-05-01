@@ -9,7 +9,7 @@ export default function BackButton(props) {
     }
 
     return (
-        <Button variant="contained" color="primary" onClick = {() => props.setShowing(move_right_style)}>
+        <Button variant="contained" color="primary" onClick = {() => props.setShowing(move_right_style)} style={{margin: "1em"}}>
             Back
         </Button>
     );

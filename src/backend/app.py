@@ -77,7 +77,6 @@ def searchByWeights():
             
             target_song_dict = {'acousticness': acousticness, 'danceability': danceability, 'valence': valence, 'instrumentalness': instrumentalness, 'energy': energy,
             'key_scale': 5, 'liveness': .16, 'loudness': -6, 'mode': .6, 'speechiness': .11, 'tempo': 121, 'time_signature': 4, 'duration_ms': 200000}
-            print(target_song_dict)
 
             all_songs_query = ('SELECT * FROM Song')
             mycursor.execute(all_songs_query)

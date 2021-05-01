@@ -28,7 +28,7 @@ export default function SpotTrack(props) {
                     let track_array = data.items.map(track => {
                         let url = track.images.length > 0 ? track.images[0].url : defaultSpotifyImgLink;
 
-                        return <div onClick={() => { props.showDialog(false) }}><SongCard style={{ 'min-height': '150px' }} id={track.id} trackArtist={track.artist_name}
+                        return <div onClick={() => { props.showDialog(false) }}><SongCard id={track.id} trackArtist={track.artist_name}
                             trackName={track.track_name} imageURL={url} type="track"></SongCard></div>
                     })
                     setCards(track_array.slice(0, 6));
@@ -48,7 +48,7 @@ export default function SpotTrack(props) {
                     props.setConfirmation(true);
                 })
                 .catch(err => {
-                    props.setAlert("Something went wrong with your request. Please try again later.")
+                    props.setAlert({show:true, message:"Something went wrong with your request. Please try again later."});
                     console.log(err)
                 })
             }

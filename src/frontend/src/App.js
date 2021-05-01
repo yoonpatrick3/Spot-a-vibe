@@ -5,6 +5,7 @@ import Header from './components/Header';
 import { BrowserRouter } from 'react-router-dom'
 import Body from './components/Body'
 import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 import Spot from './components/Spot'
 import Fab from '@material-ui/core/Fab';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  const [showAlert, setAlert] = useState("")
+  const [showAlert, setAlert] = useState({show: false, message: ""})
   const [spotPhase, changePhase] = useState("initial");
   const [spot, setSpot] = useState(true);
   const classes = useStyles();
@@ -28,11 +29,17 @@ function App() {
     setSpot(true);
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlert({show: false, message: ""});
+  };
+
   return (
     <BrowserRouter>
       <div className="App">
         <Header></Header>
-        {showAlert ? <Alert severity="error" onClose={() => { setAlert("") }}>{showAlert}</Alert> : <></>}
         <Body setAlert={setAlert}></Body>
         <Spot open={spot} handleClose={setSpot} spotPhase={spotPhase} changePhase={changePhase} setAlert={setAlert} />
       </div>
@@ -46,6 +53,11 @@ function App() {
         <ContactSupportIcon className={classes.extendedIcon} />
           Need help?
       </Fab>
+      <Snackbar open={showAlert.show} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          {showAlert.message}
+        </Alert>
+      </Snackbar>
     </BrowserRouter>
   );
 }

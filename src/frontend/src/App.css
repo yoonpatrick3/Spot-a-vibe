@@ -15,15 +15,12 @@
 
 .search {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  align-items: baseline;
   background-color: white;
 }
 
-.search>* {
+.search > * {
   padding: 5%;
-  width: 40%;
 }
 
 .results-page {
@@ -39,7 +36,7 @@
   justify-content: center;
   align-items: center;
   background-color: white;
-  overflow: hidden;
+  overflow: auto;
   height: 90vh;
 }
 
@@ -124,6 +121,16 @@
     align-items:center;
     justify-content: space-between;
   }
+
+  .search {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search > * {
+    width: 70%;
+  }
 }
 
 
@@ -149,6 +156,16 @@
     justify-content: space-around;
     align-items: center;
   }
+
+  .search {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search > * {
+    width: 80%;
+  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -163,6 +180,16 @@
   }
 
   .artist-track-bio > *{
+    width: 40%;
+  }
+
+  .search {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  
+  .search > * {
     width: 40%;
   }
 }

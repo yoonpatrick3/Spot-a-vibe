@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    'height': 70,
-    'min-height': 70,
+    'height': 100,
+    'min-height': 100,
     width: '100%'
   },
   content: {

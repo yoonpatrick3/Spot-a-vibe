@@ -63,7 +63,7 @@ function ArtistProfile(props) {
 
 
                 let discography = data.discography.map(song => {
-                    return <SongCard style={{ 'min-height': '100px' }} id={song.id} trackArtist={data.artist_name}
+                    return <SongCard id={song.id} trackArtist={data.artist_name}
                         trackName={song.title} imageURL={song.img_link} type="track"></SongCard>
                 })
 
@@ -83,7 +83,7 @@ function ArtistProfile(props) {
                 })
             })
             .catch(err => {
-                props.setAlert("Something went wrong with your request. We cannot find the specified artist.");
+                props.setAlert({show: true, message: "Something went wrong with your request. We cannot find the specified artist."});
                 console.log(err)
             })
     }, [props.id])
