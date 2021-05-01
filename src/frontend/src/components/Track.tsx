@@ -54,6 +54,7 @@ function TrackProfile({ id, setAlert }: { id: string, setAlert: any }) {
                 return response.json();
             })
             .then(data => {
+                console.log(data)
                 let danceability: string = formatStat(.6, data.danceability);
                 let valence: string = formatStat(.5, data.valence);
                 let acousticness: string = formatStat(.2, data.acousticness);
