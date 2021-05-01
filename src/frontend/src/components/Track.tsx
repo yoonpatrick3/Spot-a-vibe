@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom'
 import { address } from '../App'
+import { SongCardType } from './Card'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CardHolder from './CardHolder'
 import SongCard from './Card'
@@ -13,32 +14,58 @@ import LibraryMusicIcon from '@material-ui/icons/LibraryMusic';
 import { defaultSpotifyImgLink } from './Artist'
 
 
-function TrackProfile(props) {
-    const [trackData, setTrackData] = useState({})
+interface TrackData {
+    danceability: string,
+    valence: string,
+    acousticness: string,
+    energy: string,
+    instrumentalness: string,
+    popularity: number,
+    artistName: string,
+    img_link: string,
+    trackTitle: string,
+    similarSongs: JSX.Element[],
+    artistID: string,
+    album: string
+}
+
+const initialTrack = {
+    danceability: "",
+    valence: "",
+    acousticness: "",
+    energy: "",
+    instrumentalness: "",
+    popularity: 0,
+    artistName: "",
+    img_link: "",
+    trackTitle: "",
+    similarSongs: [],
+    artistID: "",
+    album: ""
+}
+
+
+function TrackProfile({ id, setAlert }: { id: string, setAlert: any }) {
+    const [trackData, setTrackData] = useState<TrackData>(initialTrack)
 
     useEffect(() => {
-        fetch(`${address}/api/track?track_id=${props.id}`)
+        fetch(`${address}/api/track?track_id=${id}`)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                let danceability = formatStat(.6, data.danceability);
-                let valence = formatStat(.5, data.valence);
-                let acousticness = formatStat(.2, data.acousticness);
-                let energy = formatStat(.6, data.energy);
-                let instrumentalness = formatStat(.03, data.instrumentalness);
+                let danceability: string = formatStat(.6, data.danceability);
+                let valence: string = formatStat(.5, data.valence);
+                let acousticness: string = formatStat(.2, data.acousticness);
+                let energy: string = formatStat(.6, data.energy);
+                let instrumentalness: string = formatStat(.03, data.instrumentalness);
                 console.log(data)
-                // let danceability = data.danceability
-                // let valence = data.valence
-                // let acousticness = data.acousticness
-                // let energy = data.energy
-                // let instrumentalness = data.instrumentalness
 
 
-                let similarSongs = data.similar_songs.map(song => {
+                let similarSongs = data.similar_songs.map((song: { id: string, img_link: string, title: string, artist_name: string }) => {
                     let url = song.img_link ? song.img_link : defaultSpotifyImgLink;
                     return <SongCard id={song.id} trackArtist={song.artist_name}
-                        trackName={song.title} imageURL={url} type="track" onClick={()=>{setTrackData({})}}></SongCard>
+                        trackName={song.title} imageURL={url} type={SongCardType.Track}></SongCard>
                 })
 
                 setTrackData({
@@ -56,10 +83,10 @@ function TrackProfile(props) {
                     album: data.album
                 });
             }).catch(err => {
-                props.setAlert({show: true, message: "Something went wrong with your request. We cannot find the specified track. Please try again later."})
+                setAlert({ show: true, message: "Something went wrong with your request. We cannot find the specified track. Please try again later." })
                 console.log(err)
             })
-    }, props.id)
+    }, [id])
 
     return (
         <div className="artist-track-profile">
@@ -95,11 +122,11 @@ function TrackProfile(props) {
     )
 }
 
-function Track(props) {
-    let trackID = props.id;
+function Track({setAlert, id}: {setAlert: any, id: string | null}) {
+    let trackID = id;
     return (
         <>
-            {trackID ? <TrackProfile id={trackID} setAlert={props.setAlert} /> : <Redirect to="/"></Redirect>}
+            {trackID!== null? <TrackProfile id={trackID} setAlert={setAlert} /> : <Redirect to="/"></Redirect>}
         </>
     )
 }

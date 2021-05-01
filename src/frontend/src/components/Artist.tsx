@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom'
+import { SongCardType } from './Card'
 import CardHolder from './CardHolder'
 import SongCard from './Card'
 import Tooltip from '@material-ui/core/Tooltip';
@@ -12,11 +13,36 @@ import Intro from './Intro'
 import Stat, { formatStat } from './Stat'
 import Divider from '@material-ui/core/Divider';
 
-
 export const defaultSpotifyImgLink = 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
 
+interface SongJSON {
+    id: string,
+    danceability: number,
+    valence: number,
+    acousticness: number,
+    energy: number,
+    instrumentalness: number,
+    popularity: number,
+    img_link: string,
+    title: string
+}
 
-function formatList(list) {
+interface ArtistData {
+    artist_name: string,
+    artist_image: string,
+    danceability: string,
+    valence: string,
+    acousticness: string,
+    energy: string,
+    instrumentalness: string,
+    discography: any[],
+    popularity: number,
+    followers: number,
+    genres: string,
+}
+
+
+function formatList(list: string[]): string {
     let trimmedList = list.slice(0, 3);
     let returnStr = trimmedList.toString();
     returnStr = returnStr.replaceAll(",", " | ")
@@ -24,24 +50,38 @@ function formatList(list) {
 }
 
 
-function ArtistProfile(props) {
-    const [artistData, setArtistData] = useState({})
+function ArtistProfile({ id, setAlert }: { id: string, setAlert: any }) {
+    const initialState: ArtistData = {
+        artist_name: "",
+        artist_image: "",
+        danceability: "",
+        valence: "",
+        acousticness: "",
+        energy: "",
+        instrumentalness: "",
+        discography: [],
+        popularity: 0,
+        followers: 0,
+        genres: "",
+    }
+
+    const [artistData, setArtistData] = useState<ArtistData>(initialState)
 
     useEffect(() => {
-        fetch(`${address}/api/artist?artist_id=${props.id}`)
+        fetch(`${address}/api/artist?artist_id=${id}`)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                let danceability = 0;
-                let valence = 0;
-                let acousticness = 0;
-                let energy = 0;
-                let instrumentalness = 0;
-                let popularity = data.popularity;
-                let genres = formatList(data.genres);
+                let danceability: number = 0;
+                let valence: number = 0;
+                let acousticness: number = 0;
+                let energy: number = 0;
+                let instrumentalness: number = 0;
+                let popularity: number = data.popularity;
+                let genres: string = formatList(data.genres);
 
-                data.discography.forEach(song => {
+                data.discography.forEach((song: SongJSON) => {
                     danceability += song.danceability;
                     valence += song.valence;
                     acousticness += song.acousticness;
@@ -55,38 +95,37 @@ function ArtistProfile(props) {
                 energy /= data.discography.length;
                 instrumentalness /= data.discography.length;
 
-                danceability = formatStat(.6, danceability);
-                valence = formatStat(.5, valence);
-                acousticness = formatStat(.2, acousticness);
-                energy = formatStat(.6, energy);
-                instrumentalness = formatStat(.03, instrumentalness);
+                let strDanceability:string = formatStat(.6, danceability);
+                let strValence:string = formatStat(.5, valence);
+                let strAcousticness:string = formatStat(.2, acousticness);
+                let strEnergy:string = formatStat(.6, energy);
+                let strInstrumentalness:string = formatStat(.03, instrumentalness);
 
 
-                let discography = data.discography.map(song => {
+                let discography = data.discography.map((song: SongJSON) => {
                     return <SongCard id={song.id} trackArtist={data.artist_name}
-                        trackName={song.title} imageURL={song.img_link} type="track"></SongCard>
+                        trackName={song.title} imageURL={song.img_link} type={SongCardType.Track}></SongCard>
                 })
 
                 setArtistData({
                     artist_name: data.artist_name,
                     artist_image: data.images.length > 0 ? data.images[0].url : defaultSpotifyImgLink,
-                    danceability: danceability,
-                    valence: valence,
-                    acousticness: acousticness,
-                    energy: energy,
-                    instrumentalness: instrumentalness,
+                    danceability: strDanceability,
+                    valence: strValence,
+                    acousticness: strAcousticness,
+                    energy: strEnergy,
+                    instrumentalness: strInstrumentalness,
                     discography: discography,
                     popularity: popularity,
                     followers: data["follower-count"],
                     genres: genres,
-                    discography: discography
                 })
             })
             .catch(err => {
-                props.setAlert({show: true, message: "Something went wrong with your request. We cannot find the specified artist."});
+                setAlert({ show: true, message: "Something went wrong with your request. We cannot find the specified artist." });
                 console.log(err)
             })
-    }, [props.id])
+    }, [id])
 
 
     return (
@@ -104,26 +143,26 @@ function ArtistProfile(props) {
                                     <h3><WhatshotIcon color="secondary" /> {artistData.popularity}</h3>
                                 </Tooltip>
                                 {artistData.genres.length > 0 ? <Tooltip title="Genre of music" aria-label="genre">
-                                <h3><AlbumIcon color="disabled" /> {artistData.genres}</h3>
-                            </Tooltip> : <></>}
+                                    <h3><AlbumIcon color="disabled" /> {artistData.genres}</h3>
+                                </Tooltip> : <></>}
                             </div>
                         </div>
                         <Stat danceability={artistData.danceability} valence={artistData.valence} acousticness={artistData.acousticness}
-                            energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false} onClick={()=>{setArtistData({})}}></Stat>
+                            energy={artistData.energy} instrumentalness={artistData.instrumentalness} isTrack={false}></Stat>
                     </div>
                     <Divider />
                     <div className="results-page">
-                        <CardHolder cards={artistData.discography}/>
+                        <CardHolder cards={artistData.discography} />
                     </div>
                 </> : <CircularProgress />}
         </div>
     )
 }
 
-function Artist(props) {
-    let artistID = props.id;
+function Artist({setAlert, id}: {setAlert: any, id: string | null}) {
+    let artistID = id;
     return (
-        <>{artistID ? <ArtistProfile id={artistID} setAlert={props.setAlert} /> : <Redirect to="/"></Redirect>}</>
+        <>{artistID !== null ? <ArtistProfile id={artistID} setAlert={setAlert} /> : <Redirect to="/"></Redirect>}</>
     )
 }
 

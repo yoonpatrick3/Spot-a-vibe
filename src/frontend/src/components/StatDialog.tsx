@@ -5,14 +5,19 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+interface StatDialogProps {
+    onClose: any,
+    open: boolean,
+    isTrack: boolean
+}
 
-export default function StatDialog(props) {
+export default function StatDialog({onClose, open, isTrack}: StatDialogProps) {
     return (
-        <Dialog onClose={props.onClose} aria-labelledby="stat-dialog" open={props.open}>
+        <Dialog onClose={onClose} aria-labelledby="stat-dialog" open={open}>
             <DialogTitle id="stat-dialog">Audio Features</DialogTitle>
             <List>
                 <ListItem divider={true}>
-                    {props.isTrack ? 
+                    {isTrack ? 
                     <ListItemText primary="Every track can be broken down into a set of audio features and this decomposition is what drives our algorithm." /> : 
                     <ListItemText primary="Every track can be broken down into a set of audio features and this decomposition is what drives our algorithm.
                     The music analysis section of an artist's profile is a representative set of an artist's songs and the average of its audio feature values." />}

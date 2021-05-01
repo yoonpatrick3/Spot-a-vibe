@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import StatDialog from './StatDialog'
 import StatTooltip from './StatTooltip'
 
 
-export function formatStat(average, stat) {
-    let range;
+export function formatStat(average:number, stat:number) {
+    let range:number;
     if (average <= .5) {
         range = stat;
     } else {
@@ -24,7 +24,16 @@ export function formatStat(average, stat) {
     }
 }
 
-export default function Stat(props) {
+interface StatProps {
+    danceability:string, 
+    valence:string, 
+    acousticness:string, 
+    instrumentalness:string, 
+    isTrack:boolean, 
+    energy:string
+}
+
+export default function Stat({danceability, valence, acousticness, instrumentalness, isTrack, energy}: StatProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -32,12 +41,12 @@ export default function Stat(props) {
             <h2>Music Analysis:
                 <StatTooltip setOpen={setOpen} />
             </h2>
-            <p>Danceability: {props.danceability}</p>
-            <p>Valence: {props.valence}</p>
-            <p>Acousticness: {props.acousticness}</p>
-            <p>Energy: {props.energy}</p>
-            <p>Instrumentalness: {props.instrumentalness}</p>
-            <StatDialog isTrack={props.isTrack} open={open} onClose={() => setOpen(false)} />
+            <p>Danceability: {danceability}</p>
+            <p>Valence: {valence}</p>
+            <p>Acousticness: {acousticness}</p>
+            <p>Energy: {energy}</p>
+            <p>Instrumentalness: {instrumentalness}</p>
+            <StatDialog isTrack={isTrack} open={open} onClose={() => setOpen(false)} />
         </div>
     )
 }

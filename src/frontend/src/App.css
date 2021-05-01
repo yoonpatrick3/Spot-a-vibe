@@ -37,10 +37,9 @@
   align-items: center;
   background-color: white;
   overflow: auto;
-  height: 90vh;
 }
 
-.body>* {
+.body > * {
   width: 100vw;
   height: 100%;
 }
@@ -131,6 +130,10 @@
   .search > * {
     width: 70%;
   }
+
+  .body {
+    min-height:90vh;
+  }
 }
 
 
@@ -166,6 +169,10 @@
   .search > * {
     width: 80%;
   }
+
+  .body {
+    min-height: 90vh;
+  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -187,6 +194,10 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: baseline;
+  }
+
+  .body {
+    height: 90vh;
   }
   
   .search > * {

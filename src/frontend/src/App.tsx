@@ -9,8 +9,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Spot from './components/Spot'
 import Fab from '@material-ui/core/Fab';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import { SpotPhase } from './components/Spot'
 
-export const address = 'https://spot-a-vibe.herokuapp.com'
+export const address = 'http://localhost:5000'
 
 const useStyles = makeStyles((theme) => ({
   extendedIcon: {
@@ -18,18 +19,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface AlertMessage {
+  show: boolean,
+  message: string
+}
+
 function App() {
-  const [showAlert, setAlert] = useState({show: false, message: ""})
-  const [spotPhase, changePhase] = useState("initial");
-  const [spot, setSpot] = useState(true);
+  const [showAlert, setAlert] = useState<AlertMessage>({show: false, message: ""})
+  const [spotPhase, changePhase] = useState<SpotPhase>(SpotPhase.Initial);
+  const [spot, setSpot] = useState<boolean>(true);
   const classes = useStyles();
 
   function openSpot() {
-    changePhase("initial")
+    changePhase(SpotPhase.Initial)
     setSpot(true);
   }
 
-  const handleClose = (event, reason) => {
+  const handleClose = (event: React.SyntheticEvent<Element, Event>, reason: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -54,7 +60,7 @@ function App() {
           Need help?
       </Fab>
       <Snackbar open={showAlert.show} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error">
+        <Alert severity="error">
           {showAlert.message}
         </Alert>
       </Snackbar>

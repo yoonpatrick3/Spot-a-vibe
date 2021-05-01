@@ -1,7 +1,6 @@
-import React from 'react';
 import Button from '@material-ui/core/Button';
 
-export default function BackButton(props) {
+export default function BackButton({setShowing}: {setShowing:any}) {
 
     let move_right_style = {
         transform: `translate(0vw, 0px)`,
@@ -9,7 +8,7 @@ export default function BackButton(props) {
     }
 
     return (
-        <Button variant="contained" color="primary" onClick = {() => props.setShowing(move_right_style)} style={{margin: "1em"}}>
+        <Button variant="contained" color="primary" onClick = {() => setShowing(move_right_style)} style={{margin: "1em"}}>
             Back
         </Button>
     );

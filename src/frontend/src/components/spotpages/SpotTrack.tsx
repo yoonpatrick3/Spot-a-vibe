@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import CardHolder from '../CardHolder'
 import SongCard from '../Card'
+import { SongCardType } from '../Card'
 import { address } from '../../App'
 import { defaultSpotifyImgLink } from '../Artist'
 import TextField from '@material-ui/core/TextField';
@@ -8,28 +9,35 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
+import { TrackJSON } from '../Search'
 
-export default function SpotTrack(props) {
-    const [input, setInput] = useState("");
-    const [cards, setCards] = useState([])
+interface SpotTrackProps {
+    setAlert: any, 
+    showDialog: any
+}
 
-    const handleInput = (ev) => {
+export default function SpotTrack({setAlert, showDialog}: SpotTrackProps): JSX.Element {
+    const [input, setInput] = useState<string>("");
+    const [cards, setCards] = useState<JSX.Element[]>([])
+    const [confirmationQuestion, setConfirmation] = useState<boolean>(false);
+
+    const handleInput = (ev: any):void  => {
         setInput(ev.target.value)
     }
 
     function fetchByTrack() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             input.replaceAll(" ", "%20")
             fetch(address + '/apiSearch?q=' + input + '&type=track')
                 .then(response => {
                     return response.json();
                 })
                 .then(data => {
-                    let track_array = data.items.map(track => {
+                    let track_array = data.items.map((track: TrackJSON) => {
                         let url = track.images.length > 0 ? track.images[0].url : defaultSpotifyImgLink;
 
-                        return <div onClick={() => { props.showDialog(false) }}><SongCard id={track.id} trackArtist={track.artist_name}
-                            trackName={track.track_name} imageURL={url} type="track"></SongCard></div>
+                        return <div onClick={() => { showDialog(false) }}><SongCard id={track.id} trackArtist={track.artist_name}
+                            trackName={track.track_name} imageURL={url} type={SongCardType.Track}></SongCard></div>
                     })
                     setCards(track_array.slice(0, 6));
                     resolve();
@@ -40,15 +48,15 @@ export default function SpotTrack(props) {
         })
     }
 
-    const handleEnterPressed = (ev) => {
+    const handleEnterPressed = (ev:any) => {
         if (ev.key == 'Enter') {
             if (input !== "") {
                 fetchByTrack()
                 .then(() => {
-                    props.setConfirmation(true);
+                    setConfirmation(true);
                 })
                 .catch(err => {
-                    props.setAlert({show:true, message:"Something went wrong with your request. Please try again later."});
+                    setAlert({show:true, message:"Something went wrong with your request. Please confirm you are using https."});
                     console.log(err)
                 })
             }
@@ -57,13 +65,13 @@ export default function SpotTrack(props) {
 
     useEffect(() => {
         return () => {
-            props.setConfirmation(false)
+            setConfirmation(false)
         }
     }, [])
 
     return (
         <>
-            {props.confirmationQuestion ?
+            {confirmationQuestion ?
                 <>
                     <DialogTitle id="stat-dialog">Track</DialogTitle>
                     <Divider></Divider>

@@ -7,32 +7,35 @@ import { makeStyles } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
-
     button: {
         marginTop: "10px",
     }
 });
 
-export const SearchGroup = (props) => {
+interface SearchGroupProps {
+    search: any
+}
+
+export const SearchGroup = ({search}: SearchGroupProps) => {
 
     const [currOpt, setOpt] = useState("artist");
     const [input, setInput] = useState("");
 
     const classes = useStyles();
 
-    const handleOptionChange = (ev) => {
+    const handleOptionChange = (ev: any):void => {
         setOpt(ev.target.value);
     }
 
-    const handleSearch = (ev) => {
+    const handleSearch = (ev:any):void => {
         if(input !== ""){
-            props.handleSearch(input, currOpt);
+            search(input, currOpt);
         }
     }
 
-    const handleEnterPressed = (ev) => {
+    const handleEnterPressed = (ev:any):void => {
         if (ev.key == 'Enter') {
-            props.handleSearch(input, currOpt)
+            search(input, currOpt)
         }
     }
 

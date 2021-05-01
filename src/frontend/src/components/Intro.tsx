@@ -20,10 +20,6 @@ export const useStyles = makeStyles((theme) => ({
             width: theme.spacing(30),
             height: theme.spacing(30),
         },
-        ['@media (min-width:1024px)']: { // eslint-disable-line no-useless-computed-key
-            width: theme.spacing(30),
-            height: theme.spacing(30),
-        },
         ['@media (min-width:1780px)']: { // eslint-disable-line no-useless-computed-key
             width: theme.spacing(40),
             height: theme.spacing(40),
@@ -31,13 +27,13 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Intro(props) {
+export default function Intro({imgSrc, alt, name}: {imgSrc: string, alt: string, name: string}) {
     const classes = useStyles();
 
     return (
         <div className="intro">
-            <Avatar src={props.imgSrc} alt={`Profile picture of ${props.alt}`} className={classes.icon} />
-            <h1>{props.name}</h1>
+            <Avatar src={imgSrc} alt={`Profile picture of ${alt}`} className={classes.icon} />
+            <h1>{name}</h1>
         </div>
     )
 }

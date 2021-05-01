@@ -12,14 +12,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+interface StatTooltipProps {
+    setOpen: any
+}
 
-
-export default function StatTooltip(props) {
+export default function StatTooltip({setOpen}: StatTooltipProps) {
     const classes = useStyles();
 
     return (
         <Tooltip title="Click for more information" aria-label="info" className={classes.relative}>
-            <Button onClick={() => props.setOpen(true)}>
+            <Button onClick={() => setOpen(true)}>
                 <HelpIcon color="disabled" />
             </Button>
         </Tooltip>
