@@ -10,7 +10,7 @@ import Spot from './components/Spot'
 import Fab from '@material-ui/core/Fab';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 
-export const address = 'http://localhost:5000'
+export const address = 'https://spot-a-vibe.herokuapp.com'
 
 const useStyles = makeStyles((theme) => ({
   extendedIcon: {
