@@ -1,14 +1,14 @@
 {
-    "name": "spot-ai-fy",
+    "name": "spot-a-vibe",
     "version": "0.1.0",
     "private": true,
     "cacheDirectories": [
         "src/frontend/node_modules"
-      ],
+    ],
     "scripts": {
         "heroku-postbuild": "cd src/frontend && npm install && npm run build"
     },
     "engines": {
-      "node": "v12.19.0"
+        "node": "v12.19.0"
     }
-  }
+}
