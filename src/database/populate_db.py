@@ -44,7 +44,9 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     audio_url = 'https://api.spotify.com/v1/audio-features/'
     list_of_songs = []
 
-    for t in list_of_tracks:
+    new_tracks = filterBasedByExistence(list_of_tracks, flag, mycursor, mydb)
+
+    for t in new_tracks:
         if flag:
             track = t.get('track')
         else:
@@ -53,13 +55,6 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
         
         
         track_id = track.get('id')
-        # checking if id already exists in database
-        id_exists_query = ('SELECT COUNT(*) FROM Song WHERE id = %s')
-        mycursor.execute(id_exists_query, (track_id,))
-        count = mycursor.fetchone()
-        if count[0] == 1:
-            continue
-
         track_name = track.get('name')
         img_link = album.get('images')[0].get('url')
         track_album = album.get('name')
@@ -131,6 +126,35 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
 
 
 # create a Song object for every track
+
+
+# checking if id already exists in database
+def filterBasedByExistence(list_of_tracks, flag, mycursor, mydb):
+    filtered_values = []
+    id_exists_query = ''
+    id_tuple = ()
+    for track in list_of_tracks:
+        if flag:
+            track = track.get('track')
+        else:
+            track = track
+        track_id = track.get('id')
+        id_tuple = id_tuple + (track_id, )
+        if len(id_exists_query) > 0:
+            id_exists_query += ' UNION ALL SELECT COUNT(*) FROM Song WHERE id = %s'
+        else:
+            id_exists_query += 'SELECT COUNT(*) FROM Song WHERE id = %s'
+    mycursor.execute(id_exists_query, id_tuple)
+    count_list = mycursor.fetchall()
+
+    for (track, exists) in zip(list_of_tracks, count_list):
+        if exists[0] == 0:
+            filtered_values.append(track)
+    print(count_list)
+    print("hello")
+    print(len(filtered_values))
+    return filtered_values
+
 
 if __name__ == '__main__':
     head, mycursor, mydb, list_of_tracks = make_request()

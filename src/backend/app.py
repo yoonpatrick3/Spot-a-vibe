@@ -170,7 +170,7 @@ def trackProfile():
                 return redirect("/error?msg=Please_add_the_correct_query_parameters")
         except Exception as e:
             print(str(e))
-            return redirect("/error?msg=Please_add_a_search_parameter_" + str(e))
+            return redirect("/error?msg=Database_overloaded" + str(e))
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
         
@@ -213,7 +213,7 @@ def artistProfile():
             else:
                 return redirect("/error?msg=Please_add_an_artist_id_parameter")
         except:
-            return redirect("/error?msg=Please_add_a_search_parameter")
+            return redirect("/error?msg=Database overloaded")
     else:
         return redirect("/error?msg=Invalid_HTTP_Request")
 
