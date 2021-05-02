@@ -170,7 +170,7 @@ def trackProfile():
                 return redirect("/error?msg=Please_add_the_correct_query_parameters")
         except Exception as e:
             print(str(e))
-            return redirect("/error?msg=Database_overloaded" + str(e))
+            return redirect("/error?msg=Database_overloaded")
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
         
@@ -198,7 +198,6 @@ def artistProfile():
 
                 req_for_top_tracks = requests.get(url + artist_id + "/top-tracks?market=US", headers=head)
                 create_and_insert_to_db(req_for_top_tracks.json().get("tracks"), mycursor, False, head, mydb)
-
 
                 mycursor.execute(song_query, (artist_id,))
                 artist_songs = mycursor.fetchall()

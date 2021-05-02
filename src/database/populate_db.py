@@ -150,9 +150,6 @@ def filterBasedByExistence(list_of_tracks, flag, mycursor, mydb):
     for (track, exists) in zip(list_of_tracks, count_list):
         if exists[0] == 0:
             filtered_values.append(track)
-    print(count_list)
-    print("hello")
-    print(len(filtered_values))
     return filtered_values
 
 

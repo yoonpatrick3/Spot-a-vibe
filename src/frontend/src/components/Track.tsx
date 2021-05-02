@@ -45,13 +45,18 @@ const initialTrack = {
 }
 
 
-function TrackProfile({ id, setAlert }: { id: string, setAlert: any }) {
+function TrackProfile({ id, setAlert, setRedirect }: { id: string, setAlert: any, setRedirect: any}) {
     const [trackData, setTrackData] = useState<TrackData>(initialTrack)
 
     useEffect(() => {
-        fetch(`${address}/api/track?track_id=${id}`, { redirect: 'follow'})
+        fetch(`${address}/api/track?track_id=${id}`)
             .then(response => {
-                return response.json();
+                if (!response.redirected) {
+                    return response.json();
+                } else {
+                    setRedirect(response.url);
+                    throw "Redirected"
+                }
             })
             .then(data => {
                 let danceability: string = formatStat(.6, data.danceability);
@@ -122,12 +127,12 @@ function TrackProfile({ id, setAlert }: { id: string, setAlert: any }) {
     )
 }
 
-function Track({setAlert, id}: {setAlert: any, id: string | null}) {
+function Track({ setAlert, id }: { setAlert: any, id: string | null }) {
+    const [redirect, setRedirect] = useState<string>("")
     let trackID = id;
+    let trackProfile = trackID !== null ? <TrackProfile id={trackID} setAlert={setAlert} setRedirect={setRedirect}/> : <Redirect to="/"/>
     return (
-        <>
-            {trackID!== null? <TrackProfile id={trackID} setAlert={setAlert} /> : <Redirect to="/"></Redirect>}
-        </>
+        <>{ redirect ? <Redirect to={redirect}/> : trackProfile }</>
     )
 }
 

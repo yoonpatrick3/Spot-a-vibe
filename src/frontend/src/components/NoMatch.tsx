@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
+import { useEffect } from 'react';
 
 interface MessageProps {
-    message: string | null
+    message: string | null,
+    setSpot: any
 }
 
-function NoMatch({message}: MessageProps) {
+function NoMatch({message, setSpot}: MessageProps) {
+
+    useEffect(() => {
+        setSpot(false)
+    }, [])
+
     return (
         <div className="error-page">
             {message !== null ? <h1>{'Oops! Seems like there was a mistake: "' + message.replaceAll("_", " ") + '."'} </h1>:

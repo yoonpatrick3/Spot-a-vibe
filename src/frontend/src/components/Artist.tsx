@@ -50,7 +50,7 @@ function formatList(list: string[]): string {
 }
 
 
-function ArtistProfile({ id, setAlert }: { id: string, setAlert: any }) {
+function ArtistProfile({ id, setAlert, setRedirect}: { id: string, setAlert: any, setRedirect: any}) {
     const initialState: ArtistData = {
         artist_name: "",
         artist_image: "",
@@ -66,11 +66,17 @@ function ArtistProfile({ id, setAlert }: { id: string, setAlert: any }) {
     }
 
     const [artistData, setArtistData] = useState<ArtistData>(initialState)
+    
 
     useEffect(() => {
-        fetch(`${address}/api/artist?artist_id=${id}`, { redirect: 'follow'})
+        fetch(`${address}/api/artist?artist_id=${id}`)
             .then(response => {
-                return response.json();
+                if (!response.redirected) {
+                    return response.json();
+                } else {
+                    setRedirect(response.url);
+                    throw "Redirected"
+                }
             })
             .then(data => {
                 let danceability: number = 0;
@@ -160,9 +166,11 @@ function ArtistProfile({ id, setAlert }: { id: string, setAlert: any }) {
 }
 
 function Artist({setAlert, id}: {setAlert: any, id: string | null}) {
+    const [redirect, setRedirect] = useState<string>("")
     let artistID = id;
+    let artistProfile = artistID !== null ? <ArtistProfile id={artistID} setAlert={setAlert} setRedirect={setRedirect} /> : <Redirect to="/"/>
     return (
-        <>{artistID !== null ? <ArtistProfile id={artistID} setAlert={setAlert} /> : <Redirect to="/"></Redirect>}</>
+        <>{ redirect ? <Redirect to={redirect}/> : artistProfile }</>
     )
 }
 

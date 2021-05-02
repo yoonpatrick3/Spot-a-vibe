@@ -6,7 +6,7 @@ import Search from './Search';
 import ResultsPage from './ResultsPage'
 import { Switch, Route, useLocation } from 'react-router-dom'
 
-function Body({setAlert}: {setAlert: any}) {
+function Body({setAlert, setSpot}: {setAlert: any, setSpot: any}) {
     const [cards, updateCards] = useState([]);
     const [showing, setShowing] = useState({});
     const query = new URLSearchParams(useLocation().search);
@@ -26,7 +26,7 @@ function Body({setAlert}: {setAlert: any}) {
                 <Track id={query.get("id")} setAlert={setAlert}/>
             </Route>
             <Route path="*">
-                <NoMatch message={query.get("msg")}/>
+                <NoMatch message={query.get("msg")} setSpot={setSpot}/>
             </Route>
         </Switch>
     )
