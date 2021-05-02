@@ -49,7 +49,7 @@ function TrackProfile({ id, setAlert }: { id: string, setAlert: any }) {
     const [trackData, setTrackData] = useState<TrackData>(initialTrack)
 
     useEffect(() => {
-        fetch(`${address}/api/track?track_id=${id}`)
+        fetch(`${address}/api/track?track_id=${id}`, { redirect: 'follow'})
             .then(response => {
                 return response.json();
             })

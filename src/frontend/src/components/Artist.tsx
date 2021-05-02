@@ -68,7 +68,7 @@ function ArtistProfile({ id, setAlert }: { id: string, setAlert: any }) {
     const [artistData, setArtistData] = useState<ArtistData>(initialState)
 
     useEffect(() => {
-        fetch(`${address}/api/artist?artist_id=${id}`)
+        fetch(`${address}/api/artist?artist_id=${id}`, { redirect: 'follow'})
             .then(response => {
                 return response.json();
             })

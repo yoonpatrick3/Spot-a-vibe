@@ -168,8 +168,9 @@ def trackProfile():
                 return returnTrack
             else:
                 return redirect("/error?msg=Please_add_the_correct_query_parameters")
-        except:
-            return redirect("/error?msg=Please_add_a_search_parameter")
+        except Exception as e:
+            print(str(e))
+            return redirect("/error?msg=Please_add_a_search_parameter_" + str(e))
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
         
