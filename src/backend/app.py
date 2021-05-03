@@ -123,6 +123,8 @@ def trackProfile():
             #query from db
             if track_id != None:
                 req = requests.get('https://api.spotify.com/v1/tracks/' + track_id, headers = head)
+                if (req.status_code != 200):
+                    return redirect("/error?msg=Invalid_track_id")
                 artist_name = req.json().get("album").get("artists")[0].get("name")
                 popularity = req.json().get("popularity")
 
@@ -170,7 +172,7 @@ def trackProfile():
                 return redirect("/error?msg=Please_add_the_correct_query_parameters")
         except Exception as e:
             print(str(e))
-            return redirect("/error?msg=Database_overloaded")
+            return redirect("/error?msg=" + str(e).replace(" ", "_"))
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
         
@@ -189,6 +191,8 @@ def artistProfile():
                 #get spotify data for the artist
                 url = 'https://api.spotify.com/v1/artists/'
                 req = requests.get(url + artist_id, headers=head)
+                if (req.status_code != 200):
+                    return redirect("/error?msg=Invalid_artist_id")
                 result["follower-count"] = req.json().get("followers").get("total")
                 result["genres"] = req.json().get("genres")
                 result["images"] = req.json().get("images")
@@ -211,8 +215,9 @@ def artistProfile():
                 return jsonify(result)
             else:
                 return redirect("/error?msg=Please_add_an_artist_id_parameter")
-        except:
-            return redirect("/error?msg=Database overloaded")
+        except Exception as e:
+            print(str(e))
+            return redirect("/error?msg=" + str(e).replace(" ", "_"))
     else:
         return redirect("/error?msg=Invalid_HTTP_Request")
 
