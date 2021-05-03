@@ -93,7 +93,7 @@ def searchByWeights():
                 # mycursor.execute(artist_name_query, temp_song_dict['artist_id'])
                 # temp_song_dict["artist_name"] = mycursor.fetchone()[0]
                     
-                temp_song_dict['artist_name'] = get_artist_name(mycursor, temp_song_dict.get('artist_id'))
+                temp_song_dict['artist_name'] = ""
                     
                 list_of_songs.append(Song(temp_song_dict))
 
@@ -105,6 +105,7 @@ def searchByWeights():
             returnDict = {}
             similar_song_attributes = []
             for song in similar_songs:
+                song.artist_name = get_artist_name(mycursor, song.artist_id)
                 similar_song_attributes.append(song.get_core_attributes())
             returnDict["similar_songs"] = similar_song_attributes
             return returnDict
@@ -150,7 +151,7 @@ def trackProfile():
                     # mycursor.execute(artist_name_query, temp_song_dict['artist_id'])
                     # temp_song_dict["artist_name"] = mycursor.fetchone()[0]
                     
-                    temp_song_dict['artist_name'] = get_artist_name(mycursor, temp_song_dict.get('artist_id'))
+                    temp_song_dict['artist_name'] = ""
                     
                     list_of_songs.append(Song(temp_song_dict))
 
@@ -163,6 +164,7 @@ def trackProfile():
                 returnTrack = format_song(col_names, track)
                 similar_song_attributes = []
                 for song in similar_songs:
+                    song.artist_name = get_artist_name(mycursor, song.artist_id)
                     similar_song_attributes.append(song.get_core_attributes())
                 returnTrack["similar_songs"] = similar_song_attributes
                 returnTrack["artist_name"] = artist_name
