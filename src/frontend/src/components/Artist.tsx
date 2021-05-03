@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Intro from './Intro'
 import Stat, { formatStat } from './Stat'
 import Divider from '@material-ui/core/Divider';
+import { formatErrorURL } from './Track'
 
 export const defaultSpotifyImgLink = 'https://developer.spotify.com/assets/branding-guidelines/icon3@2x.png';
 
@@ -74,7 +75,7 @@ function ArtistProfile({ id, setAlert, setRedirect}: { id: string, setAlert: any
                 if (!response.redirected) {
                     return response.json();
                 } else {
-                    setRedirect(response.url);
+                    setRedirect(formatErrorURL(response.url));
                     throw "Redirected"
                 }
             })

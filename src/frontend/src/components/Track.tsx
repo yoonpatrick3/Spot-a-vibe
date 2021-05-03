@@ -13,6 +13,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import LibraryMusicIcon from '@material-ui/icons/LibraryMusic';
 import { defaultSpotifyImgLink } from './Artist'
 
+export function formatErrorURL(url: string):string {
+    return url.substring(url.indexOf("/error"))
+}
+
 
 interface TrackData {
     danceability: string,
@@ -54,7 +58,7 @@ function TrackProfile({ id, setAlert, setRedirect }: { id: string, setAlert: any
                 if (!response.redirected) {
                     return response.json();
                 } else {
-                    setRedirect(response.url);
+                    setRedirect(formatErrorURL(response.url));
                     throw "Redirected"
                 }
             })

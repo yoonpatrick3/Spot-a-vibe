@@ -29,7 +29,7 @@ export default function LearnMore({ setPhase }: { setPhase: React.Dispatch<React
                     <div className="spot-bios" id="patrick">
                         <Avatar src={Patrick} alt="Patrick Yoon" className={classes.icon} />
                         <p>This project's brain was created by Patrick Yoon. His algorithm is what drives our
-                                recommendations and our app. </p>
+                                recommendations! </p>
                     </div>
                     <div className="spot-bios" id="david">
                         <Avatar src={David} alt="David Yan" className={classes.icon} />
