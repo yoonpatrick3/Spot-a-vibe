@@ -7,6 +7,7 @@ import requests
 import time
 from src.backend.auth import get_auth
 
+# Script that returns and populates a database with top 500 popular Spotify songs
 def make_request():
 
     #SET UP DB CONNECTION
@@ -31,7 +32,7 @@ def make_request():
 
     list_of_tracks = []
 
-    # spotify limits us to 100 tracks so we get offset by 100 every time
+    # Spotify limits us to 100 tracks so we get offset by 100 every time
     while offset < 600:
         song_json = requests.get(url + playlist_id + '/tracks' + queryparam + str(offset), headers=head)
         print(.2 * offset/100)
@@ -40,12 +41,16 @@ def make_request():
     
     return head, mycursor, mydb, list_of_tracks
 
+# Inserts a given list of tracks into a given database, each track is inputted with its audio attributes (danceability etc)
+# FLAG parameter denotes whether the list of tracks has the shape [{Track.track1, Track.track2, ...}] or not ([Track1, Track2, ...])
 def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     audio_url = 'https://api.spotify.com/v1/audio-features/'
     list_of_songs = []
 
+    # Only insert into database if it doesn't already exist
     new_tracks = filterBasedByExistence(list_of_tracks, flag, mycursor, mydb)
 
+    # For every new track, get the artist and audio features from the spotify API and insert it into the database
     for t in new_tracks:
         if flag:
             track = t.get('track')
@@ -116,19 +121,7 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     mydb.commit()
 
 
-
-#url for audio features
-# audio_url = 'https://api.spotify.com/v1/audio-features/'
-# song_id = '4P66rfizAl2nIJCICSMymC'
-
-# audio_features = requests.get(audio_url + song_id, headers=head)
-# print(audio_features.json())
-
-
-# create a Song object for every track
-
-
-# checking if id already exists in database
+# Given a list of tracks, return the tracks that don't already exist
 def filterBasedByExistence(list_of_tracks, flag, mycursor, mydb):
     filtered_values = []
     id_exists_query = ''
@@ -152,7 +145,7 @@ def filterBasedByExistence(list_of_tracks, flag, mycursor, mydb):
             filtered_values.append(track)
     return filtered_values
 
-
+# Adds Spotify top 500 songs to the database
 if __name__ == '__main__':
     head, mycursor, mydb, list_of_tracks = make_request()
     create_and_insert_to_db(list_of_tracks, mycursor, True, head, mydb)

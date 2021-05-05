@@ -42,6 +42,7 @@ def residual_square_sum(song1: Song, song2: Song, slider_values: dict) -> float:
                        scaled_squared_difference(song1.valence, song2.valence) * slider_values['valence']]
     return np.sum(list_of_features)
 
+# Weights of each song attribute
 default_slider_values = {
     'acousticness' : 15.0,
     'danceability' :20.0,

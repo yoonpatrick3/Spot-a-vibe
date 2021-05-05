@@ -1,3 +1,4 @@
+# Represents a musical track storing attributes like artist id, artist name, title, danceability, instrumentalness and other song attributes.
 class Song:
     
     def __init__(self, song_dict):
@@ -21,6 +22,7 @@ class Song:
         self.time_signature = song_dict.get("time_signature")
         self.duration_ms = song_dict.get("duration_ms")
 
+    # Returns a tuple of all attributes of this Song
     def get_tuple(self):
         return (self.id, self.title, self.artist_id, self.img_link, self.album, self.acousticness, 
         self.danceability, self.duration_ms, self.energy, self.instrumentalness, self.key_scale, 
@@ -31,7 +33,7 @@ class Song:
         string = "id: " + str(self.id) + " title: " + self.title + " artist_id: " + self.artist_id + " album: " + self.album + '\n'
         return string
 
-
+    # Gets the core attribtues of this Song (image link, artist name, artist id, title of song, album title, and track id)
     def get_core_attributes(self):
         return {"img_link": self.img_link, 'artist_name': self.artist_name, 'artist_id': self.artist_id, 'title': self.title, 'album': self.album, 'id': self.id}
     
