@@ -60,7 +60,7 @@ function App() {
           Need help?
       </Fab>
       <Snackbar open={showAlert.show} autoHideDuration={15000} onClose={handleClose}>
-        <Alert severity="error" onClose={() => {setAlert(false)}}>
+        <Alert severity="error" onClose={() => {setAlert({show: false, message: ""})}}>
           {showAlert.message}
         </Alert>
       </Snackbar>
