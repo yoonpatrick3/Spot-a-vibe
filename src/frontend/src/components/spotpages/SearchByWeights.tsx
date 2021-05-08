@@ -47,7 +47,7 @@ export default function SearchByWeights({ setAlert, showSpotDialog }: ErrorHandl
                 let track_array = data.similar_songs.map((track: { img_link: string, title: string, artist_name: string, id: string }) => {
                     let url = track.img_link ? track.img_link : defaultSpotifyImgLink;
 
-                    return <div onClick={showSpotDialog(false)}><SongCard id={track.id} trackArtist={track.artist_name}
+                    return <div onClick={() => {showSpotDialog(false)}}><SongCard id={track.id} trackArtist={track.artist_name}
                         trackName={track.title} imageURL={url} type={SongCardType.Track}></SongCard></div>
                 })
                 setCards(track_array);
