@@ -6,8 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom'
 
 export enum SongCardType {
-  Artist= "artist",
-  Track="track"
+  Artist = "artist",
+  Track = "track"
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -28,8 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SongCard = ({id, type, imageURL, trackName, trackArtist}: 
-  {id: string, type: SongCardType, imageURL: string, trackName: string, trackArtist: string}) => {
+interface SongCardProps {
+  id: string,
+  type: SongCardType,
+  imageURL: string,
+  trackName: string,
+  trackArtist: string
+}
+
+export const SongCard = ({ id, type, imageURL, trackName, trackArtist }: SongCardProps) => {
   const classes = useStyles();
 
   return (

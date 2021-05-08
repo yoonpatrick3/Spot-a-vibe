@@ -78,7 +78,7 @@ function ArtistProfile({ id, setAlert, setRedirect}: { id: string, setAlert: any
                     console.log(response.url)
                     console.log(formatErrorURL(response.url))
                     setRedirect(formatErrorURL(response.url));
-                    throw "Redirected"
+                    throw new Error("Redirected");
                 }
             })
             .then(data => {

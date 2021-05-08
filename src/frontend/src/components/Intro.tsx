@@ -1,4 +1,3 @@
-import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -27,7 +26,13 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Intro({imgSrc, alt, name}: {imgSrc: string, alt: string, name: string}) {
+interface IntroProps {
+    imgSrc: string,
+    alt: string,
+    name: string
+}
+
+export default function Intro({ imgSrc, alt, name }: IntroProps) {
     const classes = useStyles();
 
     return (

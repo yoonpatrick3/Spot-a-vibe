@@ -10,8 +10,15 @@ export interface SongWeight {
   Instrumentalness: number
 }
 
-export const ContinuousSlider = ({min, max, weightName, defaultValue, setWeight}: {min: number, max:number, weightName:string, 
-  defaultValue: number, setWeight: any}) => {
+interface SliderProps {
+  min: number,
+  max: number,
+  weightName: string,
+  defaultValue: number,
+  setWeight: any
+}
+
+export const ContinuousSlider = ({ min, max, weightName, defaultValue, setWeight }: SliderProps) => {
 
   function onChange(ev: React.ChangeEvent<{}>, value: number | number[]) {
     setWeight((prev: SongWeight) => ({
@@ -36,12 +43,12 @@ export const ContinuousSlider = ({min, max, weightName, defaultValue, setWeight}
   ];
 
   return (
-    <div>
+    <div style={{display: 'flex', 'flexDirection': 'column', 'alignItems': 'center', margin:'.5em'}}>
       <Typography id="continuous-slider" gutterBottom>
         <h3>{weightName}</h3>
       </Typography>
-      <Slider step={0.0001} defaultValue={defaultValue} min={min} max={max} onChange={onChange}
-          marks={marks} aria-labelledby="continuous-slider" track={false} />
+      <Slider step={0.0001} value={defaultValue} min={min} max={max} onChange={onChange}
+        marks={marks} aria-labelledby="continuous-slider" track={false}/>
     </div>
   );
 }

@@ -5,10 +5,11 @@ import SpotArtist from './spotpages/SpotArtist'
 import SpotTrack from './spotpages/SpotTrack'
 import LearnMore from './spotpages/LearnMore'
 import LearnEvenMore from './spotpages/LearnEvenMore'
+import SearchByWeights from './spotpages/SearchByWeights'
 
 interface SpotProps {
     open: boolean,
-    handleClose: any,
+    showSpotDialog: any,
     spotPhase: SpotPhase,
     changePhase: any,
     setAlert: any
@@ -24,31 +25,36 @@ export enum SpotPhase{
     LearnEvenMore= "explanation"
 }
 
-export default function Spot({open, handleClose, spotPhase, changePhase, setAlert}: SpotProps) {
+export default function Spot({open, showSpotDialog, spotPhase, changePhase, setAlert}: SpotProps) {
+
+    function renderSpot() {
+        switch (spotPhase) {
+            case SpotPhase.Initial:
+                return <Initial setPhase={changePhase}/>
+            case 'learn more':
+                return <LearnMore setPhase={changePhase}/>
+            case 'question':
+                return <Question setPhase={changePhase}/>
+            case 'search by track':
+                return <SpotTrack setAlert={setAlert} showSpotDialog={showSpotDialog}/>
+            case 'search by artist':
+                return <SpotArtist setAlert={setAlert} showSpotDialog={showSpotDialog}/>
+            case 'search by weights':
+                return <SearchByWeights setAlert={setAlert} showSpotDialog={showSpotDialog}/>
+            case 'explanation':
+                return <LearnEvenMore setPhase={changePhase}/> 
+            default:
+                showSpotDialog(false);
+                setAlert("Error displaying Spot")
+        }
+    }
+
     return (
-        <Dialog onClose={() => { handleClose(false) }} aria-labelledby="stat-dialog" open={open}
+        <Dialog onClose={() => { showSpotDialog(false) }} aria-labelledby="stat-dialog" open={open}
             maxWidth={'lg'}>
-            {renderSpot(spotPhase, changePhase, setAlert, handleClose)}
+            {renderSpot()}
         </Dialog>
     )
 }
 
 
-function renderSpot(phase: SpotPhase, setPhase:any, setAlert:any, showDialog:any) {
-    switch (phase) {
-        case 'initial':
-            return <Initial setPhase={setPhase}/>
-        case 'learn more':
-            return <LearnMore setPhase={setPhase}/>
-        case 'question':
-            return <Question setPhase={setPhase}/>
-        case 'search by track':
-            return <SpotTrack setAlert={setAlert} showDialog={showDialog}/>
-        case 'search by artist':
-            return <SpotArtist setAlert={setAlert} showDialog={showDialog}/>
-        case 'search by weights':
-            return;
-        case 'explanation':
-            return <LearnEvenMore setPhase={setPhase}/>
-    }
-}

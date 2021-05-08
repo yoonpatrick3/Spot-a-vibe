@@ -59,7 +59,7 @@ function TrackProfile({ id, setAlert, setRedirect }: { id: string, setAlert: any
                     return response.json();
                 } else {
                     setRedirect(formatErrorURL(response.url));
-                    throw "Redirected"
+                    throw new Error("Redirected")
                 }
             })
             .then(data => {

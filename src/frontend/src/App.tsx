@@ -11,7 +11,7 @@ import Fab from '@material-ui/core/Fab';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import { SpotPhase } from './components/Spot'
 
-export const address = 'https://spot-a-vibe.herokuapp.com'
+export const address = 'http://localhost:5000'
 
 const useStyles = makeStyles((theme) => ({
   extendedIcon: {
@@ -47,7 +47,7 @@ function App() {
       <div className="App">
         <Header></Header>
         <Body setAlert={setAlert} setSpot={setSpot}></Body>
-        <Spot open={spot} handleClose={setSpot} spotPhase={spotPhase} changePhase={changePhase} setAlert={setAlert} />
+        <Spot open={spot} showSpotDialog={setSpot} spotPhase={spotPhase} changePhase={changePhase} setAlert={setAlert} />
       </div>
       <Fab
         variant="extended"
@@ -60,7 +60,7 @@ function App() {
           Need help?
       </Fab>
       <Snackbar open={showAlert.show} autoHideDuration={15000} onClose={handleClose}>
-        <Alert severity="error">
+        <Alert severity="error" onClose={() => {setAlert(false)}}>
           {showAlert.message}
         </Alert>
       </Snackbar>

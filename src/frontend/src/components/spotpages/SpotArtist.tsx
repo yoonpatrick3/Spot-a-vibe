@@ -10,13 +10,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import { ArtistJSON } from '../Search'
+import { ErrorHandlingProps } from './SearchByWeights'
 
-interface SpotArtistProps {
-    setAlert: any, 
-    showDialog: any
-}
 
-export default function SpotArtist({setAlert, showDialog}: SpotArtistProps): JSX.Element{
+export default function SpotArtist({setAlert, showSpotDialog}: ErrorHandlingProps): JSX.Element{
     const [input, setInput] = useState<string>("");
     const [cards, setCards] = useState<JSX.Element[]>([])
     const [confirmationQuestion, setConfirmation] = useState<boolean>(false);
@@ -35,7 +32,7 @@ export default function SpotArtist({setAlert, showDialog}: SpotArtistProps): JSX
                 .then(data => {
                     let artist_array = data.items.map((artist: ArtistJSON) => {
                         let url = artist.images.length > 0 ? artist.images[0].url : defaultSpotifyImgLink
-                        return <div onClick={() => {showDialog(false)}}><SongCard type={SongCardType.Artist} id={artist.id} 
+                        return <div onClick={() => {showSpotDialog(false)}}><SongCard type={SongCardType.Artist} id={artist.id} 
                         trackArtist={artist.artist_name} imageURL={url} trackName=""></SongCard></div>
                     })
                     setCards(artist_array.splice(0, 6));
@@ -48,7 +45,7 @@ export default function SpotArtist({setAlert, showDialog}: SpotArtistProps): JSX
     }
 
     const handleEnterPressed = (ev: any):void => {
-        if (ev.key == 'Enter') {
+        if (ev.key === 'Enter') {
             if (input !== "") {
                 fetchByArtist()
                 .then(() => {
@@ -72,7 +69,7 @@ export default function SpotArtist({setAlert, showDialog}: SpotArtistProps): JSX
         <>
             {confirmationQuestion ?
                 <>
-                    <DialogTitle id="stat-dialog">Artist</DialogTitle>
+                    <DialogTitle id="spot-dialog">Artist</DialogTitle>
                     <Divider></Divider>
                     <DialogContent>
                         <DialogContentText>
@@ -82,7 +79,7 @@ export default function SpotArtist({setAlert, showDialog}: SpotArtistProps): JSX
                     </DialogContent>
                 </> :
                 <>
-                    <DialogTitle id="stat-dialog">Artist</DialogTitle>
+                    <DialogTitle id="spot-dialog">Artist</DialogTitle>
                     <Divider></Divider>
                     <DialogContent>
                         <DialogContentText>

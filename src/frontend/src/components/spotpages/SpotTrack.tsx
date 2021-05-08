@@ -10,13 +10,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import { TrackJSON } from '../Search'
+import { ErrorHandlingProps } from './SearchByWeights'
 
-interface SpotTrackProps {
-    setAlert: any, 
-    showDialog: any
-}
-
-export default function SpotTrack({setAlert, showDialog}: SpotTrackProps): JSX.Element {
+export default function SpotTrack({setAlert, showSpotDialog}: ErrorHandlingProps): JSX.Element {
     const [input, setInput] = useState<string>("");
     const [cards, setCards] = useState<JSX.Element[]>([])
     const [confirmationQuestion, setConfirmation] = useState<boolean>(false);
@@ -36,7 +32,7 @@ export default function SpotTrack({setAlert, showDialog}: SpotTrackProps): JSX.E
                     let track_array = data.items.map((track: TrackJSON) => {
                         let url = track.images.length > 0 ? track.images[0].url : defaultSpotifyImgLink;
 
-                        return <div onClick={() => { showDialog(false) }}><SongCard id={track.id} trackArtist={track.artist_name}
+                        return <div onClick={() => { showSpotDialog(false) }}><SongCard id={track.id} trackArtist={track.artist_name}
                             trackName={track.track_name} imageURL={url} type={SongCardType.Track}></SongCard></div>
                     })
                     setCards(track_array.slice(0, 6));
@@ -73,7 +69,7 @@ export default function SpotTrack({setAlert, showDialog}: SpotTrackProps): JSX.E
         <>
             {confirmationQuestion ?
                 <>
-                    <DialogTitle id="stat-dialog">Track</DialogTitle>
+                    <DialogTitle id="spot-dialog">Track</DialogTitle>
                     <Divider></Divider>
                     <DialogContent>
                         <DialogContentText>
@@ -83,7 +79,7 @@ export default function SpotTrack({setAlert, showDialog}: SpotTrackProps): JSX.E
                     </DialogContent>
                 </> :
                 <>
-                    <DialogTitle id="stat-dialog">Track</DialogTitle>
+                    <DialogTitle id="spot-dialog">Track</DialogTitle>
                     <Divider></Divider>
                     <DialogContent>
                         <DialogContentText>
