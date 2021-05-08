@@ -150,7 +150,7 @@ export default function SearchByWeights({ setAlert, showSpotDialog }: ErrorHandl
                         <DialogContent>
                             <DialogContentText>
                                 Do you like more instrumental music, or in other words, do you like music with fewer words?
-                                <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight} min={0.0} max={.06} defaultValue={0.03}></ContinuousSlider>
+                                <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight} min={0.0} max={.06} defaultValue={weights.Instrumentalness}></ContinuousSlider>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
