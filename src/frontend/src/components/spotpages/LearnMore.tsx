@@ -29,7 +29,7 @@ export default function LearnMore({ setPhase }: { setPhase: React.Dispatch<React
                     <div className="spot-bios" id="patrick">
                         <Avatar src={Patrick} alt="Patrick Yoon" className={classes.icon} />
                         <p>This project's brain was created by Patrick Yoon. His algorithm is what drives our
-                                recommendations! </p>
+                                recommendations! Patrick contributed greatly to the project's ideation.</p>
                     </div>
                     <div className="spot-bios" id="david">
                         <Avatar src={David} alt="David Yan" className={classes.icon} />
@@ -38,12 +38,12 @@ export default function LearnMore({ setPhase }: { setPhase: React.Dispatch<React
                     </div>
                     <div className="spot-bios" id="saahil">
                         <Avatar src={Saahil} alt="Saahil Kumar" className={classes.icon} />
-                        <p>Saahil helped designed our database representation and oversaw its initialization. Saahil was indispensable in the routes,
+                        <p>Saahil helped design our database representation and oversaw its initialization. Saahil was indispensable in the routes,
                                     API calls, and team energy. :)</p>
                     </div>
                     <div className="spot-bios" id="cheng">
                         <Avatar src={Cheng} alt="Cheng Xi Tsou" className={classes.icon} />
-                        <p>Cheng built the search form UI at the center of our application! He also contributed greatly to project ideation with
+                        <p>Cheng built the search form UI on the homepage, front and center! He also contributed greatly to project ideation with
                                     the idea to search by weights.</p>
                     </div>
                 </DialogContentText>
