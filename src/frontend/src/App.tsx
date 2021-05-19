@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface AlertMessage {
+export interface AlertMessage {
   show: boolean,
   message: string
 }
 
 function App() {
-  const [showAlert, setAlert] = useState<AlertMessage>({show: false, message: ""})
+  const [showAlert, setAlert] = useState<AlertMessage>({ show: false, message: "" })
   const [spotPhase, changePhase] = useState<SpotPhase>(SpotPhase.Initial);
   const [spot, setSpot] = useState<boolean>(true);
   const classes = useStyles();
@@ -39,13 +39,13 @@ function App() {
     if (reason === 'clickaway') {
       return;
     }
-    setAlert({show: false, message: ""});
+    setAlert({ show: false, message: "" });
   };
 
   return (
     <BrowserRouter>
       <div className="App">
-        <Header></Header>
+        <Header setAlert={setAlert}></Header>
         <Body setAlert={setAlert} setSpot={setSpot}></Body>
         <Spot open={spot} showSpotDialog={setSpot} spotPhase={spotPhase} changePhase={changePhase} setAlert={setAlert} />
       </div>
@@ -60,7 +60,7 @@ function App() {
           Need help?
       </Fab>
       <Snackbar open={showAlert.show} autoHideDuration={15000} onClose={handleClose}>
-        <Alert severity="error" onClose={() => {setAlert({show: false, message: ""})}}>
+        <Alert severity="error" onClose={() => { setAlert({ show: false, message: "" }) }}>
           {showAlert.message}
         </Alert>
       </Snackbar>

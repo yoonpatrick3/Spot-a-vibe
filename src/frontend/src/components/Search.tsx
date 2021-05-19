@@ -47,7 +47,6 @@ const Search = ({updateFunc, setShowing, setAlert, isTrack}: {updateFunc: any, s
         Instrumentalness: 0.03
     });
     const [open, setOpen] = useState(false);
-
     const classes = useStyles();
 
     function search(input: string, option: string) {
