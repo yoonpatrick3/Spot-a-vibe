@@ -45,7 +45,7 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
                 return response.json();
             })
             .then((data: { id: string }) => {
-                setRedirect(<Redirect to={`${address}/track?id=${data.id}`}></Redirect>);
+                setRedirect(<Redirect to={`/track?id=${data.id}`}></Redirect>);
             })
             .catch(err => {
                 setAlert({ show: true, message: "Could not get a random song :( Please try again later." })

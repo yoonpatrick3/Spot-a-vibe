@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './components/Header';
 import { BrowserRouter } from 'react-router-dom'
@@ -41,6 +41,10 @@ function App() {
     }
     setAlert({ show: false, message: "" });
   };
+
+  useEffect(() => {
+    document.title = "Spot a Vibe"
+  }, []);
 
   return (
     <BrowserRouter>
