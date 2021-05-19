@@ -229,6 +229,20 @@ def artistProfile():
     else:
         return redirect("/error?msg=Invalid_HTTP_Request")
 
+@app.route("/api/random")
+def getRandomSong(): 
+    if request.method == 'GET':
+        try:
+            random_query = ('SELECT id FROM Song ORDER BY RAND() LIMIT 1')
+            mycursor.execute(random_query)
+            song_id = mycursor.fetchone()[0]
+            return  json.dumps({"id": song_id})
+        except Exception as e:
+            print(str(e))
+            return redirect("/error?msg=" + str(e).replace(" ", "_")) # Redirect user to the error page with error message
+    else:
+        return redirect("/error?msg=Invalid_HTTP_Request")
+
 # Route to the homepage! Returns the React App.
 @app.route("/")
 def index():
