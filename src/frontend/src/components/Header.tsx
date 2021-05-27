@@ -15,7 +15,6 @@ import TextField from '@material-ui/core/TextField';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
 import { Link, Redirect } from 'react-router-dom'
 import { address } from '../App'
 import { AlertMessage } from '../App'
@@ -144,15 +143,15 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
                     return response.json();
                 })
                 .then((data: any) => {
-                    if (data.items[0]) {
+                    if (data.items > 0) {
                         setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
                         setSearchVisibility(false);
                     } else {
-                        setAlert({ show: true, message: "Could not get a random song :( Please try again later." })
+                        setAlert({ show: true, message: "Could not find the specified song :( Please try again." })
                     }
                 })
                 .catch(err => {
-                    setAlert({ show: true, message: "Could not get a random song :( Please try again later." })
+                    setAlert({ show: true, message: "Could not retrieve the song :( Please try again later." })
                 })
         }
     }
