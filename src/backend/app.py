@@ -1,13 +1,13 @@
 from flask import Flask, request, redirect, jsonify, render_template
 import mysql.connector
 import json
-from .algo import closest_songs
+from algo import closest_songs
 import requests
 import sys
 import os
 sys.path.append(os.getcwd())
-from .song import *
-from .auth import get_auth
+from song import *
+from auth import get_auth
 from src.database.populate_db import create_and_insert_to_db
 
 app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
