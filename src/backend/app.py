@@ -1,13 +1,13 @@
 from flask import Flask, request, redirect, jsonify, render_template
 import mysql.connector
 import json
-from algo import closest_songs
+from .algo import closest_songs
 import requests
 import sys
 import os
 sys.path.append(os.getcwd())
-from song import *
-from auth import get_auth
+from .song import *
+from .auth import get_auth
 from src.database.populate_db import create_and_insert_to_db
 
 app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
@@ -126,6 +126,7 @@ def trackProfile():
         try:
             params = request.args
             track_id = params.get('track_id', None)
+            print(track_id + ' got here')
 
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
@@ -135,12 +136,16 @@ def trackProfile():
                 artist_name = req.json().get("album").get("artists")[0].get("name")
                 popularity = req.json().get("popularity")
 
+                print(track_id + ' got here 2')
+
                 # Find the song that is specified from our database and convert it into a dictionary object
                 query = ('SELECT * FROM Song WHERE id = %s')
                 mycursor.execute(query, (track_id,))
                 track = mycursor.fetchone()
                 col_names = mycursor.column_names
                 target_song_dict = format_song(col_names, track)
+
+                print(' got here 3')
 
                 # Get every song in our database
                 all_songs_query = ('SELECT * FROM Song')
@@ -150,18 +155,22 @@ def trackProfile():
                 list_of_songs = []
                 all_song_columns = mycursor.column_names
 
+                print(' got here 4')
+
                 # For every song in the database, create a Song object and add it to list_of_songs array
                 for song in all_songs:
                     temp_song_dict = format_song(all_song_columns, song)
                     temp_song_dict['artist_name'] = ""
                     list_of_songs.append(Song(temp_song_dict))
 
+                print(' got here 5')
+
                 # Format the data of the specified track (artist name) and get the closest songs for the specified track
                 target_song_dict['artist_name'] = get_artist_name(mycursor, target_song_dict.get('artist_id'))
                 target_song = Song(target_song_dict)
                 similar_songs = closest_songs(target_song, list_of_songs, 10) #closest_songs(Target song, list of songs, number of closest songs to output)
                 
-                
+                print(' got here 6')
                 returnTrack = format_song(col_names, track)
                 similar_song_attributes = []
 
@@ -169,6 +178,7 @@ def trackProfile():
                 for song in similar_songs:
                     song.artist_name = get_artist_name(mycursor, song.artist_id)
                     similar_song_attributes.append(song.get_core_attributes())
+                print(' got here 8')
                 returnTrack["similar_songs"] = similar_song_attributes
                 returnTrack["artist_name"] = artist_name
                 returnTrack["popularity"] = popularity
