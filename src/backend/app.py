@@ -39,7 +39,7 @@ def apiSearch():
             try:
                 #call spotify api and return a JSON response of images, song names, artist
                 url = 'https://api.spotify.com/v1/search'
-                q = q.replace(" ", "%20")
+                q = q.replace("%20", " ")
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
 

@@ -138,13 +138,18 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
     }
 
     function handleEnterPressed(ev: any): void {
-        if (ev.key === 'Enter') {
+        if (ev.key === 'Enter' && input !== "") {
             fetch(address + '/apiSearch?q=' + input.replaceAll(" ", "%20"))
                 .then(response => {
                     return response.json();
                 })
                 .then((data: any) => {
-                    setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
+                    if (data.items[0]) {
+                        setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
+                        setSearchVisibility(false);
+                    } else {
+                        setAlert({ show: true, message: "Could not get a random song :( Please try again later." })
+                    }
                 })
                 .catch(err => {
                     setAlert({ show: true, message: "Could not get a random song :( Please try again later." })
@@ -203,7 +208,7 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
                     <DialogContentText>
                         Let me know what song you're thinking of.
                     </DialogContentText>
-                    <TextField onChange={handleInput} onKeyPress={handleEnterPressed} fullWidth/>
+                    <TextField onChange={handleInput} onKeyPress={handleEnterPressed} fullWidth />
                 </DialogContent>
             </Dialog>
         </AppBar >

@@ -49,8 +49,7 @@ const Search = ({updateFunc, setShowing, setAlert, isTrack}: {updateFunc: any, s
     const classes = useStyles();
 
     function search(input: string, option: string) {
-        input.replaceAll(" ", "%20")
-        fetch(address + '/apiSearch?q=' + input + '&type=' + option)
+        fetch(address + '/apiSearch?q=' + input.replaceAll(" ", "%20") + '&type=' + option)
             .then(response => {
                 return response.json();
             })
