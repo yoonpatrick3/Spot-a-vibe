@@ -140,9 +140,13 @@ def trackProfile():
 
                 # Find the song that is specified from our database and convert it into a dictionary object
                 query = ('SELECT * FROM Song WHERE id = %s')
+                print(track_id + ' got here 2-3')
                 mycursor.execute(query, (track_id,))
+                print(track_id + ' got here 2-4')
                 track = mycursor.fetchone()
+                print(track_id + ' got here 2-5')
                 col_names = mycursor.column_names
+                print(track_id + ' got here 2-6')
                 target_song_dict = format_song(col_names, track)
 
                 print(' got here 3')
