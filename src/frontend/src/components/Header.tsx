@@ -143,7 +143,7 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
                     return response.json();
                 })
                 .then((data: any) => {
-                    if (data.items > 0) {
+                    if (data.items.length > 0) {
                         setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
                         setSearchVisibility(false);
                     } else {
