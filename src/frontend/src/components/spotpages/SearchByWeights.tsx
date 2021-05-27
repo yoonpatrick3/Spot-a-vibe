@@ -170,7 +170,7 @@ export default function SearchByWeights({ setAlert, showSpotDialog }: ErrorHandl
                         <Divider></Divider>
                         <DialogContent>
                             <DialogContentText>
-                                How important do you value acoustic music ie. non eletric music?
+                                How important do you value acoustic music ie. non electric music?
                                 <ContinuousSlider weightName="Acousticness" setWeight={setWeight} max={0.4} min={0.0} defaultValue={weights.Acousticness}></ContinuousSlider>
                             </DialogContentText>
                         </DialogContent>
@@ -187,7 +187,7 @@ export default function SearchByWeights({ setAlert, showSpotDialog }: ErrorHandl
             case WeightQuestionPhase.Results:
                 return (
                     <>
-                        <DialogTitle id="spot-dialog">Artist</DialogTitle>
+                        <DialogTitle id="spot-dialog">Tracks</DialogTitle>
                         <Divider></Divider>
                         <DialogContent>
                             <DialogContentText>

@@ -27,7 +27,6 @@ export interface TrackJSON {
 
 
 const useStyles = makeStyles({
-
     button: {
         marginTop: "10px",
     }

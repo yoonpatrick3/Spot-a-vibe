@@ -34,7 +34,7 @@ export const SearchGroup = ({search}: SearchGroupProps) => {
     }
 
     const handleEnterPressed = (ev:any):void => {
-        if (ev.key == 'Enter') {
+        if (ev.key === 'Enter') {
             search(input, currOpt)
         }
     }
