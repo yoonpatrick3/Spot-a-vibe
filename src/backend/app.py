@@ -147,6 +147,8 @@ def trackProfile():
                 print(track_id + ' got here 2-5')
                 col_names = mycursor.column_names
                 print(track_id + ' got here 2-6')
+                print(col_names)
+                print(track)
                 target_song_dict = format_song(col_names, track)
 
                 print(' got here 3')
