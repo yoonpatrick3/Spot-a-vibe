@@ -51,7 +51,7 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     #new_tracks = filterBasedByExistence(list_of_tracks, flag, mycursor, mydb)
 
     # For every new track, get the artist and audio features from the spotify API and insert it into the database
-    for t in new_tracks:
+    for t in list_of_tracks:
         if flag:
             track = t.get('track')
         else:
