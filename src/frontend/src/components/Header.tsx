@@ -138,7 +138,7 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
 
     function handleEnterPressed(ev: any): void {
         if (ev.key === 'Enter' && input !== "") {
-            fetch(address + '/apiSearch?q=' + input.replaceAll(" ", "%20"))
+            fetch(address + '/apiSearch?q=' + input.replaceAll(" ", "%20") + '&type=track')
                 .then(response => {
                     return response.json();
                 })
@@ -147,7 +147,7 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
                         setTimeout(() => {
                             setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
                             setSearchVisibility(false);
-                        }, 100)
+                        }, 500)
                     } else {
                         setAlert({ show: true, message: "Could not find the specified song :( Please try again." })
                     }
