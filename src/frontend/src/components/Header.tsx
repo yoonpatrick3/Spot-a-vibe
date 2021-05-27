@@ -144,10 +144,8 @@ export default function ButtonAppBar({ setAlert }: { setAlert: React.Dispatch<Re
                 })
                 .then((data: any) => {
                     if (data.items.length > 0) {
-                        setTimeout(() => {
-                            setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
-                            setSearchVisibility(false);
-                        }, 2000)
+                        setRedirect(<Redirect to={`/track?id=${data.items[0].id}`}></Redirect>);
+                        setSearchVisibility(false);
                     } else {
                         setAlert({ show: true, message: "Could not find the specified song :( Please try again." })
                     }

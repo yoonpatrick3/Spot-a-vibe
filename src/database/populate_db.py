@@ -116,6 +116,7 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
     song_val = []
     for song in list_of_songs:
         song_val.append(song.get_tuple())
+    print(list_of_songs)
 
     mycursor.executemany(song_sql, song_val)
     mydb.commit()
