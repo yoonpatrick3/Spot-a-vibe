@@ -118,6 +118,7 @@ def create_and_insert_to_db(list_of_tracks, mycursor, flag, head, mydb):
         song_val.append(song.get_tuple())
     print(list_of_songs)
 
+    time.sleep(0.1)
     mycursor.executemany(song_sql, song_val)
     mydb.commit()
 

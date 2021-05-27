@@ -39,7 +39,7 @@ def apiSearch():
             try:
                 #call spotify api and return a JSON response of images, song names, artist
                 url = 'https://api.spotify.com/v1/search'
-                q = q.replace("%20", " ")
+                q = q.replace(" ", "%20")
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
 
@@ -126,7 +126,6 @@ def trackProfile():
         try:
             params = request.args
             track_id = params.get('track_id', None)
-            print(track_id + ' got here')
 
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
@@ -136,22 +135,12 @@ def trackProfile():
                 artist_name = req.json().get("album").get("artists")[0].get("name")
                 popularity = req.json().get("popularity")
 
-                print(track_id + ' got here 2')
-
                 # Find the song that is specified from our database and convert it into a dictionary object
                 query = ('SELECT * FROM Song WHERE id = %s')
-                print(track_id + ' got here 2-3')
                 mycursor.execute(query, (track_id,))
-                print(track_id + ' got here 2-4')
                 track = mycursor.fetchone()
-                print(track_id + ' got here 2-5')
                 col_names = mycursor.column_names
-                print(track_id + ' got here 2-6')
-                print(col_names)
-                print(track)
                 target_song_dict = format_song(col_names, track)
-
-                print(' got here 3')
 
                 # Get every song in our database
                 all_songs_query = ('SELECT * FROM Song')
@@ -161,22 +150,18 @@ def trackProfile():
                 list_of_songs = []
                 all_song_columns = mycursor.column_names
 
-                print(' got here 4')
-
                 # For every song in the database, create a Song object and add it to list_of_songs array
                 for song in all_songs:
                     temp_song_dict = format_song(all_song_columns, song)
                     temp_song_dict['artist_name'] = ""
                     list_of_songs.append(Song(temp_song_dict))
 
-                print(' got here 5')
-
                 # Format the data of the specified track (artist name) and get the closest songs for the specified track
                 target_song_dict['artist_name'] = get_artist_name(mycursor, target_song_dict.get('artist_id'))
                 target_song = Song(target_song_dict)
                 similar_songs = closest_songs(target_song, list_of_songs, 10) #closest_songs(Target song, list of songs, number of closest songs to output)
                 
-                print(' got here 6')
+                
                 returnTrack = format_song(col_names, track)
                 similar_song_attributes = []
 
@@ -184,7 +169,6 @@ def trackProfile():
                 for song in similar_songs:
                     song.artist_name = get_artist_name(mycursor, song.artist_id)
                     similar_song_attributes.append(song.get_core_attributes())
-                print(' got here 8')
                 returnTrack["similar_songs"] = similar_song_attributes
                 returnTrack["artist_name"] = artist_name
                 returnTrack["popularity"] = popularity
@@ -239,20 +223,6 @@ def artistProfile():
                 return jsonify(result)
             else:
                 return redirect("/error?msg=Please_add_an_artist_id_parameter")
-        except Exception as e:
-            print(str(e))
-            return redirect("/error?msg=" + str(e).replace(" ", "_")) # Redirect user to the error page with error message
-    else:
-        return redirect("/error?msg=Invalid_HTTP_Request")
-
-@app.route("/api/random")
-def getRandomSong(): 
-    if request.method == 'GET':
-        try:
-            random_query = ('SELECT id FROM Song ORDER BY RAND() LIMIT 1')
-            mycursor.execute(random_query)
-            song_id = mycursor.fetchone()[0]
-            return  json.dumps({"id": song_id})
         except Exception as e:
             print(str(e))
             return redirect("/error?msg=" + str(e).replace(" ", "_")) # Redirect user to the error page with error message
