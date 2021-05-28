@@ -19,6 +19,7 @@ mydb = mysql.connector.connect(
     password=os.getenv('DATABASE_PASS', ''),
     database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs')
     )
+mydb.autocommit = True
 mycursor = mydb.cursor()
 
 # Access token from environment variable (local only)
@@ -138,7 +139,6 @@ def trackProfile():
                 # Find the song that is specified from our database and convert it into a dictionary object
                 query = ('SELECT * FROM Song WHERE id = %s')
                 mycursor.execute(query, (track_id,))
-                mydb.commit()
                 track = mycursor.fetchone()
                 col_names = mycursor.column_names
                 target_song_dict = format_song(col_names, track)
