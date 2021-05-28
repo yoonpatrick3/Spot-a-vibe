@@ -135,10 +135,13 @@ def trackProfile():
                 artist_name = req.json().get("album").get("artists")[0].get("name")
                 popularity = req.json().get("popularity")
 
+
+                print(track_id)
                 # Find the song that is specified from our database and convert it into a dictionary object
                 query = ('SELECT * FROM Song WHERE id = %s')
                 mycursor.execute(query, (track_id,))
                 track = mycursor.fetchone()
+                print(track)
                 col_names = mycursor.column_names
                 target_song_dict = format_song(col_names, track)
 
