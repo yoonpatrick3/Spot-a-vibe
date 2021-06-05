@@ -14,8 +14,12 @@ The more people use our website, the better it can recommend.
 
 ## At a glance
 
-### Homepage and Spot!
+### Homepage
 ![Homepage](./src/frontend/src/resources/homepage.png)
+In Spot a Vibe, you can search by artist name, song name, or by vibes! You can search or specify the importance of attributes like danceability or acousticness to determine
+ what songs we recommend. Try it out!
+
+### Spot the Helper!
 ![Spot the helper](./src/frontend/src/resources/spot_helper.png)  
 Spot is our handy helper asks a series of questions to ease users into finding the best recommendations possible. Inspired by my friend Ainslee!
 
