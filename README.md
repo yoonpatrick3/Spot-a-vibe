@@ -16,7 +16,7 @@ The more people use our website, the better it can recommend.
 
 ### Homepage and Spot!
 ![Homepage](./src/frontend/src/resources/homepage.png)
-![Spot the helper](./src/frontend/src/resources/spot_helper.png)
+![Spot the helper](./src/frontend/src/resources/spot_helper.png)  
 Spot is our handy helper asks a series of questions to ease users into finding the best recommendations possible. Inspired by my friend Ainslee!
 
 ### Track Profile Page
@@ -24,5 +24,5 @@ Spot is our handy helper asks a series of questions to ease users into finding t
 Every track on Spotify can be searched and analyzed. The track profile page displays its stats, popularity, details, and of course recommendations! The recommendations are based on the audio breakdown of the specified song.
 
 ### Artist Profile Page
-![Artist Page](./src/frontend/src/resources/artist_page.png)
+![Artist Page](./src/frontend/src/resources/artist_page.png)  
 Every artist on Spotify can be searched and analyzed as well! The artist profile page displays the audio breakdown of the artist's most well known songs, their popularity, genre, and links to their most popular songs.
