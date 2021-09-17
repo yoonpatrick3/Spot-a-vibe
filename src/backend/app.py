@@ -60,9 +60,9 @@ def apiSearch():
                         artists.append({"images": artist.get("images"), "artist_name": artist.get("name"), "id": artist.get("id")})
                     return_dict = {"items": artists}
                     return json.dumps(return_dict)
-            except:
+            except Exception as e:
                 # error page
-                return redirect("/error?msg=Something_went_wrong_with_your_request")  # redirect to error message if an error occurs
+                return redirect("/error?msg=Something_went_wrong_with_your_request&error=" + str(e))  # redirect to error message if an error occurs
         else:
             return redirect("/error?msg=Please_add_a_search_parameter")
     else: 
