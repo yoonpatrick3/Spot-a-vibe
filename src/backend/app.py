@@ -36,6 +36,7 @@ def apiSearch():
         params = request.args
         q = params.get('q', None)
         relation = params.get('type', 'track')
+        print("q" + str(q))
         if q != None:
             try:
                 #call spotify api and return a JSON response of images, song names, artist
