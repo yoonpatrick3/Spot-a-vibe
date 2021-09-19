@@ -38,7 +38,6 @@ def apiSearch():
         params = request.args
         q = params.get('q', None)
         relation = params.get('type', 'track')
-        print("q" + str(q))
         if q != None:
             try:
                 #call spotify api and return a JSON response of images, song names, artist
@@ -46,7 +45,6 @@ def apiSearch():
                 q = q.replace(" ", "%20")
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
-                print("req obj" + req)
 
                 if relation == 'track':  # if a track, add all returned tracks from the API into DB, then format a JSON response of the tracks
                     create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
@@ -181,7 +179,6 @@ def trackProfile():
             else:
                 return redirect("/error?msg=Please_add_the_correct_query_parameters")
         except Exception as e:
-            print(str(e))
             return redirect("/error?msg=" + str(e).replace(" ", "_"))  # Redirect user to the error page with error message
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
@@ -229,7 +226,6 @@ def artistProfile():
             else:
                 return redirect("/error?msg=Please_add_an_artist_id_parameter")
         except Exception as e:
-            print(str(e))
             return redirect("/error?msg=" + str(e).replace(" ", "_")) # Redirect user to the error page with error message
     else:
         return redirect("/error?msg=Invalid_HTTP_Request")
@@ -243,7 +239,6 @@ def getRandomSong():
             song_id = mycursor.fetchone()[0]
             return  json.dumps({"id": song_id})
         except Exception as e:
-            print(str(e))
             return redirect("/error?msg=" + str(e).replace(" ", "_")) # Redirect user to the error page with error message
     else:
         return redirect("/error?msg=Invalid_HTTP_Request")
