@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, jsonify, render_template
 import mysql.connector
+from mysql.connector.errors import PoolError
+import mysql.connector.pooling
 import json
 from algo import closest_songs
 import requests
@@ -13,16 +15,32 @@ from src.database.populate_db import create_and_insert_to_db
 app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
 
 # Connects to the database specified by environment variables (heroku), if none provided connect to a local mysql
-mydb = mysql.connector.connect(
-    host=os.getenv('DATABASE_URL', 'localhost'),
-    user=os.getenv('DATABASE_USERNAME', 'root'),
-    password=os.getenv('DATABASE_PASS', ''),
-    database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs'),
-    pool_name = "mypool",
+db_config = {
+    "host":os.getenv('DATABASE_URL', 'localhost'),
+    "user":os.getenv('DATABASE_USERNAME', 'root'),
+    "password":os.getenv('DATABASE_PASS', ''),
+    "database":os.getenv('DATABASE_DB_NAME', 'SpotifySongs'),
+}
+connection_pool = mysql.connector.pooling.MySQLConnectionPool(
+    **db_config,
+    pool_name = "flaskpool",
     pool_size = 3
     )
-mydb.autocommit = True
-mycursor = mydb.cursor()
+
+def getConnectionFromPool():
+    try:
+        cnx = connection_pool.get_connection()
+    except PoolError:
+        connection_pool.add_connection()
+        cnx = connection_pool.get_connection()
+    cnx.autocommit = True
+    cursor = cnx.cursor()
+    return cnx, cursor
+
+def returnConnection(cnx, cursor):
+    cursor.close()
+    cnx.close()
+
 
 # Access token from environment variable (local only)
 access_token = get_auth(1)
@@ -46,6 +64,8 @@ def apiSearch():
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
 
+                mydb, mycursor = getConnectionFromPool()
+
                 if relation == 'track':  # if a track, add all returned tracks from the API into DB, then format a JSON response of the tracks
                     create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
                     response = req.json().get("tracks").get("items")
@@ -54,14 +74,14 @@ def apiSearch():
                         tracks.append({"images": track.get("album").get("images"), "artist_name": track.get("artists")[0].get("name"), 
                         "track_name": track.get("name"), "id": track.get("id")})
                     return_dict = {"items": tracks}
-                    return json.dumps(return_dict)
                 else:  # if requested an artist, format a JSON response of the tracks
                     response = req.json().get("artists").get("items")
                     artists = []
                     for artist in response:
                         artists.append({"images": artist.get("images"), "artist_name": artist.get("name"), "id": artist.get("id")})
                     return_dict = {"items": artists}
-                    return json.dumps(return_dict)
+                returnConnection(mydb, mycursor)
+                return json.dumps(return_dict)
             except Exception as e:
                 # error page
                 return redirect("/error?msg=Something_went_wrong_with_your_request&error=" + str(e))  # redirect to error message if an error occurs
@@ -77,6 +97,7 @@ def apiSearch():
 def searchByWeights():
     if request.method == 'GET':
         try:
+            mydb, mycursor = getConnectionFromPool()
             params = request.args
             danceability = float(params.get('d'))
             acousticness = float(params.get('a'))
@@ -96,7 +117,7 @@ def searchByWeights():
             all_songs = mycursor.fetchall()
                 
             list_of_songs = []
-            all_song_columns = mycursor.column_names
+            all_song_columns = col_names
             # for every song in the database, convert it into a Song object and add it to the list list_of_songs
             for song in all_songs:
                 temp_song_dict = format_song(all_song_columns, song)
@@ -115,8 +136,10 @@ def searchByWeights():
                 song.artist_name = get_artist_name(mycursor, song.artist_id)
                 similar_song_attributes.append(song.get_core_attributes())
             returnDict["similar_songs"] = similar_song_attributes
+            returnConnection(mydb, mycursor)
             return returnDict
         except:
+            returnConnection(mydb, mycursor)
             return redirect("/error?msg=Please_add_a_search_parameter")
     else: 
         return redirect("/error?msg=Invalid_HTTP_method")
@@ -129,6 +152,7 @@ def trackProfile():
         try:
             params = request.args
             track_id = params.get('track_id', None)
+            mydb, mycursor = getConnectionFromPool()
 
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
@@ -175,10 +199,13 @@ def trackProfile():
                 returnTrack["similar_songs"] = similar_song_attributes
                 returnTrack["artist_name"] = artist_name
                 returnTrack["popularity"] = popularity
+                returnConnection(mydb, mycursor)
                 return returnTrack
             else:
+                returnConnection(mydb, mycursor)
                 return redirect("/error?msg=Please_add_the_correct_query_parameters")
         except Exception as e:
+            returnConnection(mydb, mycursor)
             return redirect("/error?msg=" + str(e).replace(" ", "_"))  # Redirect user to the error page with error message
     else:
         return redirect("/error?msg=Invalid_HTTP_method")
@@ -190,9 +217,9 @@ def artistProfile():
     if request.method == 'GET':
         try:
             params = request.args
-            artist_id = params.get('artist_id', None)
+            artist_id = params.get('artist_id', None)  
             if artist_id != None:
-
+                mydb, mycursor = getConnectionFromPool()
                 # Find the specified artist in the database
                 song_query = ('SELECT * FROM Song WHERE artist_id = %s')
 
@@ -221,7 +248,7 @@ def artistProfile():
                     songs.append(format_song(mycursor.column_names, song))
 
                 result["discography"] = songs
-                    
+                returnConnection(mydb, mycursor)
                 return jsonify(result)
             else:
                 return redirect("/error?msg=Please_add_an_artist_id_parameter")
@@ -234,11 +261,14 @@ def artistProfile():
 def getRandomSong(): 
     if request.method == 'GET':
         try:
+            mydb, mycursor = getConnectionFromPool()
             random_query = ('SELECT id FROM Song ORDER BY RAND() LIMIT 1')
             mycursor.execute(random_query)
             song_id = mycursor.fetchone()[0]
+            returnConnection(mydb, mycursor)
             return  json.dumps({"id": song_id})
         except Exception as e:
+            returnConnection(mydb, mycursor)
             return redirect("/error?msg=" + str(e).replace(" ", "_")) # Redirect user to the error page with error message
     else:
         return redirect("/error?msg=Invalid_HTTP_Request")
