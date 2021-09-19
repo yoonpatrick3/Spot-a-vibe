@@ -157,7 +157,7 @@ def trackProfile():
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
                 req = requests.get('https://api.spotify.com/v1/tracks/' + track_id, headers = head)
-                print(str(req))
+                print(str(req.json()))
                 print(str(mydb))
                 print(str(mycursor))
 
