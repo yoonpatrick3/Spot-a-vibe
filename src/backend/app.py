@@ -24,7 +24,8 @@ db_config = {
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(
     **db_config,
     pool_name = "flaskpool",
-    pool_size = 3
+    pool_size = 3,
+    pool_reset_session=False,
     )
 
 def getConnectionFromPool():
