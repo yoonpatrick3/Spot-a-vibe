@@ -17,7 +17,9 @@ mydb = mysql.connector.connect(
     host=os.getenv('DATABASE_URL', 'localhost'),
     user=os.getenv('DATABASE_USERNAME', 'root'),
     password=os.getenv('DATABASE_PASS', ''),
-    database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs')
+    database=os.getenv('DATABASE_DB_NAME', 'SpotifySongs'),
+    pool_name = "mypool",
+    pool_size = 3
     )
 mydb.autocommit = True
 mycursor = mydb.cursor()
