@@ -50,7 +50,7 @@ export const SearchGroup = ({search}: SearchGroupProps) => {
                     <MenuItem value="track">Track</MenuItem>
                 </Select>
             </div>
-            <Button variant="outlined" onClick={handleSearch} className={classes.button}>Search</Button>
+            <Button variant="contained" onClick={handleSearch} className={classes.button}>Search</Button>
         </>
     )
 }

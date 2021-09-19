@@ -112,7 +112,7 @@ const Search = ({updateFunc, setShowing, setAlert, isTrack}: {updateFunc: any, s
                 <ContinuousSlider weightName="Acousticness" setWeight={setWeight} max={0.4} min={0.0} defaultValue={weights.Acousticness}></ContinuousSlider>
                 <ContinuousSlider weightName="Energy" setWeight={setWeight} min={0.2} max={1.0} defaultValue={weights.Energy}></ContinuousSlider>
                 <ContinuousSlider weightName="Instrumentalness" setWeight={setWeight} min={0.0} max={.06} defaultValue={weights.Instrumentalness}></ContinuousSlider>
-                <Button variant="outlined" onClick={searchByWeights} className={classes.button}>Search</Button>
+                <Button variant="contained" onClick={searchByWeights} className={classes.button}>Search</Button>
                 <StatDialog isTrack={isTrack} open={open} onClose={() => setOpen(false)} />
             </div>
         </div>

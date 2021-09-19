@@ -26,6 +26,7 @@ connection_pool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name = "flaskpool",
     pool_size = 3,
     pool_reset_session=False,
+    autocommit=True,
     )
 
 def getConnectionFromPool():
@@ -34,7 +35,7 @@ def getConnectionFromPool():
     except PoolError:
         connection_pool.add_connection()
         cnx = connection_pool.get_connection()
-    cnx.autocommit = True
+        
     cursor = cnx.cursor()
     return cnx, cursor
 
@@ -157,7 +158,6 @@ def trackProfile():
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
                 req = requests.get('https://api.spotify.com/v1/tracks/' + track_id, headers = head)
-                print(str(req.json()))
 
                 if (req.status_code != 200):
                     return redirect("/error?msg=Invalid_track_id")
@@ -168,19 +168,13 @@ def trackProfile():
                 query = ('SELECT * FROM Song WHERE id = %s')
                 mycursor.execute(query, (track_id,))
                 track = mycursor.fetchone()
-                print("track")
-                print(track)
                 col_names = mycursor.column_names
                 target_song_dict = format_song(col_names, track)
-                print("target song dict")
-                print(str(target_song_dict))
 
                 # Get every song in our database
                 all_songs_query = ('SELECT * FROM Song')
                 mycursor.execute(all_songs_query)
                 all_songs = mycursor.fetchall()
-                print("all songs")
-                print(str(all_songs))
                 
                 list_of_songs = []
                 all_song_columns = mycursor.column_names
@@ -198,8 +192,6 @@ def trackProfile():
                 
                 
                 returnTrack = format_song(col_names, track)
-                print("returntrack")
-                print(str(returnTrack))
                 similar_song_attributes = []
 
                 # For all of the closest songs of the specified track, get the artist_id and the song's core attributes
