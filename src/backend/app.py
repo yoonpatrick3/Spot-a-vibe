@@ -168,6 +168,8 @@ def trackProfile():
                 query = ('SELECT * FROM Song WHERE id = %s')
                 mycursor.execute(query, (track_id,))
                 track = mycursor.fetchone()
+                print("track")
+                print(track)
                 col_names = mycursor.column_names
                 target_song_dict = format_song(col_names, track)
                 print("target song dict")
