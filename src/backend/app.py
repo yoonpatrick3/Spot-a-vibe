@@ -64,12 +64,8 @@ def apiSearch():
                 q = q.replace(" ", "%20")
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
-                print(str(req))
-
                 mydb, mycursor = getConnectionFromPool()
-                print(str(mydb))
-                print(str(mycursor))
-
+    
                 if relation == 'track':  # if a track, add all returned tracks from the API into DB, then format a JSON response of the tracks
                     create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
                     response = req.json().get("tracks").get("items")
@@ -161,6 +157,10 @@ def trackProfile():
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
                 req = requests.get('https://api.spotify.com/v1/tracks/' + track_id, headers = head)
+                print(str(req))
+                print(str(mydb))
+                print(str(mycursor))
+
                 if (req.status_code != 200):
                     return redirect("/error?msg=Invalid_track_id")
                 artist_name = req.json().get("album").get("artists")[0].get("name")
