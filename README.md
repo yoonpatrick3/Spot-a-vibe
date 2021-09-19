@@ -21,7 +21,7 @@ In Spot a Vibe, you can search by artist name, song name, or by vibes! You can s
 
 ### Spot the Helper!
 ![Spot the helper](./src/frontend/src/resources/spot_helper.png)  
-Spot is our handy helper asks a series of questions to ease users into finding the best recommendations possible. Inspired by my friend Ainslee!
+Spot is our handy helper that asks a series of questions to ease users into finding the best recommendations possible. Inspired by my friend Ainslee!
 
 ### Track Profile Page
 ![Track Page](./src/frontend/src/resources/track_page.png)
