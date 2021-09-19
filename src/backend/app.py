@@ -64,8 +64,11 @@ def apiSearch():
                 q = q.replace(" ", "%20")
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
+                print(str(req))
 
                 mydb, mycursor = getConnectionFromPool()
+                print(str(mydb))
+                print(str(mycursor))
 
                 if relation == 'track':  # if a track, add all returned tracks from the API into DB, then format a JSON response of the tracks
                     create_and_insert_to_db(req.json().get("tracks").get("items"), mycursor, False, head, mydb)
