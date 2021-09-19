@@ -160,6 +160,7 @@ def trackProfile():
                 req = requests.get('https://api.spotify.com/v1/tracks/' + track_id, headers = head)
 
                 if (req.status_code != 200):
+                    print(str(req.status_code))
                     return redirect("/error?msg=Invalid_track_id")
                 artist_name = req.json().get("album").get("artists")[0].get("name")
                 popularity = req.json().get("popularity")
