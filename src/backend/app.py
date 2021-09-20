@@ -70,6 +70,14 @@ def apiSearch():
                 q = q.replace(" ", "%20")
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
+                if (req.status_code == 401):
+                    access_token = reauthenticate_token
+                    head = {'Authorization': 'Bearer ' + access_token}
+                    req = requests.get(url + queryparam, headers=head)
+                elif (req.status_code != 200):
+                    print(str(req.status_code))
+                    print(str(req.json()))
+                    return redirect("/error?msg=Bad_search")
                 mydb, mycursor = getConnectionFromPool()
 
                 if relation == 'track':  # if a track, add all returned tracks from the API into DB, then format a JSON response of the tracks
