@@ -161,6 +161,7 @@ def trackProfile():
 
                 if (req.status_code != 200):
                     print(str(req.status_code))
+                    print(str(req.json()))
                     return redirect("/error?msg=Invalid_track_id")
                 artist_name = req.json().get("album").get("artists")[0].get("name")
                 popularity = req.json().get("popularity")
