@@ -14,14 +14,14 @@ client_secret2 = os.getenv('CLIENT_SECRET2')
 client_id3 = os.getenv('CLIENT_ID3')
 client_secret3 = os.getenv('CLIENT_SECRET3')
 
-refresh_token =''
-
 # Getting the authorization token from Spotify
 AUTH_URL = 'https://accounts.spotify.com/api/token'
-REFRESH_URL = 'https://accounts.spotify.com/api/token'
+REFRESH_URL = 'https://accounts.spotify.com/authorize'
 
 # Of 3 available tokens, return an object that contains an authorization token based on the number supplied
 # There are 3 different tokens, in case one token fails
+
+
 def get_auth(token_number: int) -> str:
     if token_number == 1:
         auth_response = requests.post(AUTH_URL, {
@@ -47,13 +47,14 @@ def get_auth(token_number: int) -> str:
     auth_response_data = auth_response.json()
     # save the access token
     access_token = auth_response_data['access_token']
-    refresh_token = auth_response_data['refresh_token']
     return access_token
 
-def reauthenticate_token():
-    base64_encoding = base64.b64encode(f"{client_id1}:{client_secret1}")
-    refresh_response = requests.post(REFRESH_URL, data={
-        'grant_type': 'refresh_token',
-        'refresh_token': refresh_token,
-    }, headers={ 'Authorization' : f"Basic {base64_encoding}"})
-    return refresh_response['access_token']
+def increment_token_num(token_number):
+    if token_number == 1:
+        return 2
+    elif token_number == 2:
+        return 3
+    elif token_number == 3:
+       return 1
+    else:
+        return None

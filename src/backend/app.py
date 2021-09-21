@@ -1,5 +1,5 @@
 from src.database.populate_db import create_and_insert_to_db
-from auth import get_auth, reauthenticate_token
+from auth import get_auth, increment_token_num
 from song import *
 from flask import Flask, request, redirect, jsonify, render_template
 import mysql.connector
@@ -48,7 +48,8 @@ def returnConnection(cnx, cursor):
 
 
 # Access token from environment variable (local only)
-access_token = get_auth(1)
+token_number = 1
+access_token = get_auth(token_number)
 
 # Header to send with every request to Spotify's API
 head = {'Authorization': 'Bearer ' + access_token}
@@ -71,31 +72,32 @@ def apiSearch():
                 queryparam = '?q=' + q + '&type=' + relation + '&limit=10'
                 req = requests.get(url + queryparam, headers=head)
                 if (req.status_code == 401):
-                    access_token = reauthenticate_token
-                    head = {'Authorization': 'Bearer ' + access_token}
-                    req = requests.get(url + queryparam, headers=head)
+                    token_number = increment_token_num(token_number)
+                    access_token=get_auth(token_number)
+                    head={'Authorization': 'Bearer ' + access_token}
+                    req=requests.get(url + queryparam, headers=head)
                 elif (req.status_code != 200):
                     print(str(req.status_code))
                     print(str(req.json()))
                     return redirect("/error?msg=Bad_search")
-                mydb, mycursor = getConnectionFromPool()
+                mydb, mycursor=getConnectionFromPool()
 
                 if relation == 'track':  # if a track, add all returned tracks from the API into DB, then format a JSON response of the tracks
                     create_and_insert_to_db(req.json().get("tracks").get(
                         "items"), mycursor, False, head, mydb)
-                    response = req.json().get("tracks").get("items")
-                    tracks = []
+                    response=req.json().get("tracks").get("items")
+                    tracks=[]
                     for track in response:
                         tracks.append({"images": track.get("album").get("images"), "artist_name": track.get("artists")[0].get("name"),
                                        "track_name": track.get("name"), "id": track.get("id")})
-                    return_dict = {"items": tracks}
+                    return_dict={"items": tracks}
                 else:  # if requested an artist, format a JSON response of the tracks
-                    response = req.json().get("artists").get("items")
-                    artists = []
+                    response=req.json().get("artists").get("items")
+                    artists=[]
                     for artist in response:
                         artists.append({"images": artist.get(
                             "images"), "artist_name": artist.get("name"), "id": artist.get("id")})
-                    return_dict = {"items": artists}
+                    return_dict={"items": artists}
                 returnConnection(mydb, mycursor)
                 return json.dumps(return_dict)
             except Exception as e:
@@ -110,48 +112,48 @@ def apiSearch():
 
 # Route to handle searching for songs through a set of weight values for song attributes. Returns a JSON response of a list of closely related songs.
 # REQ. PARAMS: 'd' for danceability, 'a' for acousticness, 'v' for valence, 'i' for instrumentalness, 'e' for energy (numbers)
-@app.route("/apiWeights")
+@ app.route("/apiWeights")
 def searchByWeights():
     if request.method == 'GET':
         try:
-            mydb, mycursor = getConnectionFromPool()
-            params = request.args
-            danceability = float(params.get('d'))
-            acousticness = float(params.get('a'))
-            valence = float(params.get('v'))
-            instrumentalness = float(params.get('i'))
-            energy = float(params.get('e'))
+            mydb, mycursor=getConnectionFromPool()
+            params=request.args
+            danceability=float(params.get('d'))
+            acousticness=float(params.get('a'))
+            valence=float(params.get('v'))
+            instrumentalness=float(params.get('i'))
+            energy=float(params.get('e'))
 
             # creates a mock song, 'target_song', with the specified song attributes with default (average) values for non-customizable song attributes
-            target_song_dict = {'acousticness': acousticness, 'danceability': danceability, 'valence': valence, 'instrumentalness': instrumentalness, 'energy': energy,
+            target_song_dict={'acousticness': acousticness, 'danceability': danceability, 'valence': valence, 'instrumentalness': instrumentalness, 'energy': energy,
                                 'key_scale': 5, 'liveness': .16, 'loudness': -6, 'mode': .6, 'speechiness': .11, 'tempo': 121, 'time_signature': 4, 'duration_ms': 200000}
 
             # query all songs, comparison will be made to each, returning the ones that are most similar
-            all_songs_query = ('SELECT * FROM Song')
+            all_songs_query=('SELECT * FROM Song')
             mycursor.execute(all_songs_query)
-            col_names = mycursor.column_names
-            all_songs = mycursor.fetchall()
+            col_names=mycursor.column_names
+            all_songs=mycursor.fetchall()
 
-            list_of_songs = []
-            all_song_columns = col_names
+            list_of_songs=[]
+            all_song_columns=col_names
             # for every song in the database, convert it into a Song object and add it to the list list_of_songs
             for song in all_songs:
-                temp_song_dict = format_song(all_song_columns, song)
-                temp_song_dict['artist_name'] = ""
+                temp_song_dict=format_song(all_song_columns, song)
+                temp_song_dict['artist_name']=""
                 list_of_songs.append(Song(temp_song_dict))
 
             # closest_songs(Target song, list of songs, number of closest songs to output)
-            target_song = Song(target_song_dict)
-            similar_songs = closest_songs(target_song, list_of_songs, 10)
+            target_song=Song(target_song_dict)
+            similar_songs=closest_songs(target_song, list_of_songs, 10)
 
-            returnDict = {}
-            similar_song_attributes = []
+            returnDict={}
+            similar_song_attributes=[]
 
             # for every song in the most closest songs, format a JSON representation to be send as a response
             for song in similar_songs:
-                song.artist_name = get_artist_name(mycursor, song.artist_id)
+                song.artist_name=get_artist_name(mycursor, song.artist_id)
                 similar_song_attributes.append(song.get_core_attributes())
-            returnDict["similar_songs"] = similar_song_attributes
+            returnDict["similar_songs"]=similar_song_attributes
             returnConnection(mydb, mycursor)
             return returnDict
         except:
@@ -164,71 +166,72 @@ def searchByWeights():
 # REQ. Param:  'track_id' for track id
 
 
-@app.route("/api/track")
+@ app.route("/api/track")
 def trackProfile():
     if request.method == 'GET':
         try:
-            params = request.args
-            track_id = params.get('track_id', None)
-            mydb, mycursor = getConnectionFromPool()
+            params=request.args
+            track_id=params.get('track_id', None)
+            mydb, mycursor=getConnectionFromPool()
 
             if track_id != None:
                 # Request track information from Spotify API and format the data returned
-                req = requests.get(
+                req=requests.get(
                     'https://api.spotify.com/v1/tracks/' + track_id, headers=head)
                 if (req.status_code == 401):
-                    access_token = reauthenticate_token
-                    head = {'Authorization': 'Bearer ' + access_token}
-                    req = requests.get(
+                    token_number = increment_token_num(token_number)
+                    access_token=get_auth(token_number)
+                    head={'Authorization': 'Bearer ' + access_token}
+                    req=requests.get(
                         'https://api.spotify.com/v1/tracks/' + track_id, headers=head)
                 elif (req.status_code != 200):
                     print(str(req.status_code))
                     print(str(req.json()))
                     return redirect("/error?msg=Invalid_track_id")
 
-                artist_name = req.json().get(
+                artist_name=req.json().get(
                     "album").get("artists")[0].get("name")
-                popularity = req.json().get("popularity")
+                popularity=req.json().get("popularity")
 
                 # Find the song that is specified from our database and convert it into a dictionary object
-                query = ('SELECT * FROM Song WHERE id = %s')
+                query=('SELECT * FROM Song WHERE id = %s')
                 mycursor.execute(query, (track_id,))
-                track = mycursor.fetchone()
-                col_names = mycursor.column_names
-                target_song_dict = format_song(col_names, track)
+                track=mycursor.fetchone()
+                col_names=mycursor.column_names
+                target_song_dict=format_song(col_names, track)
 
                 # Get every song in our database
-                all_songs_query = ('SELECT * FROM Song')
+                all_songs_query=('SELECT * FROM Song')
                 mycursor.execute(all_songs_query)
-                all_songs = mycursor.fetchall()
+                all_songs=mycursor.fetchall()
 
-                list_of_songs = []
-                all_song_columns = mycursor.column_names
+                list_of_songs=[]
+                all_song_columns=mycursor.column_names
 
                 # For every song in the database, create a Song object and add it to list_of_songs array
                 for song in all_songs:
-                    temp_song_dict = format_song(all_song_columns, song)
-                    temp_song_dict['artist_name'] = ""
+                    temp_song_dict=format_song(all_song_columns, song)
+                    temp_song_dict['artist_name']=""
                     list_of_songs.append(Song(temp_song_dict))
 
                 # Format the data of the specified track (artist name) and get the closest songs for the specified track
-                target_song_dict['artist_name'] = get_artist_name(
+                target_song_dict['artist_name']=get_artist_name(
                     mycursor, target_song_dict.get('artist_id'))
-                target_song = Song(target_song_dict)
+                target_song=Song(target_song_dict)
                 # closest_songs(Target song, list of songs, number of closest songs to output)
-                similar_songs = closest_songs(target_song, list_of_songs, 10)
+                similar_songs=closest_songs(target_song, list_of_songs, 10)
 
-                returnTrack = format_song(col_names, track)
-                similar_song_attributes = []
+                returnTrack=format_song(col_names, track)
+                similar_song_attributes=[]
 
                 # For all of the closest songs of the specified track, get the artist_id and the song's core attributes
                 for song in similar_songs:
-                    song.artist_name = get_artist_name(
+                    song.artist_name=get_artist_name(
                         mycursor, song.artist_id)
                     similar_song_attributes.append(song.get_core_attributes())
-                returnTrack["similar_songs"] = similar_song_attributes
-                returnTrack["artist_name"] = artist_name
-                returnTrack["popularity"] = popularity
+                returnTrack["similar_songs"]=similar_song_attributes
+                returnTrack["artist_name"]=artist_name
+                returnTrack["popularity"]=popularity
                 returnConnection(mydb, mycursor)
                 return returnTrack
             else:
@@ -245,44 +248,60 @@ def trackProfile():
 # REQ. Param:  'artist_id' for artist id
 
 
-@app.route("/api/artist")
+@ app.route("/api/artist")
 def artistProfile():
     if request.method == 'GET':
         try:
-            params = request.args
-            artist_id = params.get('artist_id', None)
+            params=request.args
+            artist_id=params.get('artist_id', None)
             if artist_id != None:
-                mydb, mycursor = getConnectionFromPool()
+                mydb, mycursor=getConnectionFromPool()
                 # Find the specified artist in the database
-                song_query = ('SELECT * FROM Song WHERE artist_id = %s')
+                song_query=('SELECT * FROM Song WHERE artist_id = %s')
 
                 # Access the Spotify API for artist information and format the data returned
-                result = {}
-                url = 'https://api.spotify.com/v1/artists/'
-                req = requests.get(url + artist_id, headers=head)
-                if (req.status_code != 200):
-                    return redirect("/error?msg=Invalid_artist_id")
-                result["follower-count"] = req.json().get("followers").get("total")
-                result["genres"] = req.json().get("genres")
-                result["images"] = req.json().get("images")
-                result["popularity"] = req.json().get("popularity")
-                result["artist_name"] = req.json().get("name")
-                result["artist_id"] = req.json().get("id")
+                result={}
+                url='https://api.spotify.com/v1/artists/'
+                req=requests.get(url + artist_id, headers=head)
+                if (req.status_code == 401):
+                    token_number = increment_token_num(token_number)
+                    access_token=get_auth(token_number)
+                    head={'Authorization': 'Bearer ' + access_token}
+                    req=requests.get(url + artist_id, headers=head)
+                elif (req.status_code != 200):
+                    print(str(req.status_code))
+                    print(str(req.json()))
+                    return redirect("/error?msg=Invalid_artist_ID")
+                result["follower-count"]=req.json().get("followers").get("total")
+                result["genres"]=req.json().get("genres")
+                result["images"]=req.json().get("images")
+                result["popularity"]=req.json().get("popularity")
+                result["artist_name"]=req.json().get("name")
+                result["artist_id"]=req.json().get("id")
 
                 # Get the top tracks for the specified artist
-                req_for_top_tracks = requests.get(
+                req_for_top_tracks=requests.get(
                     url + artist_id + "/top-tracks?market=US", headers=head)
+                if (req.status_code == 401):
+                    access_token=reauthenticate_token()
+                    head={'Authorization': 'Bearer ' + access_token}
+                    req_for_top_tracks=requests.get(
+                        url + artist_id + "/top-tracks?market=US", headers=head)
+                elif (req.status_code != 200):
+                    print(str(req.status_code))
+                    print(str(req.json()))
+                    return redirect("/error?msg=Bad_search")
                 create_and_insert_to_db(req_for_top_tracks.json().get(
                     "tracks"), mycursor, False, head, mydb)
 
                 mycursor.execute(song_query, (artist_id,))
-                artist_songs = mycursor.fetchall()
+                artist_songs=mycursor.fetchall()
 
-                songs = []
+                songs=[]
                 for song in artist_songs:
                     songs.append(format_song(mycursor.column_names, song))
 
-                result["discography"] = songs
+                result["discography"]=songs
                 returnConnection(mydb, mycursor)
                 return jsonify(result)
             else:
@@ -294,14 +313,14 @@ def artistProfile():
         return redirect("/error?msg=Invalid_HTTP_Request")
 
 
-@app.route("/api/random")
+@ app.route("/api/random")
 def getRandomSong():
     if request.method == 'GET':
         try:
-            mydb, mycursor = getConnectionFromPool()
-            random_query = ('SELECT id FROM Song ORDER BY RAND() LIMIT 1')
+            mydb, mycursor=getConnectionFromPool()
+            random_query=('SELECT id FROM Song ORDER BY RAND() LIMIT 1')
             mycursor.execute(random_query)
-            song_id = mycursor.fetchone()[0]
+            song_id=mycursor.fetchone()[0]
             returnConnection(mydb, mycursor)
             return json.dumps({"id": song_id})
         except Exception as e:
@@ -314,21 +333,21 @@ def getRandomSong():
 # Route to the homepage! Returns the React App.
 
 
-@app.route("/")
+@ app.route("/")
 def index():
     return render_template('index.html')
 
 # All error pages are rendered client side, all /error requests should be served the React App.
 
 
-@app.route("/error")
+@ app.route("/error")
 def error():
     return render_template('index.html')
 
 # For 404 errors, render the React App, error handling is done client side
 
 
-@app.errorhandler(404)
+@ app.errorhandler(404)
 def not_found(e):
     return render_template("index.html")
 
@@ -336,21 +355,21 @@ def not_found(e):
 
 
 def format_song(col_names, track):
-    song_dict = {}
+    song_dict={}
     for (col_name, attribute) in zip(col_names, track):
-        song_dict[col_name] = attribute
+        song_dict[col_name]=attribute
     return song_dict
 
 # Given an artist_id and the cursor to a database, return the artist name associated with the artist_id
 
 
 def get_artist_name(mycursor, artist_id):
-    artist_name_query = ('SELECT artist_name FROM Artist WHERE artist_id = %s')
+    artist_name_query=('SELECT artist_name FROM Artist WHERE artist_id = %s')
     mycursor.execute(artist_name_query, (artist_id,))
     return mycursor.fetchone()[0]
 
 
 # App entry point, creates the app on the environment variable of PORT, otherwise use 5000
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port=int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
