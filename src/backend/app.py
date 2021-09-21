@@ -51,8 +51,10 @@ def returnConnection(cnx, cursor):
 token_number = 1
 access_token = get_auth(token_number)
 
+
 # Header to send with every request to Spotify's API
 head = {'Authorization': 'Bearer ' + access_token}
+
 
 # Route that returns a formatted list of tracks and artists based on search terms given in parameters
 # REQ. PARAMS: 'q' or the search term/phrase and 'type' of either track or artist
@@ -61,6 +63,8 @@ head = {'Authorization': 'Bearer ' + access_token}
 @app.route("/apiSearch", methods=['GET'])
 def apiSearch():
     if request.method == 'GET':
+        global head
+        global token_number
         params = request.args
         q = params.get('q', None)
         relation = params.get('type', 'track')
@@ -112,7 +116,7 @@ def apiSearch():
 
 # Route to handle searching for songs through a set of weight values for song attributes. Returns a JSON response of a list of closely related songs.
 # REQ. PARAMS: 'd' for danceability, 'a' for acousticness, 'v' for valence, 'i' for instrumentalness, 'e' for energy (numbers)
-@ app.route("/apiWeights")
+@app.route("/apiWeights")
 def searchByWeights():
     if request.method == 'GET':
         try:
@@ -166,10 +170,12 @@ def searchByWeights():
 # REQ. Param:  'track_id' for track id
 
 
-@ app.route("/api/track")
+@app.route("/api/track")
 def trackProfile():
     if request.method == 'GET':
         try:
+            global head
+            global token_number
             params=request.args
             track_id=params.get('track_id', None)
             mydb, mycursor=getConnectionFromPool()
@@ -247,11 +253,12 @@ def trackProfile():
 # Route that if given an artist id parameter, returns a formatted JSON response of the artist's most popular songs and statistics.
 # REQ. Param:  'artist_id' for artist id
 
-
-@ app.route("/api/artist")
+@app.route("/api/artist")
 def artistProfile():
     if request.method == 'GET':
         try:
+            global head
+            global token_number
             params=request.args
             artist_id=params.get('artist_id', None)
             if artist_id != None:
@@ -283,7 +290,8 @@ def artistProfile():
                 req_for_top_tracks=requests.get(
                     url + artist_id + "/top-tracks?market=US", headers=head)
                 if (req.status_code == 401):
-                    access_token=reauthenticate_token()
+                    token_number = increment_token_num(token_number)
+                    access_token=get_auth(token_number)
                     head={'Authorization': 'Bearer ' + access_token}
                     req_for_top_tracks=requests.get(
                         url + artist_id + "/top-tracks?market=US", headers=head)
@@ -313,7 +321,7 @@ def artistProfile():
         return redirect("/error?msg=Invalid_HTTP_Request")
 
 
-@ app.route("/api/random")
+@app.route("/api/random")
 def getRandomSong():
     if request.method == 'GET':
         try:
@@ -333,21 +341,21 @@ def getRandomSong():
 # Route to the homepage! Returns the React App.
 
 
-@ app.route("/")
+@app.route("/")
 def index():
     return render_template('index.html')
 
 # All error pages are rendered client side, all /error requests should be served the React App.
 
 
-@ app.route("/error")
+@app.route("/error")
 def error():
     return render_template('index.html')
 
 # For 404 errors, render the React App, error handling is done client side
 
 
-@ app.errorhandler(404)
+@app.errorhandler(404)
 def not_found(e):
     return render_template("index.html")
 
