@@ -6,10 +6,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
-import Cheng from "../../resources/cheng.jpg";
-import David from "../../resources/smol_me.jpg";
-import Patrick from "../../resources/patrick_yoon.jpg";
-import Saahil from "../../resources/saahil.jpg";
+import Cheng from "../../../../resources/cheng.jpg";
+import David from "../../../../resources/smol_me.jpg";
+import Patrick from "../../../../resources/patrick_yoon.jpg";
+import Saahil from "../../../../resources/saahil.jpg";
 import { SpotPhase } from "..";
 
 export default function LearnMore({
