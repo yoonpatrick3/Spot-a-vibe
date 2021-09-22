@@ -43,10 +43,11 @@ export default function LearnMore({
           <div className="spot-bios" id="david">
             <Avatar src={David} alt="David Yan" className={classes.icon} />
             <p>
-              Hi, I'm David! Didn't want to leave this project unfinished... so
-              I hope you enjoy the finished product! Loved working on
-              everything; the routing, UI/UX, and connecting it all together
-              were super fun.
+              Hi, I'm David! Didn't want to leave this project unfinished. We
+              left this project without a frontend and half baked so hope you
+              enjoy the finished product! I Loved working on everything; the
+              routing, UI/UX, hosting, and connecting it all together were super
+              fun.
             </p>
           </div>
           <div className="spot-bios" id="saahil">
