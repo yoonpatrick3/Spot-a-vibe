@@ -18,7 +18,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Link, Redirect } from "react-router-dom";
 import { address } from "../../App";
 import { AlertMessage } from "../../App";
-import "../stylesheets/App.css";
+import "../../stylesheets/App.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
