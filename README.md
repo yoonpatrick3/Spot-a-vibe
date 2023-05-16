@@ -1,6 +1,6 @@
 # Spot-A-Vibe!
 
-Available here: https://spot-a-vibe.herokuapp.com
+Hosted here: https://spotavibe.david-yan.com
 
 This project was made at HackBeanpot 2021 using the Spotify API. It is served using Gunicorn and the Heroku platform.
 Backend: Flask, Python, MySQL (MariaDB)
